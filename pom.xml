@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>rest-service</artifactId>
+    <artifactId>scheduling-tasks</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>rest-service</name>
+    <name>scheduling-tasks</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -21,7 +21,13 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>3.1.2</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
