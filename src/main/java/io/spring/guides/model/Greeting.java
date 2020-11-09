@@ -1,4 +1,4 @@
-package io.spring.guides;
+package io.spring.guides.model;
 
 public class Greeting {
     private final long id;
