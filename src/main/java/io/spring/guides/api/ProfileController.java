@@ -3,10 +3,9 @@ package io.spring.guides.api;
 import io.spring.guides.mbg.entity.User;
 import io.spring.guides.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController()
 @RequestMapping(path = "/profile")
@@ -15,9 +14,10 @@ public class ProfileController {
     @Autowired
     UserService userService;
 
-    @GetMapping(path = "/current")
-    public String getCurrent(){
-        return "Current";
+    @GetMapping(path = "/all")
+    public List<User> getCurrent(@RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
+                                 @RequestParam(value = "pageSize",defaultValue = "3") Integer pageSize){
+        return this.userService.fetchUsers();
     }
 
     @GetMapping(path = "/{id}")
