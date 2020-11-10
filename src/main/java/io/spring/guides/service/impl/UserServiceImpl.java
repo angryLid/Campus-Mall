@@ -1,10 +1,8 @@
 package io.spring.guides.service.impl;
 
-import io.spring.guides.mapper.UserMapper;
-import io.spring.guides.model.User;
+import io.spring.guides.mbg.dao.UserMapper;
+import io.spring.guides.mbg.entity.User;
 import io.spring.guides.service.UserService;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,7 +15,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User queryUserById(long id) {
-        return this.mapper.selectById(id);
+        return this.mapper.selectByPrimaryKey(id);
 //        return new User(233L,"USERL","F");
     }
 }

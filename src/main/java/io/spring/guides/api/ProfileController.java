@@ -1,6 +1,6 @@
 package io.spring.guides.api;
 
-import io.spring.guides.model.User;
+import io.spring.guides.mbg.entity.User;
 import io.spring.guides.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
