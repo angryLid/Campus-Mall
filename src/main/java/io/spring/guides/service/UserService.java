@@ -11,4 +11,8 @@ public interface UserService {
     List<User> fetchAllUsers();
 
     List<User> fetchUsers();
+
+    String login(String name, String password);
+
+    String login(long primaryKey, String password) throws IllegalArgumentException;
 }
