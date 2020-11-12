@@ -112,4 +112,12 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(pageNum, pageSize);
         return mapper.selectAll();
     }
+
+    @Override
+    public boolean fireUser(Long id) {
+        User user = this.mapper.selectByPrimaryKey(id);
+        user.setDateSeperation(new Date());
+        int result = this.mapper.updateByPrimaryKey(user);
+        return result == 1;
+    }
 }

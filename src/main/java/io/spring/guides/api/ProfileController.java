@@ -1,10 +1,10 @@
 package io.spring.guides.api;
 
-import io.spring.guides.jwt.annotation.TokenRequired;
-import io.spring.guides.jwt.UserRole;
 import io.spring.guides.dto.CustomResponse;
 import io.spring.guides.dto.UserAddDto;
 import io.spring.guides.dto.UserModifyDto;
+import io.spring.guides.jwt.UserRole;
+import io.spring.guides.jwt.annotation.TokenRequired;
 import io.spring.guides.mbg.entity.User;
 import io.spring.guides.service.UserService;
 import io.swagger.annotations.Api;
@@ -33,7 +33,7 @@ public class ProfileController {
 
     @TokenRequired(role = UserRole.ADMIN)
     @ApiOperation("获取所有用户")
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = true, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
+    @ApiImplicitParam(name = "Authorization", required = true, paramType = "header", dataTypeClass = String.class)
     @GetMapping(path = "/all")
     public CustomResponse<List<User>> getCurrent(@RequestParam(value = "pageNum", defaultValue = "1")
                                                  @ApiParam("页码数量") Integer pageNum,
@@ -47,6 +47,7 @@ public class ProfileController {
 
     @TokenRequired(role = UserRole.ADMIN)
     @ApiOperation("根据主键获得指定用户")
+    @ApiImplicitParam(name = "Authorization", required = true, paramType = "header", dataTypeClass = String.class)
     @GetMapping(path = "/{id}")
     public User getProfileById(@PathVariable("id") long id) {
         return this.userService.queryUserById(id);
@@ -54,6 +55,7 @@ public class ProfileController {
 
     @TokenRequired(role = UserRole.ADMIN)
     @ApiOperation("修改用户信息")
+    @ApiImplicitParam(name = "Authorization", required = true, paramType = "header", dataTypeClass = String.class)
     @PutMapping(path = "{id}")
     public CustomResponse<String> modifyUser(@PathVariable("id") Long id,
                                              @RequestBody
@@ -82,6 +84,7 @@ public class ProfileController {
 
     @TokenRequired(role = UserRole.ADMIN)
     @ApiOperation("新增用户")
+    @ApiImplicitParam(name = "Authorization", required = true, paramType = "header", dataTypeClass = String.class)
     @PostMapping()
     public CustomResponse<String> addUser(@RequestBody @Validated UserAddDto dto,
                                           BindingResult bindingResult) {
@@ -105,5 +108,17 @@ public class ProfileController {
             return CustomResponse.success("新用户已经添加");
         }
         return CustomResponse.dbException("数据访问错误");
+    }
+
+    @TokenRequired(role = UserRole.ADMIN)
+    @ApiOperation("用户标记为离职")
+    @ApiImplicitParam(name = "Authorization", required = true, paramType = "header", dataTypeClass = String.class)
+    @DeleteMapping("{id}")
+    public CustomResponse<String> fire(@PathVariable("id") Long id){
+        boolean result = this.userService.fireUser(id);
+        if(result){
+            return CustomResponse.success("该雇员已解职");
+        }
+        return CustomResponse.dbException("数据访问出错");
     }
 }
