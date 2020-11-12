@@ -93,4 +93,21 @@ public class MessageController {
 
         return CustomResponse.success(messages);
     }
+
+    @ApiOperation("查看当前用户的申请")
+    @ApiImplicitParam(name = "Authorization", required = true, paramType = "header", dataTypeClass = String.class)
+    @TokenRequired(role = UserRole.STAFF)
+    @GetMapping(path = "/cur")
+    public CustomResponse<List<Message>> getMessagesOfCurrentUser(HttpServletRequest req){
+        Long id = 0L;
+        try {
+            id = (Long) req.getAttribute("identity");
+        } catch (Exception e) {
+            logger.warn("{}", e.toString());
+        } finally {
+            CustomResponse.validException("错误");
+        }
+        List<Message> messages = this.messageService.retrieveCurrentUser(id);
+        return CustomResponse.success(messages);
+    }
 }
