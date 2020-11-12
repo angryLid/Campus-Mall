@@ -3,7 +3,7 @@ package io.spring.guides.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import io.spring.guides.annotation.TokenRequired;
+import io.spring.guides.jwt.annotation.TokenRequired;
 import io.spring.guides.mbg.entity.User;
 import io.spring.guides.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,30 +30,37 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         Method method = handlerMethod.getMethod();
 
         if (method.isAnnotationPresent(TokenRequired.class)) {
-//            TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);
-            if (token == null) {
-//                request.getRequestDispatcher("/api/error/invalidtoken").forward(request, response);
 
-//                return false;
-                throw new IllegalArgumentException("登录过期");
+            if (token == null) {
+                throw new IllegalArgumentException("请先登录");
             }
-            String userId;
+
             try {
-                userId = JWT.decode(token).getClaim("userId").asString();
+                if (!JwtUtil.verity(token)) {
+                    throw new IllegalArgumentException("未通过认证，请重新登录");
+                }
+            } catch (JWTVerificationException e) {
+                throw new IllegalArgumentException("未通过认证，请重新登录");
+            }
+
+            String jobNumber;
+            try {
+                jobNumber = JWT.decode(token).getClaim("jobNumber").asString();
             } catch (JWTDecodeException e) {
                 throw new IllegalArgumentException("用户不存在");
             }
-            User user = userService.queryUserById(Long.parseLong(userId));
+            User user = userService.queryUserById(Long.parseLong(jobNumber));
             if (user == null) {
                 throw new IllegalArgumentException("用户不存在");
             }
-            try {
-                if (!JwtUtil.verity(token, user.getPasswd())) {
-                    throw new IllegalArgumentException("用户不合法");
+
+            TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);
+            if (userLoginToken.role() == UserRole.ADMIN) {
+                if (user.getIsAdmin() != 1) {
+                    throw new IllegalArgumentException("无权访问");
                 }
-            } catch (JWTVerificationException e) {
-                throw new IllegalArgumentException("用户不合法");
             }
+
             return true;
         }
         return true;

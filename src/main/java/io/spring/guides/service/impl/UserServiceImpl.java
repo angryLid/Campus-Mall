@@ -66,7 +66,9 @@ public class UserServiceImpl implements UserService {
         } else if (!user.getPasswd().equals(password)) {
             throw new IllegalArgumentException("Wrong Password!");
         } else {
-            token = JwtUtil.sign(user.getUname(), user.getUid().toString(), user.getPasswd());
+
+//            token = JwtUtil.sign(user.getUname(), user.getUid().toString(), user.getPasswd());
+            token = JwtUtil.sign(user.getUid(),user.getIsAdmin());
         }
 
         return token;
@@ -75,14 +77,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean modifyUser(long primaryKey, Date separation, String department, String position, boolean isAdmin, String password) {
         User user = this.mapper.selectByPrimaryKey(primaryKey);
+        if (user == null) {
+            return false;
+        }
+
         user.setDateSeperation(separation);
         user.setDepartment(department);
         user.setPosition(position);
-//        if(isAdmin != null){
-//            user.setIsAdmin(isAdmin == true ? (byte)1:(byte)0);
-//        }
-//        user.setIsAdmin(isAdmin == true ? (byte)1:(byte)0);
+        user.setIsAdmin(isAdmin ? (byte) 1 : (byte) 0);
         user.setPasswd(password);
+
         int result = this.mapper.updateByPrimaryKey(user);
         return result == 1;
     }
@@ -101,5 +105,11 @@ public class UserServiceImpl implements UserService {
         int result = this.mapper.insert(user);
         return result == 1;
 
+    }
+
+    @Override
+    public List<User> fetchUsers(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        return mapper.selectAll();
     }
 }

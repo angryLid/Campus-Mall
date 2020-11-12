@@ -13,6 +13,8 @@ public interface UserService {
 
     List<User> fetchUsers();
 
+    List<User> fetchUsers(int pageNum,int pageSize);
+
     String login(String name, String password);
 
     String login(long primaryKey, String password) throws IllegalArgumentException;

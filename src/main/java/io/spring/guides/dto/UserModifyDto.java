@@ -1,11 +1,22 @@
 package io.spring.guides.dto;
 
+import org.springframework.lang.NonNull;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class UserModifyDto {
+    @NotNull
     protected Date dateSeparation;
+
+    @NotBlank
     protected String department;
+
+    @NotBlank
     protected String position;
+
+    @NonNull
     protected boolean isAdmin;
 
     public Date getDateSeparation() {
