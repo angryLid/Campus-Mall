@@ -1,8 +1,10 @@
 package io.spring.guides.api;
 
+import com.auth0.jwt.JWT;
 import io.spring.guides.dto.CustomResponse;
 import io.spring.guides.dto.UserAddDto;
 import io.spring.guides.dto.UserModifyDto;
+import io.spring.guides.jwt.JwtUtil;
 import io.spring.guides.jwt.UserRole;
 import io.spring.guides.jwt.annotation.TokenRequired;
 import io.spring.guides.mbg.entity.User;
@@ -39,7 +41,7 @@ public class ProfileController {
                                                  @ApiParam("页码数量") Integer pageNum,
                                                  @RequestParam(value = "pageSize", defaultValue = "3")
                                                  @ApiParam("页码大小") Integer pageSize) {
-        List<User> users = this.userService.fetchUsers(pageNum,pageSize);
+        List<User> users = this.userService.fetchUsers(pageNum, pageSize);
 
         return CustomResponse.success(users);
 
@@ -52,6 +54,18 @@ public class ProfileController {
     public User getProfileById(@PathVariable("id") long id) {
         return this.userService.queryUserById(id);
     }
+
+    @TokenRequired(role = UserRole.STAFF)
+    @ApiOperation("获取自己的信息")
+    @ApiImplicitParam(name = "Authorization", required = true, paramType = "header", dataTypeClass = String.class)
+    @GetMapping()
+    public CustomResponse<User> getSelfInfo(
+            @RequestHeader("Authorization") String token) {
+        String jobNumber = JWT.decode(token).getClaim("jobNumber").asString();
+        User user = userService.queryUserById(Long.parseLong(jobNumber));
+        return CustomResponse.success(user);
+    }
+
 
     @TokenRequired(role = UserRole.ADMIN)
     @ApiOperation("修改用户信息")
@@ -69,7 +83,7 @@ public class ProfileController {
         }
         boolean result = this.userService.modifyUser(
                 id,
-                dto.getDateSeparation(),
+
                 dto.getDepartment(),
                 dto.getPosition(),
                 dto.isAdmin(),
@@ -114,9 +128,9 @@ public class ProfileController {
     @ApiOperation("用户标记为离职")
     @ApiImplicitParam(name = "Authorization", required = true, paramType = "header", dataTypeClass = String.class)
     @DeleteMapping("{id}")
-    public CustomResponse<String> fire(@PathVariable("id") Long id){
+    public CustomResponse<String> fire(@PathVariable("id") Long id) {
         boolean result = this.userService.fireUser(id);
-        if(result){
+        if (result) {
             return CustomResponse.success("该雇员已解职");
         }
         return CustomResponse.dbException("数据访问出错");

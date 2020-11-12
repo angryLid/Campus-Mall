@@ -76,14 +76,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean modifyUser(long primaryKey, Date separation, String department, String position,
+    public boolean modifyUser(long primaryKey, String department, String position,
                               boolean isAdmin, String password) {
         User user = this.mapper.selectByPrimaryKey(primaryKey);
         if (user == null) {
             return false;
         }
 
-        user.setDateSeperation(separation);
+
         user.setDepartment(department);
         user.setPosition(position);
         user.setIsAdmin(isAdmin ? (byte) 1 : (byte) 0);

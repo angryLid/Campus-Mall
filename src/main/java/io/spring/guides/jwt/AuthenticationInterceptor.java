@@ -54,11 +54,17 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 throw new IllegalArgumentException("用户不存在");
             }
 
+            request.setAttribute("identity",user.getUid());
+
             TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);
             if (userLoginToken.role() == UserRole.ADMIN) {
                 if (user.getIsAdmin() != 1) {
                     throw new IllegalArgumentException("无权访问");
                 }
+            }
+
+            if(userLoginToken.role() == UserRole.STAFF){
+                request.setAttribute("UserIdentity",user.getUid());
             }
 
             return true;

@@ -13,13 +13,13 @@ public interface UserService {
 
     List<User> fetchUsers();
 
-    List<User> fetchUsers(int pageNum,int pageSize);
+    List<User> fetchUsers(int pageNum, int pageSize);
 
     String login(String name, String password);
 
     String login(long primaryKey, String password) throws IllegalArgumentException;
 
-    boolean modifyUser(long primaryKey,Date separation, String department, String position, boolean isAdmin, String password);
+    boolean modifyUser(long primaryKey, String department, String position, boolean isAdmin, String password);
 
     boolean addUser(String name, String gender, Date entry, String department, String position, boolean isAdmin, String password);
 

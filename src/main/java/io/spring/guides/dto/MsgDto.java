@@ -1,10 +1,14 @@
 package io.spring.guides.dto;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class MsgDto {
     @NotBlank
+    @Length(min = 2,max = 200)
     String message;
 
     @NotNull

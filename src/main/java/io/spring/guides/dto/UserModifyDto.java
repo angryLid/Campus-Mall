@@ -3,12 +3,10 @@ package io.spring.guides.dto;
 import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class UserModifyDto {
-    @NotNull
-    protected Date dateSeparation;
+
 
     @NotBlank
     protected String department;
@@ -19,13 +17,6 @@ public class UserModifyDto {
     @NonNull
     protected boolean isAdmin;
 
-    public Date getDateSeparation() {
-        return dateSeparation;
-    }
-
-    public void setDateSeparation(Date dateSeparation) {
-        this.dateSeparation = dateSeparation;
-    }
 
     public String getPassword() {
         return password;
@@ -40,20 +31,12 @@ public class UserModifyDto {
     @Override
     public String toString() {
         return "UserModifyDto{" +
-                "dateSeperation=" + dateSeparation +
+                "dateSeperation=" +
                 ", department='" + department + '\'' +
                 ", position='" + position + '\'' +
                 ", isAdmin=" + isAdmin +
                 '}';
     }
-
-    public UserModifyDto(Date dateSeperation, String department, String position, boolean isAdmin) {
-        this.dateSeparation = dateSeperation;
-        this.department = department;
-        this.position = position;
-        this.isAdmin = isAdmin;
-    }
-
 
 
     public String getDepartment() {
