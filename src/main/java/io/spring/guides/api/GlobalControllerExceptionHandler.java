@@ -11,4 +11,5 @@ public class GlobalControllerExceptionHandler {
     public CustomResponse<String> deniedPermissionException(IllegalArgumentException ex) {
         return CustomResponse.unauthorized(ex.getMessage());
     }
+
 }

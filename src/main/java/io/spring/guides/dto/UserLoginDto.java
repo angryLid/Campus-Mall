@@ -1,9 +1,20 @@
 package io.spring.guides.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class UserLoginDto {
+    @NotNull
     Long jobNumber;
-    String username;
+
+    @NotBlank
     String password;
+
+    public UserLoginDto(String password, Long jobNumber) {
+
+        this.password = password;
+        this.jobNumber = jobNumber;
+    }
 
     public Long getJobNumber() {
         return jobNumber;
@@ -13,19 +24,6 @@ public class UserLoginDto {
         this.jobNumber = jobNumber;
     }
 
-    public UserLoginDto(String username, String password, Long jobNumber) {
-        this.username = username;
-        this.password = password;
-        this.jobNumber = jobNumber;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getPassword() {
         return password;

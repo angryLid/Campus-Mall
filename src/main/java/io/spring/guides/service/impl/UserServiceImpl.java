@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> fetchUsers() {
         PageHelper.startPage(1, 3);
-        List<User> origin = mapper.selectAll();
-        return origin;
+        return mapper.selectAll();
+
     }
 
     @Override
@@ -57,25 +57,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(long primaryKey, String password) throws IllegalArgumentException {
-        String token;
 
         User user = mapper.selectByPrimaryKey(primaryKey);
 
         if (user == null) {
             throw new IllegalArgumentException("User doesn't Exist!");
-        } else if (!user.getPasswd().equals(password)) {
-            throw new IllegalArgumentException("Wrong Password!");
-        } else {
-
-//            token = JwtUtil.sign(user.getUname(), user.getUid().toString(), user.getPasswd());
-            token = JwtUtil.sign(user.getUid(),user.getIsAdmin());
         }
 
-        return token;
+        if (user.getDateSeperation() != null) {
+            throw new IllegalArgumentException("User has left the company!");
+        }
+
+        if (!user.getPasswd().equals(password)) {
+            throw new IllegalArgumentException("Wrong Password!");
+        }
+        // Validation passed.
+        return JwtUtil.sign(user.getUid(), user.getIsAdmin());
     }
 
     @Override
-    public boolean modifyUser(long primaryKey, Date separation, String department, String position, boolean isAdmin, String password) {
+    public boolean modifyUser(long primaryKey, Date separation, String department, String position,
+                              boolean isAdmin, String password) {
         User user = this.mapper.selectByPrimaryKey(primaryKey);
         if (user == null) {
             return false;
@@ -92,7 +94,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean addUser(String name, String gender, Date entry, String department, String position, boolean isAdmin, String password) {
+    public boolean addUser(String name, String gender, Date entry, String department, String position,
+                           boolean isAdmin, String password) {
         User user = new User();
         user.setUname(name);
         user.setUsex(gender);
