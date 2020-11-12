@@ -23,6 +23,13 @@ public class CustomResponse<T> {
     public static <T> CustomResponse<T> unauthorized(T data,String message) {
         return new CustomResponse<T>(Code.UNAUTHORIZED.getCode(), message, data);
     }
+
+    public static <T> CustomResponse<T> dbException(T data) {
+        return new CustomResponse<T>(Code.DB_EXCEPTION.getCode(),Code.DB_EXCEPTION.getMessage(), data);
+    }
+    public static <T> CustomResponse<T> validException(T data) {
+        return new CustomResponse<T>(Code.VALIDATION_EXCEPTION.getCode(), Code.VALIDATION_EXCEPTION.getMessage(), data);
+    }
     public int getCode() {
         return code;
     }

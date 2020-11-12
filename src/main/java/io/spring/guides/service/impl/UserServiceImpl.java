@@ -8,6 +8,7 @@ import io.spring.guides.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service("userService")
@@ -69,5 +70,36 @@ public class UserServiceImpl implements UserService {
         }
 
         return token;
+    }
+
+    @Override
+    public boolean modifyUser(long primaryKey, Date separation, String department, String position, boolean isAdmin, String password) {
+        User user = this.mapper.selectByPrimaryKey(primaryKey);
+        user.setDateSeperation(separation);
+        user.setDepartment(department);
+        user.setPosition(position);
+//        if(isAdmin != null){
+//            user.setIsAdmin(isAdmin == true ? (byte)1:(byte)0);
+//        }
+//        user.setIsAdmin(isAdmin == true ? (byte)1:(byte)0);
+        user.setPasswd(password);
+        int result = this.mapper.updateByPrimaryKey(user);
+        return result == 1;
+    }
+
+    @Override
+    public boolean addUser(String name, String gender, Date entry, String department, String position, boolean isAdmin, String password) {
+        User user = new User();
+        user.setUname(name);
+        user.setUsex(gender);
+        user.setDateEntry(entry);
+        user.setPosition(position);
+        user.setIsAdmin(isAdmin ? (byte) 1 : (byte) 0);
+        user.setPasswd(password);
+        user.setDepartment(department);
+
+        int result = this.mapper.insert(user);
+        return result == 1;
+
     }
 }
