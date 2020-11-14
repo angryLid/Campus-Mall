@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class JwtUtil {
-    private static final long EXPIRE_TIME = 15 * 60 * 1000;
+    private static final long EXPIRE_TIME = 15 * 60 * 1000 *32;
     private static final String SECRET = "8sn3D3v-:.f]3";
 
     public static String sign(String username, String userId, String password) {

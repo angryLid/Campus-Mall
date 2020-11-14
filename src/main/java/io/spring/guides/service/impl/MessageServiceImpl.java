@@ -33,7 +33,7 @@ public class MessageServiceImpl {
 
     public boolean checkMessage(int id,Boolean status){
         Message message = this.mapper.selectByPrimaryKey(id);
-        message.setApproved(status?(byte)1:(byte)0);
+        message.setApproved(status?(byte)1:(byte)2);
 
         int result = this.mapper.updateByPrimaryKey(message);
         return result == 1;
