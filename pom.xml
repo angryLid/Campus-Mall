@@ -8,10 +8,10 @@
         <version>2.1.7.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>spring-guide</artifactId>
-    <version>0.0.1</version>
-    <name>spring-guide</name>
+    <groupId>io.github.angrylid</groupId>
+    <artifactId>mall</artifactId>
+    <version>0.0.2</version>
+    <name>angrylid's mall</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

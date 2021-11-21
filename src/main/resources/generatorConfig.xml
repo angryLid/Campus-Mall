@@ -56,7 +56,7 @@
         </javaTypeResolver>
 
         <!-- 生成实体类地址 -->
-        <javaModelGenerator targetPackage="io.spring.guides.mbg.entity" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="io.github.angrylid.mall.mbg.entity" targetProject="src/main/java">
             <!-- 是否让 schema 作为包的后缀，默认为false -->
             <!--<property name="enableSubPackages" value="false"/>-->
             <!-- 是否针对string类型的字段在set方法中进行修剪，默认false -->
@@ -65,12 +65,12 @@
 
 
         <!-- 生成Mapper.xml文件 -->
-        <sqlMapGenerator targetPackage="io.spring.guides.mbg.dao" targetProject="src/main/resources">
+        <sqlMapGenerator targetPackage="io.github.angrylid.mall.mbg.dao" targetProject="src/main/resources">
             <!--<property name="enableSubPackages" value="false"/>-->
         </sqlMapGenerator>
 
         <!-- 生成 XxxMapper.java 接口-->
-        <javaClientGenerator targetPackage="io.spring.guides.mbg.dao" targetProject="src/main/java" type="XMLMAPPER">
+        <javaClientGenerator targetPackage="io.github.angrylid.mall.mbg.dao" targetProject="src/main/java" type="XMLMAPPER">
             <!--<property name="enableSubPackages" value="false"/>-->
         </javaClientGenerator>
 
