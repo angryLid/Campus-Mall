@@ -24,4 +24,6 @@ public interface UserService {
     boolean addUser(String name, String gender, Date entry, String department, String position, boolean isAdmin, String password);
 
     boolean fireUser(Long id);
+
+    boolean registerUser(String telephone,String password);
 }

@@ -123,4 +123,10 @@ public class UserServiceImpl implements UserService {
         int result = this.mapper.updateByPrimaryKey(user);
         return result == 1;
     }
+
+    @Override
+    public boolean registerUser(String telephone, String password) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }
