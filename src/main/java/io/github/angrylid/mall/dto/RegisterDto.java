@@ -1,15 +1,22 @@
 package io.github.angrylid.mall.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class RegisterDto {
 
     @NotBlank
+    @Size(min = 13,max = 13)
     String telephone;
+
     @NotBlank
+    @Size(min = 8,max = 16)
     String password;
 
-    public RegisterDto(@NotBlank String telephone, @NotBlank String password) {
+    
+
+    public RegisterDto(@NotBlank @Size(min = 13, max = 13) String telephone,
+            @NotBlank @Size(min = 8, max = 16) String password) {
         this.telephone = telephone;
         this.password = password;
     }

@@ -25,5 +25,5 @@ public interface UserService {
 
     boolean fireUser(Long id);
 
-    boolean registerUser(String telephone,String password);
+    boolean registerUser(String telephone,String password) throws IllegalArgumentException ;
 }
