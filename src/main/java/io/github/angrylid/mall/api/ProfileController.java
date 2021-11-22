@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.UserAddDto;
 import io.github.angrylid.mall.dto.UserModifyDto;
-import io.github.angrylid.mall.jwt.JwtUtil;
 import io.github.angrylid.mall.jwt.UserRole;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.mbg.entity.User;

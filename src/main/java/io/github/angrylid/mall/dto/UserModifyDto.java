@@ -3,7 +3,6 @@ package io.github.angrylid.mall.dto;
 import org.springframework.lang.NonNull;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
 
 public class UserModifyDto {
 

@@ -3,7 +3,6 @@ package io.github.angrylid.mall.service.impl;
 import io.github.angrylid.mall.mapper.CustomMessageMapper;
 import io.github.angrylid.mall.mbg.dao.MessageMapper;
 import io.github.angrylid.mall.mbg.entity.Message;
-import io.github.angrylid.mall.mbg.entity.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

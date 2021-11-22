@@ -2,7 +2,6 @@ package io.github.angrylid.mall.dto;
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
