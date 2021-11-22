@@ -1,5 +1,5 @@
 package io.github.angrylid.mall.service;
 
 public interface AccountService {
-    boolean register(String telephone, String password);
+    boolean register(String telephone, String password) throws Exception;
 }

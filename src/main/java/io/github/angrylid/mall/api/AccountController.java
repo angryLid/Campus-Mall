@@ -3,6 +3,7 @@ package io.github.angrylid.mall.api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.RegisterDto;
 import io.github.angrylid.mall.service.AccountService;
 import io.swagger.annotations.Api;
@@ -29,21 +30,21 @@ public class AccountController {
 
     @ApiOperation("注册账户")
     @PostMapping("/register")
-    public String register(@RequestBody @Validated RegisterDto registerDto, BindingResult bindingResult) {
+    public CustomResponse<String> register(@RequestBody @Validated RegisterDto registerDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for(FieldError fieldError:bindingResult.getFieldErrors()){
                 logger.error("FieldError: {}", fieldError);
             }
-            return "Illegel Parameters.";
+            return CustomResponse.validException("Illegel Parameters.");
         }
 
         try {
             this.accountService.register(registerDto.getTelephone(), registerDto.getPassword());
-            return "OK";
+            return CustomResponse.success("registered.");
         } catch (Exception e) {
 
         }
-        return "Error";
+        return CustomResponse.dbException("failed to store");
     }
 
     @ApiOperation("忘记密码")
