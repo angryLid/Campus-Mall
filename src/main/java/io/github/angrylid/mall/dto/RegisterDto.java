@@ -6,16 +6,14 @@ import javax.validation.constraints.Size;
 public class RegisterDto {
 
     @NotBlank
-    @Size(min = 13,max = 13)
+    @Size(min = 11, max = 11)
     String telephone;
 
     @NotBlank
-    @Size(min = 8,max = 16)
+    @Size(min = 8, max = 16)
     String password;
 
-    
-
-    public RegisterDto(@NotBlank @Size(min = 13, max = 13) String telephone,
+    public RegisterDto(@NotBlank @Size(min = 11, max = 11) String telephone,
             @NotBlank @Size(min = 8, max = 16) String password) {
         this.telephone = telephone;
         this.password = password;

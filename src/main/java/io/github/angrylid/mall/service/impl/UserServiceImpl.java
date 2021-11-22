@@ -1,6 +1,5 @@
 package io.github.angrylid.mall.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import io.github.angrylid.mall.jwt.JwtUtil;
 import io.github.angrylid.mall.mbg.dao.UserMapper;
 import io.github.angrylid.mall.mbg.entity.User;
@@ -30,7 +29,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> fetchUsers() {
-        PageHelper.startPage(1, 3);
         return mapper.selectAll();
 
     }
@@ -112,7 +110,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> fetchUsers(int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
         return mapper.selectAll();
     }
 

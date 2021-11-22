@@ -1,13 +1,13 @@
 package io.github.angrylid.mall.dto;
 
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class MsgDto {
     @NotBlank
-    @Length(min = 2,max = 200)
+    @Size(min = 2,max = 200)
     String message;
 
     @NotNull
