@@ -20,12 +20,7 @@ public class TestRegister {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Test
-    public void testSelect() {
-        List<User> userList = customUserMapper.selectList(null);
-        assertEquals(22, userList.size());
-        userList.forEach(System.out::println);
-    }
+
 
     @Test
     public void findDeveloper() {

@@ -1,6 +1,7 @@
 package io.github.angrylid.mall.service.impl;
 
 import io.github.angrylid.mall.jwt.JwtUtil;
+import io.github.angrylid.mall.mapper.CustomUserMapper;
 import io.github.angrylid.mall.mbg.dao.UserMapper;
 import io.github.angrylid.mall.mbg.entity.User;
 import io.github.angrylid.mall.service.UserService;
@@ -15,6 +16,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserMapper mapper;
+
+    @Resource
+    private CustomUserMapper customUserMapper;
 
     @Override
     public User queryUserById(long id) {
@@ -34,23 +38,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(String name, String password) {
-        String token = "null";
-        try {
-            User user = mapper.selectByPrimaryKey(1L);
-            if (user == null) {
-                return "401";
-            } else {
-                if (!user.getPasswd().equals(password)) {
-                    return "401";
-                } else {
-                    token = JwtUtil.sign(user.getUname(), user.getUid().toString(), user.getPasswd());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    public String login(String telephone, String password) {
+        User user = this.customUserMapper.getUser(telephone, password);
+        if (user != null) {
+            return JwtUtil.sign(telephone, telephone, password);
         }
-        return token;
+
+
+        throw new IllegalArgumentException("Wrong tel or password");
     }
 
     @Override
@@ -62,15 +57,16 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User doesn't Exist!");
         }
 
-        if (user.getDateSeperation() != null) {
-            throw new IllegalArgumentException("User has left the company!");
-        }
+        //  if (user.getDateSeperation() != null) {
+        //      throw new IllegalArgumentException("User has left the company!");
+        // }
 
         if (!user.getPasswd().equals(password)) {
             throw new IllegalArgumentException("Wrong Password!");
         }
         // Validation passed.
-        return JwtUtil.sign(user.getUid(), user.getIsAdmin());
+        //  return JwtUtil.sign(user.getUid(), user.getIsAdmin());
+        return "";
     }
 
     @Override
@@ -82,7 +78,7 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        user.setDepartment(department);
+        //   user.setDepartment(department);
         user.setPosition(position);
         user.setIsAdmin(isAdmin ? (byte) 1 : (byte) 0);
         user.setPasswd(password);
@@ -95,13 +91,13 @@ public class UserServiceImpl implements UserService {
     public boolean addUser(String name, String gender, Date entry, String department, String position,
                            boolean isAdmin, String password) {
         User user = new User();
-        user.setUname(name);
-        user.setUsex(gender);
+        //  user.setUname(name);
+        // user.setUsex(gender);
         user.setDateEntry(entry);
         user.setPosition(position);
         user.setIsAdmin(isAdmin ? (byte) 1 : (byte) 0);
         user.setPasswd(password);
-        user.setDepartment(department);
+        ///  user.setDepartment(department);
 
         int result = this.mapper.insert(user);
         return result == 1;
@@ -116,7 +112,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean fireUser(Long id) {
         User user = this.mapper.selectByPrimaryKey(id);
-        user.setDateSeperation(new Date());
+        //  user.setDateSeperation(new Date());
         int result = this.mapper.updateByPrimaryKey(user);
         return result == 1;
     }

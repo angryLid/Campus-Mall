@@ -2,28 +2,32 @@ package io.github.angrylid.mall.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UserLoginDto {
-    @NotNull
-    Long jobNumber;
 
+    @Size(max = 11, min = 11)
     @NotBlank
+    @NotNull
+    String telephone;
+
+    @Size(min = 8, max = 16)
+    @NotBlank
+    @NotNull
     String password;
 
-    public UserLoginDto(String password, Long jobNumber) {
-
+    public UserLoginDto(String telephone, String password) {
+        this.telephone = telephone;
         this.password = password;
-        this.jobNumber = jobNumber;
     }
 
-    public Long getJobNumber() {
-        return jobNumber;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setJobNumber(Long jobNumber) {
-        this.jobNumber = jobNumber;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
-
 
     public String getPassword() {
         return password;

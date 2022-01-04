@@ -40,7 +40,7 @@ public class LogInController {
         }
         String token;
         try {
-            token = this.userService.login(userLoginDto.getJobNumber(),
+            token = this.userService.login(userLoginDto.getTelephone(),
                     userLoginDto.getPassword());
         } catch (IllegalArgumentException e) {
             token = e.getMessage();

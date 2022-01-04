@@ -1,14 +1,16 @@
+# IDEA
 /.idea
 *.iml
-/target
 
 # Eclipse
 .classpath
 .project
 /.settings
-# IDEA
 
 # VSCode
 /.devcontainer
 .http
 /.vscode
+
+# classes
+/target

@@ -54,7 +54,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 throw new IllegalArgumentException("用户不存在");
             }
 
-            request.setAttribute("identity",user.getUid());
+            request.setAttribute("identity",user.getId());
 
             TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);
             if (userLoginToken.role() == UserRole.ADMIN) {
@@ -64,7 +64,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             }
 
             if(userLoginToken.role() == UserRole.STAFF){
-                request.setAttribute("UserIdentity",user.getUid());
+                request.setAttribute("UserIdentity",user.getId());
             }
 
             return true;
