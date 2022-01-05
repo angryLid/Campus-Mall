@@ -1,29 +1,67 @@
 package io.github.angrylid.mall.service;
 
+import io.github.angrylid.mall.entity.AccountInformation;
+import io.github.angrylid.mall.jwt.JwtUtil;
+import io.github.angrylid.mall.mapper.CustomUserMapper;
+import io.github.angrylid.mall.mbg.dao.UserMapper;
 import io.github.angrylid.mall.mbg.entity.User;
+import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import javax.annotation.Resource;
 
-public interface UserService {
+@Service
+public class UserService {
 
-    User queryUserById(long id);
+    @Resource
+    private UserMapper mapper;
 
-    List<User> fetchAllUsers();
+    @Resource
+    private CustomUserMapper customUserMapper;
 
-    List<User> fetchUsers();
+    public String login(String telephone, String password) {
+        User user = this.customUserMapper.getUser(telephone, password);
+        if (user != null) {
+            return JwtUtil.sign(telephone, password);
+        }
 
-    List<User> fetchUsers(int pageNum, int pageSize);
 
-    String login(String telephone, String password);
+        throw new IllegalArgumentException("Wrong tel or password");
+    }
 
-    String login(long primaryKey, String password) throws IllegalArgumentException;
+    public String addUser(String telephone, String password, String nickname) {
+        try {
+            this.customUserMapper.addUser(telephone, password, nickname);
+        } catch (Exception e) {
+            throw e;
+        }
+        return "Succeed!";
+    }
 
-    boolean modifyUser(long primaryKey, String department, String position, boolean isAdmin, String password);
+    public User getUserByTel(String telephone) {
+        User user = new User();
+        try {
+            user = this.customUserMapper.getUserByTel(telephone);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return user;
+    }
 
-    boolean addUser(String name, String gender, Date entry, String department, String position, boolean isAdmin, String password);
+    public AccountInformation getFollowingAndFollowedOfCurrentUser(int id) {
+        AccountInformation friend = new AccountInformation();
+        try {
+            friend.setFollowing(this.customUserMapper.getFollowingSpecificUser(id));
+            friend.setFollowed(this.customUserMapper.getFollowedSpecificUser(id));
 
-    boolean fireUser(Long id);
+            User user = this.customUserMapper.getUserById(id);
+            friend.setName(user.getNikename());
+            friend.setTelephone(user.getTelephone());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
 
-    boolean registerUser(String telephone,String password) throws IllegalArgumentException ;
+        return friend;
+    }
 }

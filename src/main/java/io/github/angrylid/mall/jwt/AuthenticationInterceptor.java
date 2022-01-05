@@ -7,6 +7,7 @@ import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.mbg.entity.User;
 import io.github.angrylid.mall.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -14,19 +15,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
+@Component
 public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     UserService userService;
 
+
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        if (!(handler instanceof HandlerMethod)) {
+        if (!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
         }
         String token = request.getHeader("Authorization");
 
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
 
         if (method.isAnnotationPresent(TokenRequired.class)) {
@@ -36,20 +39,22 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             }
 
             try {
-                if (!JwtUtil.verity(token)) {
-                    throw new IllegalArgumentException("未通过认证，请重新登录");
+                if (!JwtUtil.verify(token)) {
+                    throw new IllegalArgumentException(token + "不合法，未通过认证，请重新登录");
                 }
             } catch (JWTVerificationException e) {
                 throw new IllegalArgumentException("未通过认证，请重新登录");
             }
 
-            String jobNumber;
+            String telephone;
             try {
-                jobNumber = JWT.decode(token).getClaim("jobNumber").asString();
+                telephone = JWT.decode(token).getClaim("telephone").asString();
             } catch (JWTDecodeException e) {
                 throw new IllegalArgumentException("用户不存在");
             }
-            User user = userService.queryUserById(Long.parseLong(jobNumber));
+
+            User user = this.userService.getUserByTel(telephone);
+
             if (user == null) {
                 throw new IllegalArgumentException("用户不存在");
             }
