@@ -1,12 +1,9 @@
 package io.github.angrylid.mall.generated.entity;
 
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import io.swagger.annotations.ApiModel;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -17,7 +14,6 @@ import io.swagger.annotations.ApiModel;
  * @since 2022-01-07
  */
 @TableName("product_image")
-@ApiModel(value = "ProductImage对象", description = "")
 public class ProductImage implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -28,6 +24,7 @@ public class ProductImage implements Serializable {
     private Integer productId;
 
     private String content;
+
 
     public Integer getId() {
         return id;
@@ -56,9 +53,9 @@ public class ProductImage implements Serializable {
     @Override
     public String toString() {
         return "ProductImage{" +
-                "id=" + id +
-                ", productId=" + productId +
-                ", content=" + content +
-                "}";
+        "id=" + id +
+        ", productId=" + productId +
+        ", content=" + content +
+        "}";
     }
 }

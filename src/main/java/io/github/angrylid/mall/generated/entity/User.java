@@ -1,12 +1,9 @@
 package io.github.angrylid.mall.generated.entity;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-
-import io.swagger.annotations.ApiModel;
+import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * <p>
@@ -16,7 +13,6 @@ import io.swagger.annotations.ApiModel;
  * @author angrylid
  * @since 2022-01-07
  */
-@ApiModel(value = "User对象", description = "")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,6 +35,7 @@ public class User implements Serializable {
     private String position;
 
     private Integer isAdmin;
+
 
     public Long getId() {
         return id;
@@ -115,15 +112,15 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", nikename=" + nikename +
-                ", telephone=" + telephone +
-                ", passwd=" + passwd +
-                ", gender=" + gender +
-                ", role=" + role +
-                ", dateEntry=" + dateEntry +
-                ", position=" + position +
-                ", isAdmin=" + isAdmin +
-                "}";
+        "id=" + id +
+        ", nikename=" + nikename +
+        ", telephone=" + telephone +
+        ", passwd=" + passwd +
+        ", gender=" + gender +
+        ", role=" + role +
+        ", dateEntry=" + dateEntry +
+        ", position=" + position +
+        ", isAdmin=" + isAdmin +
+        "}";
     }
 }
