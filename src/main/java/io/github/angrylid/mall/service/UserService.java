@@ -1,19 +1,18 @@
 package io.github.angrylid.mall.service;
 
 import io.github.angrylid.mall.entity.AccountInformation;
+import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.jwt.JwtUtil;
 import io.github.angrylid.mall.mapper.CustomUserMapper;
-import io.github.angrylid.mall.mbg.dao.UserMapper;
-import io.github.angrylid.mall.mbg.entity.User;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@Service
+@Service("userService")
 public class UserService {
 
-    @Resource
-    private UserMapper mapper;
+
 
     @Resource
     private CustomUserMapper customUserMapper;

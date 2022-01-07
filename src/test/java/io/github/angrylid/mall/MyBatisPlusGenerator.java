@@ -1,9 +1,8 @@
 package io.github.angrylid.mall;
 
-import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
-import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.baomidou.mybatisplus.generator.config.TemplateType;
 
 import java.util.Collections;
 
@@ -20,18 +19,21 @@ public class MyBatisPlusGenerator {
                 })
                 .packageConfig(builder -> {
                     builder.parent("io.github.angrylid.mall") // 设置父包名
-                            .moduleName("generated")
+                            .moduleName("generated")// 设置父包模块名
                             .entity("entity")
                             .mapper("mapper")
-                            .service("service")
-                            .serviceImpl("service.impl")
-                            .controller("controller")// 设置父包模块名
-                            .pathInfo(Collections.singletonMap(OutputFile.mapperXml, "/src/main/resources/io/github/angryid/mall/generated/mapper/")); // 设置mapperXml生成路径
+//                            .service("service")
+//                            .serviceImpl("service.impl")
+//                            .controller("controller")
+                            .pathInfo(Collections.singletonMap(OutputFile.mapperXml, projectPath + "/src/main/resources/io/github/angrylid/mall/generated/mapper/")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("user") // 设置需要生成的表名
+                    builder.addInclude("user")
+                            .addInclude("product")// 设置需要生成的表名
+                            .addInclude("product_image")
+                            .addInclude("relation")
                             .addTablePrefix("t_", "c_"); // 设置过滤表前缀
-                })
+                }).templateConfig(builder -> builder.disable(TemplateType.SERVICE, TemplateType.SERVICEIMPL, TemplateType.CONTROLLER).build())
                 //   .templateEngine(new FreemarkerTemplateEngine())  使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
 

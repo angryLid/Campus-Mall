@@ -2,7 +2,7 @@ package io.github.angrylid.mall.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import io.github.angrylid.mall.mbg.entity.User;
+import io.github.angrylid.mall.generated.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;

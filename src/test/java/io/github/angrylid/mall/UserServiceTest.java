@@ -1,8 +1,8 @@
 package io.github.angrylid.mall;
 
 import io.github.angrylid.mall.entity.AccountInformation;
+import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.mapper.CustomUserMapper;
-import io.github.angrylid.mall.mbg.entity.User;
 import io.github.angrylid.mall.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
