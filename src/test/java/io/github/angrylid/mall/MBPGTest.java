@@ -1,15 +1,19 @@
 package io.github.angrylid.mall;
 
+import java.util.Collections;
+
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.TemplateType;
 
-import java.util.Collections;
+import org.junit.jupiter.api.Test;
 
-public class MyBatisPlusGenerator {
-    public static String projectPath = System.getProperty("user.dir");
+public class MBPGTest {
 
-    public static void main(String[] args) {
+    @Test
+    void testGenerator() {
+        String projectPath = System.getProperty("user.dir");
+
         FastAutoGenerator.create(
                 "jdbc:mysql://localhost:3306/scott?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai",
                 "root", "")
@@ -37,8 +41,10 @@ public class MyBatisPlusGenerator {
                             .addInclude("relation")
                             .addTablePrefix("t_", "c_"); // 设置过滤表前缀
                 })
-                .templateConfig(builder -> builder.disable(TemplateType.SERVICE, TemplateType.SERVICEIMPL,
-                        TemplateType.CONTROLLER, TemplateType.XML).build())
+                .templateConfig(builder -> builder
+                        .disable(TemplateType.SERVICE, TemplateType.SERVICEIMPL, TemplateType.CONTROLLER,
+                                TemplateType.XML)
+                        .build())
                 // .templateEngine(new FreemarkerTemplateEngine())
                 // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
