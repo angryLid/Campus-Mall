@@ -1,11 +1,12 @@
 package io.github.angrylid.mall.generated.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.time.LocalDate;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
@@ -38,7 +39,6 @@ public class User implements Serializable {
     private String position;
 
     private Integer isAdmin;
-
 
     public Long getId() {
         return id;
@@ -115,15 +115,15 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-        "id=" + id +
-        ", nikename=" + nikename +
-        ", telephone=" + telephone +
-        ", passwd=" + passwd +
-        ", gender=" + gender +
-        ", role=" + role +
-        ", dateEntry=" + dateEntry +
-        ", position=" + position +
-        ", isAdmin=" + isAdmin +
-        "}";
+                "id=" + id +
+                ", nikename=" + nikename +
+                ", telephone=" + telephone +
+                ", passwd=" + passwd +
+                ", gender=" + gender +
+                ", role=" + role +
+                ", dateEntry=" + dateEntry +
+                ", position=" + position +
+                ", isAdmin=" + isAdmin +
+                "}";
     }
 }

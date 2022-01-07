@@ -1,10 +1,11 @@
 package io.github.angrylid.mall.generated.entity;
 
+import java.io.Serializable;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
@@ -25,7 +26,6 @@ public class Relation implements Serializable {
     private Integer userId;
 
     private Integer followerId;
-
 
     public Integer getId() {
         return id;
@@ -54,9 +54,9 @@ public class Relation implements Serializable {
     @Override
     public String toString() {
         return "Relation{" +
-        "id=" + id +
-        ", userId=" + userId +
-        ", followerId=" + followerId +
-        "}";
+                "id=" + id +
+                ", userId=" + userId +
+                ", followerId=" + followerId +
+                "}";
     }
 }

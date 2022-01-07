@@ -1,13 +1,11 @@
 package io.github.angrylid.mall.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.List;
 
-import io.github.angrylid.mall.generated.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
 
-import java.util.List;
+import io.github.angrylid.mall.generated.entity.User;
 
 public interface CustomUserMapper {
     List<User> getUsers();
@@ -16,10 +14,10 @@ public interface CustomUserMapper {
     User getUser(String telephone, String password);
 
     @Insert("insert into user(telephone, passwd, nikename) values(#{telephone},#{password}, #{nickname})")
-    int addUser(String telephone, String password,String nickname);
+    int addUser(String telephone, String password, String nickname);
 
     @Select("select * from user where telephone = #{telephone};")
-    User  getUserByTel(String telephone);
+    User getUserByTel(String telephone);
 
     @Select("select * from user where id = #{id};")
     User getUserById(int id);

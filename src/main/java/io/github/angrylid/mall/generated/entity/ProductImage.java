@@ -1,11 +1,12 @@
 package io.github.angrylid.mall.generated.entity;
 
+import java.io.Serializable;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 /**
  * <p>
@@ -27,7 +28,6 @@ public class ProductImage implements Serializable {
     private Integer productId;
 
     private String content;
-
 
     public Integer getId() {
         return id;
@@ -56,9 +56,9 @@ public class ProductImage implements Serializable {
     @Override
     public String toString() {
         return "ProductImage{" +
-        "id=" + id +
-        ", productId=" + productId +
-        ", content=" + content +
-        "}";
+                "id=" + id +
+                ", productId=" + productId +
+                ", content=" + content +
+                "}";
     }
 }
