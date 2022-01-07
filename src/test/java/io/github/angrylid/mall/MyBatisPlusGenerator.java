@@ -6,13 +6,25 @@ import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.TemplateType;
 
-public class MyBatisPlusGenerator {
-        public static String projectPath = System.getProperty("user.dir");
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 
-        public static void main(String[] args) {
-                FastAutoGenerator.create(
-                                "jdbc:mysql://localhost:3306/scott?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai",
-                                "root", "")
+@SpringBootTest
+public class MyBatisPlusGenerator {
+
+        @Autowired
+        private Environment env;
+
+        @Test
+        void run() {
+                var projectPath = System.getProperty("user.dir");
+                var url = env.getProperty("spring.datasource.url");
+                var username = env.getProperty("spring.datasource.username");
+                var password = env.getProperty("spring.datasource.password");
+                FastAutoGenerator.create(url, username, password)
                                 .globalConfig(builder -> {
                                         builder.author("angrylid") // 设置作者
                                                         // 开启 swagger 模式
@@ -44,6 +56,10 @@ public class MyBatisPlusGenerator {
                                 // .templateEngine(new FreemarkerTemplateEngine())
                                 // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                                 .execute();
+        }
 
+        @Test
+        void checkProperty() {
+                Assertions.assertEquals("root", env.getProperty("spring.datasource.username"));
         }
 }
