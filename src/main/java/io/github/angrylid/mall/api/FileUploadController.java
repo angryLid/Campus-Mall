@@ -31,6 +31,10 @@ public class FileUploadController {
     @ApiOperation("测试上传")
     public CustomResponse<String> upload(@RequestBody @Validated PostProductDto postProductDto,
             BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            return CustomResponse.success(postProductDto.getImages()[0]);
+        }
+
         if (bindingResult.hasErrors()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 logger.warn("fieldError:{}", fieldError);
