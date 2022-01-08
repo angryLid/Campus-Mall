@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * </p>
  *
  * @author angrylid
- * @since 2022-01-07
+ * @since 2022-01-08
  */
 public class Product implements Serializable {
 
@@ -25,6 +25,8 @@ public class Product implements Serializable {
     private String description;
 
     private BigDecimal price;
+
+    private Boolean isDeleted;
 
 
     public Integer getId() {
@@ -59,6 +61,14 @@ public class Product implements Serializable {
         this.price = price;
     }
 
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -66,6 +76,7 @@ public class Product implements Serializable {
         ", title=" + title +
         ", description=" + description +
         ", price=" + price +
+        ", isDeleted=" + isDeleted +
         "}";
     }
 }
