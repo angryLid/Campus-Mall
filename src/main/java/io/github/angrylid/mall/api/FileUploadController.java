@@ -1,10 +1,5 @@
 package io.github.angrylid.mall.api;
 
-import io.github.angrylid.mall.dto.CustomResponse;
-import io.github.angrylid.mall.dto.PostProductDto;
-import io.github.angrylid.mall.service.ProductService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Field;
+import io.github.angrylid.mall.dto.CustomResponse;
+import io.github.angrylid.mall.dto.PostProductDto;
+import io.github.angrylid.mall.service.ProductService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "文件上传")
 @RestController()
@@ -26,21 +25,20 @@ public class FileUploadController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @PostMapping(value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     @ApiOperation("测试上传")
     public CustomResponse<Object> upload(@ModelAttribute PostProductDto postProductDto) throws IllegalAccessException {
 
-        Field[] fields = postProductDto.getClass().getDeclaredFields();
-        for (Field f : fields) {
-            f.setAccessible(true);
+        // Field[] fields = postProductDto.getClass().getDeclaredFields();
+        // for (Field f : fields) {
+        // f.setAccessible(true);
 
-            Object value = f.get(postProductDto);
-            System.out.println(f.getName()+value);
-        }
-
+        // Object value = f.get(postProductDto);
+        // System.out.println(f.getName()+value);
+        // }
 
         try {
-            productService.addProduct(postProductDto.getImage0());
+            productService.addProduct(postProductDto);
         } catch (Exception e) {
             e.printStackTrace();
         }

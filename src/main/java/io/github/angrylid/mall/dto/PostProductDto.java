@@ -1,14 +1,12 @@
 package io.github.angrylid.mall.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
-public class PostProductDto  {
+import org.springframework.web.multipart.MultipartFile;
+
+public class PostProductDto {
 
     @NotNull
     @NotBlank
