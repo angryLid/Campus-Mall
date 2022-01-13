@@ -1,13 +1,11 @@
 package io.github.angrylid.mall;
 
-import io.github.angrylid.mall.dto.PostProductDto;
+import java.lang.reflect.Field;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import io.github.angrylid.mall.dto.PostProductDto;
 
 public class LoopPojoTest {
     @Test
@@ -18,13 +16,12 @@ public class LoopPojoTest {
         dto.setPrice("PRICE");
         dto.setImage0(new MockMultipartFile("data", "filename.txt", "text/plain", "some xml".getBytes()));
 
-
         Field[] fields = dto.getClass().getDeclaredFields();
         for (Field f : fields) {
-            if(f.getName().startsWith("image")){
+            if (f.getName().startsWith("image")) {
                 f.setAccessible(true);
                 Object image = f.get(dto);
-                System.out.printf("%s: %s\n",f.getName(),image);
+                System.out.printf("%s: %s\n", f.getName(), image);
             }
 
         }

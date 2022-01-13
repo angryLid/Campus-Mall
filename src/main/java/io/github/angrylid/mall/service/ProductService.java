@@ -32,7 +32,7 @@ public class ProductService {
         entity.setTitle(dto.getTitle());
         entity.setDescription(dto.getDescription());
         entity.setSellerId(10001);
-        entity.setPrice(new BigDecimal(12.99));
+        entity.setPrice(new BigDecimal(dto.getPrice()));
 
         for (MultipartFile file = dto.getImage0(); file != null; file = null) {
             String name = minio.upload(file);
