@@ -39,6 +39,7 @@ public class ProductInsertionTest {
         product.setTitle(stringBuilder.toString().substring(0, 50));
         product.setDescription(stringBuilder.toString());
         product.setIsDeleted(true);
+        product.setSellerId(10002);
     }
 
     @AfterEach
