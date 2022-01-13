@@ -29,14 +29,6 @@ public class FileUploadController {
     @ApiOperation("测试上传")
     public CustomResponse<Object> upload(@ModelAttribute PostProductDto postProductDto) throws IllegalAccessException {
 
-        // Field[] fields = postProductDto.getClass().getDeclaredFields();
-        // for (Field f : fields) {
-        // f.setAccessible(true);
-
-        // Object value = f.get(postProductDto);
-        // System.out.println(f.getName()+value);
-        // }
-
         try {
             productService.addProduct(postProductDto);
         } catch (Exception e) {

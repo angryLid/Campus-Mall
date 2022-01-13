@@ -1,9 +1,7 @@
 package io.github.angrylid.mall.service;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.math.BigDecimal;
 
 import javax.annotation.Resource;
 
@@ -12,63 +10,60 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.github.angrylid.mall.dto.PostProductDto;
+import io.github.angrylid.mall.generated.entity.Product;
+import io.github.angrylid.mall.generated.mapper.ProductMapper;
 import io.github.angrylid.mall.mapper.MyProductMapper;
 import io.github.angrylid.mall.utils.Minio;
 
 @Service
 public class ProductService {
 
-    private final Path root = Paths.get("C:/Users/mian/Desktop/assets");
     @Resource
     MyProductMapper myProductMapper;
+
+    @Resource
+    ProductMapper productMapper;
 
     @Autowired
     Minio minio;
 
-    public String addProduct(String title, String description, String[] images, int price) {
+    public void addProduct(PostProductDto dto) throws IllegalAccessException, IOException {
+        var entity = new Product();
+        entity.setTitle(dto.getTitle());
+        entity.setDescription(dto.getDescription());
+        entity.setSellerId(10001);
+        entity.setPrice(new BigDecimal(12.99));
 
-        int insertedId;
+        for (MultipartFile file = dto.getImage0(); file != null; file = null) {
+            String name = minio.upload(file);
+            entity.setImage0(name);
+        }
+        for (MultipartFile file = dto.getImage1(); file != null; file = null) {
+            String name = minio.upload(file);
+            entity.setImage1(name);
+        }
+        for (MultipartFile file = dto.getImage2(); file != null; file = null) {
+            String name = minio.upload(file);
+            entity.setImage2(name);
+        }
+        for (MultipartFile file = dto.getImage3(); file != null; file = null) {
+            String name = minio.upload(file);
+            entity.setImage3(name);
+        }
+        for (MultipartFile file = dto.getImage4(); file != null; file = null) {
+            String name = minio.upload(file);
+            entity.setImage4(name);
+        }
+        for (MultipartFile file = dto.getImage5(); file != null; file = null) {
+            String name = minio.upload(file);
+            entity.setImage5(name);
+        }
+
         try {
-            insertedId = this.myProductMapper.addProduct(title, description, price);
+            productMapper.insert(entity);
         } catch (Exception e) {
             e.printStackTrace();
-            throw e;
         }
-        return "True";
-    }
 
-    /*
-     * public void addProduct(MultipartFile file) throws IOException {
-     * InputStream inputStream = new ByteArrayInputStream(file.getBytes());
-     * final String IMAGE_TYPE = "image/";
-     * String extension =
-     * StringUtils.getFilenameExtension(file.getOriginalFilename());
-     * String filename = UUID.randomUUID().toString();
-     * try {
-     * minioClient.putObject(PutObjectArgs.builder().bucket("mall").object(filename)
-     * .stream(file.getInputStream(), -1, 10485760)
-     * .contentType(IMAGE_TYPE + extension).build()
-     * );
-     * 
-     * } catch (Exception e) {
-     * throw new RuntimeException("Could not store the file. Error: " +
-     * e.getMessage());
-     * }
-     * }
-     */
-
-    public void addProduct(PostProductDto postProductDto) throws IllegalAccessException, IOException {
-        Field[] fields = postProductDto.getClass().getDeclaredFields();
-        for (Field f : fields) {
-            String filedName = f.getName();
-            if (filedName.startsWith("image")) {
-                f.setAccessible(true);
-                MultipartFile image = (MultipartFile) f.get(postProductDto);
-                if (image != null) {
-                    String name = minio.upload(image);
-                    System.out.println(filedName + " " + name);
-                }
-            }
-        }
     }
 }
