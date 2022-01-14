@@ -2,9 +2,7 @@ package io.github.angrylid.mall.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -71,8 +69,13 @@ public class ProductService {
     }
 
     public List<Product> getProducts() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("is_deleted", false);
-        return productMapper.selectByMap(map);
+        // Map<String, Object> map = new HashMap<>();
+        // map.put("is_deleted", false);
+        // return productMapper.selectByMap(map);
+        return productMapper.selectList(null);
+    }
+
+    public Product getProduct(String id) {
+        return productMapper.selectById(id);
     }
 }
