@@ -2,9 +2,11 @@ package io.github.angrylid.mall;
 
 import java.util.Collections;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.TemplateType;
+import com.baomidou.mybatisplus.generator.fill.Column;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -48,6 +50,12 @@ public class MyBatisPlusGenerator {
                                                         .addInclude("product_image")
                                                         .addInclude("relation")
                                                         .addTablePrefix("t_", "c_"); // 设置过滤表前缀
+                                }).strategyConfig(builder -> {
+                                        builder.entityBuilder().logicDeleteColumnName("is_deleted")
+                                                        .addTableFills(new Column("created_at", FieldFill.INSERT))
+                                                        .addTableFills(new Column("modified_at",
+                                                                        FieldFill.INSERT_UPDATE))
+                                                        .build();
                                 })
                                 .templateConfig(builder -> builder
                                                 .disable(TemplateType.SERVICE, TemplateType.SERVICEIMPL,

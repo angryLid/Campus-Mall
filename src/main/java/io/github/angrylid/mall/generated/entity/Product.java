@@ -1,9 +1,13 @@
 package io.github.angrylid.mall.generated.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -11,7 +15,7 @@ import java.math.BigDecimal;
  * </p>
  *
  * @author angrylid
- * @since 2022-01-13
+ * @since 2022-01-14
  */
 public class Product implements Serializable {
 
@@ -26,6 +30,7 @@ public class Product implements Serializable {
 
     private BigDecimal price;
 
+    @TableLogic
     private Boolean isDeleted;
 
     private Integer sellerId;
@@ -41,6 +46,12 @@ public class Product implements Serializable {
     private String image4;
 
     private String image5;
+
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createdAt;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime modifiedAt;
 
 
     public Integer getId() {
@@ -139,6 +150,22 @@ public class Product implements Serializable {
         this.image5 = image5;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -154,6 +181,8 @@ public class Product implements Serializable {
         ", image3=" + image3 +
         ", image4=" + image4 +
         ", image5=" + image5 +
+        ", createdAt=" + createdAt +
+        ", modifiedAt=" + modifiedAt +
         "}";
     }
 }
