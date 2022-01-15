@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author angrylid
- * @since 2022-01-14
+ * @since 2022-01-15
  */
 public class Product implements Serializable {
 

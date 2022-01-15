@@ -1,9 +1,13 @@
 package io.github.angrylid.mall.generated.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -11,7 +15,7 @@ import java.time.LocalDate;
  * </p>
  *
  * @author angrylid
- * @since 2022-01-14
+ * @since 2022-01-15
  */
 public class User implements Serializable {
 
@@ -28,13 +32,22 @@ public class User implements Serializable {
 
     private String gender;
 
-    private String role;
+    private String roleType;
 
     private LocalDate dateEntry;
 
     private String position;
 
     private Integer isAdmin;
+
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createdAt;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime modifiedAt;
+
+    @TableLogic
+    private Boolean isDeleted;
 
 
     public Long getId() {
@@ -77,12 +90,12 @@ public class User implements Serializable {
         this.gender = gender;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoleType() {
+        return roleType;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
     }
 
     public LocalDate getDateEntry() {
@@ -109,6 +122,30 @@ public class User implements Serializable {
         this.isAdmin = isAdmin;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -117,10 +154,13 @@ public class User implements Serializable {
         ", telephone=" + telephone +
         ", passwd=" + passwd +
         ", gender=" + gender +
-        ", role=" + role +
+        ", roleType=" + roleType +
         ", dateEntry=" + dateEntry +
         ", position=" + position +
         ", isAdmin=" + isAdmin +
+        ", createdAt=" + createdAt +
+        ", modifiedAt=" + modifiedAt +
+        ", isDeleted=" + isDeleted +
         "}";
     }
 }
