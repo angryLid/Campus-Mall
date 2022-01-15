@@ -1,6 +1,7 @@
 package io.github.angrylid.mall.api;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,9 +31,9 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public CustomResponse<Product> getSpecificProduct(@PathVariable("id") String id) {
+    public CustomResponse<Map<String, Object>> getSpecificProduct(@PathVariable("id") String id) {
 
-        var resp = productService.getProduct(id);
+        var resp = productService.getProductAndSeller(id);
         return CustomResponse.success(resp);
 
     }

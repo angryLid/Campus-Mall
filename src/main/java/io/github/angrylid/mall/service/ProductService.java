@@ -2,7 +2,9 @@ package io.github.angrylid.mall.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -13,17 +15,21 @@ import org.springframework.web.multipart.MultipartFile;
 import io.github.angrylid.mall.dto.PostProductDto;
 import io.github.angrylid.mall.generated.entity.Product;
 import io.github.angrylid.mall.generated.mapper.ProductMapper;
-import io.github.angrylid.mall.mapper.MyProductMapper;
+import io.github.angrylid.mall.generated.mapper.UserMapper;
+import io.github.angrylid.mall.mapper.ProductDetailMapper;
 import io.github.angrylid.mall.utils.Minio;
 
 @Service
 public class ProductService {
 
     @Resource
-    MyProductMapper myProductMapper;
+    ProductDetailMapper myProductMapper;
 
     @Resource
     ProductMapper productMapper;
+
+    @Resource
+    UserMapper userMapper;
 
     @Autowired
     Minio minio;
@@ -78,4 +84,18 @@ public class ProductService {
     public Product getProduct(String id) {
         return productMapper.selectById(id);
     }
+
+    public Map<String, Object> getProductAndSeller(String id) {
+        Map<String, Object> map = new HashMap<>();
+        var product = getProduct(id);
+        map.put("product", product);
+
+        var sellerId = product.getSellerId();
+        var user = userMapper.selectById(sellerId);
+
+        map.put("publisher", user);
+
+        return map;
+    }
+
 }
