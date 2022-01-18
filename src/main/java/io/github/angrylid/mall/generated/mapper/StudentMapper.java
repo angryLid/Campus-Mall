@@ -1,6 +1,6 @@
 package io.github.angrylid.mall.generated.mapper;
 
-import io.github.angrylid.mall.generated.entity.Product;
+import io.github.angrylid.mall.generated.entity.Student;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author angrylid
  * @since 2022-01-18
  */
-public interface ProductMapper extends BaseMapper<Product> {
+public interface StudentMapper extends BaseMapper<Student> {
 
 }

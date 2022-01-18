@@ -49,6 +49,7 @@ public class MyBatisPlusGenerator {
                                                         .addInclude("product")// 设置需要生成的表名
                                                         .addInclude("product_image")
                                                         .addInclude("relation")
+                                                        .addInclude("student")
                                                         .addTablePrefix("t_", "c_"); // 设置过滤表前缀
                                 }).strategyConfig(builder -> {
                                         builder.entityBuilder().logicDeleteColumnName("is_deleted")

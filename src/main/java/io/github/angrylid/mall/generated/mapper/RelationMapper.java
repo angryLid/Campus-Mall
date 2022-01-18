@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author angrylid
- * @since 2022-01-15
+ * @since 2022-01-18
  */
 public interface RelationMapper extends BaseMapper<Relation> {
 
