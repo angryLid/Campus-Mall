@@ -1,5 +1,19 @@
 package io.github.angrylid.mall.api;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.UserLoginDto;
 import io.github.angrylid.mall.entity.AccountInformation;
@@ -7,13 +21,6 @@ import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "登录/注册模块")
 @RestController
@@ -27,8 +34,9 @@ public class UserController {
 
     @ApiOperation("测试连通")
     @GetMapping("/")
-    public String ping() {
-        return "<h1>Ping</h1>";
+    public Boolean ping(@RequestParam("token") String token) {
+        logger.info(token);
+        return userService.verifyJwt(token);
     }
 
     @ApiOperation("登录方法")

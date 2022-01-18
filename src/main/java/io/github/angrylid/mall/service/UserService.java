@@ -1,18 +1,16 @@
 package io.github.angrylid.mall.service;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.jwt.JwtUtil;
 import io.github.angrylid.mall.mapper.CustomUserMapper;
 
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-
 @Service("userService")
 public class UserService {
-
-
 
     @Resource
     private CustomUserMapper customUserMapper;
@@ -22,7 +20,6 @@ public class UserService {
         if (user != null) {
             return JwtUtil.sign(telephone, password);
         }
-
 
         throw new IllegalArgumentException("Wrong tel or password");
     }
@@ -62,5 +59,9 @@ public class UserService {
         }
 
         return friend;
+    }
+
+    public boolean verifyJwt(String token) {
+        return JwtUtil.verify(token);
     }
 }

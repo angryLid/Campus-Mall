@@ -38,7 +38,6 @@ public class JwtUtil {
         }
     }
 
-
     public static boolean verity(String token, String password) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(password);
@@ -67,6 +66,5 @@ public class JwtUtil {
                 .withExpiresAt(date)
                 .sign(algorithm);
     }
-
 
 }
