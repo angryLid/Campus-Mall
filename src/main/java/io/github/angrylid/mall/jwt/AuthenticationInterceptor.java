@@ -1,29 +1,31 @@
 package io.github.angrylid.mall.jwt;
 
+import java.lang.reflect.Method;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import io.github.angrylid.mall.generated.entity.User;
-import io.github.angrylid.mall.jwt.annotation.TokenRequired;
-import io.github.angrylid.mall.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Method;
+import io.github.angrylid.mall.generated.entity.User;
+import io.github.angrylid.mall.jwt.annotation.TokenRequired;
+import io.github.angrylid.mall.service.UserService;
 
 @Component
 public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     UserService userService;
 
-
-
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
 
         if (!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
@@ -59,17 +61,17 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 throw new IllegalArgumentException("用户不存在");
             }
 
-            request.setAttribute("identity",user.getId());
+            request.setAttribute("identity", user.getId());
 
             TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);
             if (userLoginToken.role() == UserRole.ADMIN) {
-                if (user.getIsAdmin() != 1) {
+                if (user.getRoleType() != "1") {
                     throw new IllegalArgumentException("无权访问");
                 }
             }
 
-            if(userLoginToken.role() == UserRole.STAFF){
-                request.setAttribute("UserIdentity",user.getId());
+            if (userLoginToken.role() == UserRole.STAFF) {
+                request.setAttribute("UserIdentity", user.getId());
             }
 
             return true;
