@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "登录/注册模块")
 @RestController
 @RequestMapping(path = "/user")
-public class LogInController {
+public class UserController {
 
     @Autowired
     UserService userService;
 
-    private static final Logger logger = LoggerFactory.getLogger(LogInController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @ApiOperation("测试连通")
     @GetMapping("/")
@@ -33,9 +33,8 @@ public class LogInController {
 
     @ApiOperation("登录方法")
     @PostMapping("/signin")
-    public CustomResponse<String> login(@RequestBody
-                                        @Validated UserLoginDto userLoginDto,
-                                        BindingResult bindingResult) {
+    public CustomResponse<String> login(@RequestBody @Validated UserLoginDto userLoginDto,
+            BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -56,7 +55,8 @@ public class LogInController {
 
     @ApiOperation("注册方法")
     @PostMapping("/signup")
-    public CustomResponse<String> register(@RequestBody @Validated UserLoginDto userLoginDto, BindingResult bindingResult) {
+    public CustomResponse<String> register(@RequestBody @Validated UserLoginDto userLoginDto,
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
                 logger.warn("fieldError:{}", fieldError);
