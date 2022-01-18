@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.github.angrylid.mall.mapper.UnverifiedStudentMapper">
+    <select id="getStudents" resultType="UnverifiedStudent">
+        SELECT
+            u.id uid,
+            s.student_id stuid,
+            s.name sname,
+            u.telephone,
+            u.nikename uname 
+        FROM student s 
+        INNER JOIN `user` u 
+        ON s.related_user = u.id 
+        WHERE u.role_type = "student_not_verified";
+    </select>
+
+</mapper>

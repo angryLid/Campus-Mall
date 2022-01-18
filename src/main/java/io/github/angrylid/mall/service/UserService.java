@@ -1,19 +1,30 @@
 package io.github.angrylid.mall.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import io.github.angrylid.mall.entity.AccountInformation;
+import io.github.angrylid.mall.entity.UnverifiedStudent;
 import io.github.angrylid.mall.generated.entity.User;
+import io.github.angrylid.mall.generated.mapper.UserMapper;
 import io.github.angrylid.mall.jwt.JwtUtil;
 import io.github.angrylid.mall.mapper.CustomUserMapper;
+import io.github.angrylid.mall.mapper.UnverifiedStudentMapper;
 
 @Service("userService")
 public class UserService {
 
     @Resource
     private CustomUserMapper customUserMapper;
+
+    @Resource
+    UnverifiedStudentMapper unverifiedStudentMapper;
+
+    @Resource
+    private UserMapper userMapper;
 
     public String login(String telephone, String password) {
         User user = this.customUserMapper.getUser(telephone, password);
@@ -63,5 +74,20 @@ public class UserService {
 
     public boolean verifyJwt(String token) {
         return JwtUtil.verify(token);
+    }
+
+    public List<UnverifiedStudent> getUnverifiedStudents() {
+        return unverifiedStudentMapper.getStudents();
+    }
+
+    /**
+     * @param uid user table's id column
+     * @return Infected row, value is 1 unless error occurs
+     */
+    public Integer permitStudent(Integer uid) {
+        User user = new User();
+        user.setId((long) uid);
+        user.setRoleType("student_verified");
+        return userMapper.updateById(user);
     }
 }

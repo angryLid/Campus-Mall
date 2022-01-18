@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.UserLoginDto;
 import io.github.angrylid.mall.entity.AccountInformation;
+import io.github.angrylid.mall.entity.UnverifiedStudent;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.UserService;
 import io.swagger.annotations.Api;
@@ -35,7 +37,6 @@ public class UserController {
     @ApiOperation("测试连通")
     @GetMapping("/")
     public Boolean ping(@RequestParam("token") String token) {
-        logger.info(token);
         return userService.verifyJwt(token);
     }
 
@@ -89,5 +90,22 @@ public class UserController {
         var friend = this.userService.getFollowingAndFollowedOfCurrentUser(Integer.parseInt(identify));
 
         return CustomResponse.success(friend);
+    }
+
+    @GetMapping("/student")
+    public CustomResponse<Object> manage() {
+        var resp = userService.getUnverifiedStudents();
+        return CustomResponse.success(resp);
+    }
+
+    @PutMapping("/student")
+    public CustomResponse<Object> approve(@RequestBody UnverifiedStudent unverifiedStudent) {
+        var result = userService.permitStudent(unverifiedStudent.getUid());
+        if (result == 1) {
+            return CustomResponse.success("OK");
+        } else {
+            return CustomResponse.dbException("Error");
+        }
+
     }
 }
