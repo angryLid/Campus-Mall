@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -24,6 +23,15 @@ public class User implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createdAt;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime modifiedAt;
+
+    @TableLogic
+    private Boolean isDeleted;
+
     private String nikename;
 
     private String telephone;
@@ -34,20 +42,7 @@ public class User implements Serializable {
 
     private String roleType;
 
-    private LocalDate dateEntry;
-
-    private String position;
-
-    private Integer isAdmin;
-
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createdAt;
-
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime modifiedAt;
-
-    @TableLogic
-    private Boolean isDeleted;
+    private Integer authStatus;
 
 
     public Long getId() {
@@ -56,6 +51,30 @@ public class User implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public String getNikename() {
@@ -98,69 +117,27 @@ public class User implements Serializable {
         this.roleType = roleType;
     }
 
-    public LocalDate getDateEntry() {
-        return dateEntry;
+    public Integer getAuthStatus() {
+        return authStatus;
     }
 
-    public void setDateEntry(LocalDate dateEntry) {
-        this.dateEntry = dateEntry;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public Integer getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setIsAdmin(Integer isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    public Boolean getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setAuthStatus(Integer authStatus) {
+        this.authStatus = authStatus;
     }
 
     @Override
     public String toString() {
         return "User{" +
         "id=" + id +
+        ", createdAt=" + createdAt +
+        ", modifiedAt=" + modifiedAt +
+        ", isDeleted=" + isDeleted +
         ", nikename=" + nikename +
         ", telephone=" + telephone +
         ", passwd=" + passwd +
         ", gender=" + gender +
         ", roleType=" + roleType +
-        ", dateEntry=" + dateEntry +
-        ", position=" + position +
-        ", isAdmin=" + isAdmin +
-        ", createdAt=" + createdAt +
-        ", modifiedAt=" + modifiedAt +
-        ", isDeleted=" + isDeleted +
+        ", authStatus=" + authStatus +
         "}";
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 
 @SpringBootTest
-public class MyBatisPlusGenerator {
+public class MbpGenerator {
 
         @Autowired
         private Environment env;
