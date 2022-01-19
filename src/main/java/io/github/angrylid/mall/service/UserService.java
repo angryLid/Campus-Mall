@@ -62,7 +62,7 @@ public class UserService {
             friend.setFollowed(this.customUserMapper.getFollowedSpecificUser(id));
 
             User user = this.customUserMapper.getUserById(id);
-            friend.setName(user.getNikename());
+            friend.setName(user.getNickname());
             friend.setTelephone(user.getTelephone());
         } catch (Exception ex) {
             ex.printStackTrace();

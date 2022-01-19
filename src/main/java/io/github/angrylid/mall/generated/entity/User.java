@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  * </p>
  *
  * @author angrylid
- * @since 2022-01-18
+ * @since 2022-01-19
  */
 public class User implements Serializable {
 
@@ -32,7 +32,7 @@ public class User implements Serializable {
     @TableLogic
     private Boolean isDeleted;
 
-    private String nikename;
+    private String nickname;
 
     private String telephone;
 
@@ -77,12 +77,12 @@ public class User implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    public String getNikename() {
-        return nikename;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNikename(String nikename) {
-        this.nikename = nikename;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getTelephone() {
@@ -132,7 +132,7 @@ public class User implements Serializable {
         ", createdAt=" + createdAt +
         ", modifiedAt=" + modifiedAt +
         ", isDeleted=" + isDeleted +
-        ", nikename=" + nikename +
+        ", nickname=" + nickname +
         ", telephone=" + telephone +
         ", passwd=" + passwd +
         ", gender=" + gender +
