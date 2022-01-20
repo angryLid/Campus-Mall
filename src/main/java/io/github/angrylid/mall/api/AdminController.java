@@ -3,7 +3,8 @@ package io.github.angrylid.mall.api;
 import static java.util.Map.entry;
 import static java.util.Map.ofEntries;
 
-import java.util.List;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +64,11 @@ public class AdminController {
      */
     @GetMapping("/user")
     public CustomResponse<Object> getAllUsers() {
-        List<User> users = userMapper.selectList(null);
-        return CustomResponse.success(users);
+        Page<User> page = new Page<>(1, 50);
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("created_at");
+        Page<User> users = userMapper.selectPage(page, wrapper);
+
+        return CustomResponse.success(users.getRecords());
     }
 }
