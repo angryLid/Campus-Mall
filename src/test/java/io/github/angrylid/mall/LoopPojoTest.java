@@ -26,4 +26,10 @@ public class LoopPojoTest {
 
         }
     }
+
+    @Test
+    void testString() {
+        System.out.println(System.currentTimeMillis());
+
+    }
 }

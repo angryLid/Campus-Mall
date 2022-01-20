@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import io.github.angrylid.mall.entity.AccountInformation;
+import io.github.angrylid.mall.entity.RoleType;
 import io.github.angrylid.mall.entity.UnverifiedStudent;
 import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.generated.mapper.UserMapper;
@@ -36,8 +37,13 @@ public class UserService {
     }
 
     public String addUser(String telephone, String password, String nickname) {
+        User user = new User();
+        user.setTelephone(telephone);
+        user.setPasswd(password);
+        user.setNickname(nickname);
+        user.setRoleType(RoleType.UNKNOWN.getStatus());
         try {
-            this.customUserMapper.addUser(telephone, password, nickname);
+            userMapper.insert(user);
         } catch (Exception e) {
             throw e;
         }
