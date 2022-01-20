@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
  * @author angrylid
  * @since 
  */
-public class User implements Serializable {
+public class Admin implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
@@ -32,24 +32,16 @@ public class User implements Serializable {
     @TableLogic
     private Boolean isDeleted;
 
-    private String nickname;
+    private String name;
 
-    private String telephone;
-
-    private String passwd;
-
-    private String gender;
-
-    private String roleType;
-
-    private Integer authStatus;
+    private String password;
 
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -77,67 +69,31 @@ public class User implements Serializable {
         this.isDeleted = isDeleted;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getName() {
+        return name;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public String getPassword() {
+        return password;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    public String getPasswd() {
-        return passwd;
-    }
-
-    public void setPasswd(String passwd) {
-        this.passwd = passwd;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
-    }
-
-    public Integer getAuthStatus() {
-        return authStatus;
-    }
-
-    public void setAuthStatus(Integer authStatus) {
-        this.authStatus = authStatus;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "Admin{" +
         "id=" + id +
         ", createdAt=" + createdAt +
         ", modifiedAt=" + modifiedAt +
         ", isDeleted=" + isDeleted +
-        ", nickname=" + nickname +
-        ", telephone=" + telephone +
-        ", passwd=" + passwd +
-        ", gender=" + gender +
-        ", roleType=" + roleType +
-        ", authStatus=" + authStatus +
+        ", name=" + name +
+        ", password=" + password +
         "}";
     }
 }

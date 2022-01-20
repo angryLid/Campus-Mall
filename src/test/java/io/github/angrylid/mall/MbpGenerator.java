@@ -31,6 +31,7 @@ public class MbpGenerator {
                                         builder.author("angrylid") // 设置作者
                                                         // 开启 swagger 模式
                                                         .fileOverride() // 覆盖已生成文件
+                                                        .commentDate("")
                                                         .outputDir(projectPath + "/src/main/java").disableOpenDir(); // 指定输出目录
                                 })
                                 .packageConfig(builder -> {
@@ -50,6 +51,7 @@ public class MbpGenerator {
                                                         .addInclude("product_image")
                                                         .addInclude("relation")
                                                         .addInclude("student")
+                                                        .addInclude("admin")
                                                         .addTablePrefix("t_", "c_"); // 设置过滤表前缀
                                 }).strategyConfig(builder -> {
                                         builder.entityBuilder().logicDeleteColumnName("is_deleted")

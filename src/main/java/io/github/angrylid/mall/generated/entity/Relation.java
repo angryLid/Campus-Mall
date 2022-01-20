@@ -10,7 +10,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author angrylid
- * @since 2022-01-19
+ * @since 
  */
 public class Relation implements Serializable {
 
