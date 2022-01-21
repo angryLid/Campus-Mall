@@ -4,12 +4,18 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import io.github.angrylid.mall.dto.EnrollmentStudent;
 import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.entity.RoleType;
 import io.github.angrylid.mall.entity.UnverifiedStudent;
+import io.github.angrylid.mall.generated.entity.Student;
 import io.github.angrylid.mall.generated.entity.User;
+import io.github.angrylid.mall.generated.mapper.StudentMapper;
 import io.github.angrylid.mall.generated.mapper.UserMapper;
 import io.github.angrylid.mall.jwt.JwtUtil;
 import io.github.angrylid.mall.mapper.CustomUserMapper;
@@ -26,6 +32,11 @@ public class UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private StudentMapper studentMapper;
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public String login(String telephone, String password) {
         User user = this.customUserMapper.getUser(telephone, password);
@@ -92,8 +103,28 @@ public class UserService {
      */
     public Integer permitStudent(Integer uid) {
         User user = new User();
-        user.setId((long) uid);
+        user.setId(uid);
         user.setRoleType("student_verified");
         return userMapper.updateById(user);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void enrollBatch(EnrollmentStudent input) {
+
+        User user = new User();
+        user.setTelephone(input.getTelephone());
+        user.setPasswd("12345678");
+        user.setRoleType(RoleType.STUDENT_VERIFIED.getStatus());
+        user.setNickname(input.getName() + input.getTelephone().substring(9, 11));
+        userMapper.insert(user);
+
+        Student student = new Student();
+        student.setName(input.getName());
+        student.setBelongTo(input.getBelongTo());
+        student.setStudentId(input.getStudentId());
+        student.setRelatedUser(user.getId());
+        studentMapper.insert(student);
+
+        logger.error("{}", student);
     }
 }

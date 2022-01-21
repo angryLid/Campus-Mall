@@ -21,7 +21,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
@@ -45,11 +45,11 @@ public class User implements Serializable {
     private Integer authStatus;
 
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

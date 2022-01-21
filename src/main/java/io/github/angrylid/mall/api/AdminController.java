@@ -22,12 +22,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.EnrollmentDto;
-import io.github.angrylid.mall.dto.MsgDto;
+import io.github.angrylid.mall.dto.EnrollmentStudent;
 import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.generated.mapper.AdminMapper;
 import io.github.angrylid.mall.generated.mapper.UserMapper;
 import io.github.angrylid.mall.jwt.JwtUtil;
+import io.github.angrylid.mall.service.UserService;
 
+/**
+ * 
+ * 后台管理员接口
+ */
 @RestController()
 @RequestMapping("/admin")
 public class AdminController {
@@ -38,7 +43,14 @@ public class AdminController {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    UserService userService;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    private boolean isBen(String target) {
+        return target == null || target.isEmpty() || target.isBlank();
+    }
 
     /**
      * 管理员登录
@@ -94,8 +106,8 @@ public class AdminController {
      * @return 是否成功
      */
     @PutMapping("/user/{id}")
-    public CustomResponse<String> updateUserStatus(@PathVariable("id") Long id,
-            @RequestParam("authStatus") int authStatus) {
+    public CustomResponse<String> updateUserStatus(@PathVariable("id") Integer id,
+            @RequestParam("authStatus") Integer authStatus) {
         User user = new User();
         user.setId(id);
         user.setAuthStatus(authStatus);
@@ -122,10 +134,24 @@ public class AdminController {
         return CustomResponse.success(users.get(0));
     }
 
+    /**
+     * 新生入学批量登记注册
+     * 
+     * @param enrollmentDto 学号,姓名,电话号码,班级
+     * @return
+     */
     @PostMapping("/enrollment")
-    public String doEnrollment(@RequestBody MsgDto enrollmentDto) {
+    public String doEnrollment(@RequestBody EnrollmentDto enrollmentDto) {
 
-        logger.error("{}", enrollmentDto.getMessage());
+        logger.error("enrollment");
+
+        for (EnrollmentStudent s : enrollmentDto.getStudents()) {
+            if (isBen(s.getStudentId()) || isBen(s.getName()) || isBen(s.getTelephone()) || isBen(s.getBelongTo())) {
+                continue;
+            }
+            userService.enrollBatch(s);
+        }
+
         return "enrollment";
     }
 }
