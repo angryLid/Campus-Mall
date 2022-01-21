@@ -21,10 +21,7 @@ import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.entity.UnverifiedStudent;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
-@Api(tags = "登录/注册模块")
 @RestController
 @RequestMapping(path = "/user")
 public class UserController {
@@ -34,13 +31,11 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @ApiOperation("测试连通")
     @GetMapping("/")
     public Boolean ping(@RequestParam("token") String token) {
         return userService.verifyJwt(token);
     }
 
-    @ApiOperation("登录方法")
     @PostMapping("/signin")
     public CustomResponse<String> login(@RequestBody @Validated UserLoginDto userLoginDto,
             BindingResult bindingResult) {
@@ -62,7 +57,6 @@ public class UserController {
         return CustomResponse.success(token);
     }
 
-    @ApiOperation("注册方法")
     @PostMapping("/signup")
     public CustomResponse<String> register(@RequestBody @Validated UserLoginDto userLoginDto,
             BindingResult bindingResult) {
@@ -83,7 +77,6 @@ public class UserController {
     }
 
     @TokenRequired
-    @ApiOperation("获取当前用户信息")
     @GetMapping("/myaccount")
     public CustomResponse<AccountInformation> getCurrentUserInformation(@RequestAttribute("identity") String identify) {
 

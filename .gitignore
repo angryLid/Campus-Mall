@@ -14,3 +14,6 @@
 
 # classes
 /target
+
+# smart-doc 文档 
+/src/main/resources/static
