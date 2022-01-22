@@ -14,6 +14,7 @@ public class JwtUtil {
     private static final String SECRET = "8sn3D3v-:.f]3";
 
     /**
+     * 签发用户token
      * 
      * @param telephone 用户名
      * @param password  密码
@@ -34,6 +35,7 @@ public class JwtUtil {
     }
 
     /**
+     * 验证用户token
      * 
      * @param token 签发的token
      * @return 是否合法，是否过期
@@ -41,6 +43,45 @@ public class JwtUtil {
     public static boolean verify(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            verifier.verify(token);
+            return true;
+        } catch (JWTVerificationException | IllegalArgumentException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 签发后台管理员
+     * 
+     * @param username 用户名
+     * @param password 密码
+     * @return JWT
+     */
+    public static String signAdmin(String username, String password) {
+        Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+        Algorithm algorithm = Algorithm.HMAC256("SECRET");
+        HashMap<String, Object> header = new HashMap<>(2);
+        header.put("typ", "JWT");
+        header.put("alg", "HS256");
+        return JWT.create()
+                .withHeader(header)
+                .withClaim("password", password)
+                .withClaim("username", username)
+                .withExpiresAt(date)
+                .sign(algorithm);
+    }
+
+    /**
+     * 验证后台管理员身份
+     * 
+     * @param token JWT
+     * @return 是否合法
+     */
+    public static boolean verifyAdmin(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("SECRET");
             JWTVerifier verifier = JWT.require(algorithm).build();
             verifier.verify(token);
             return true;

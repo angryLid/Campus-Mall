@@ -78,7 +78,7 @@ public class UserController {
 
     @TokenRequired
     @GetMapping("/myaccount")
-    public CustomResponse<AccountInformation> getCurrentUserInformation(@RequestAttribute("identity") String identify) {
+    public CustomResponse<AccountInformation> getCurrentUserInformation(@RequestAttribute("id") String identify) {
 
         var friend = this.userService.getFollowingAndFollowedOfCurrentUser(Integer.parseInt(identify));
 
@@ -100,5 +100,18 @@ public class UserController {
             return CustomResponse.dbException("Error");
         }
 
+    }
+
+    /**
+     * 用户查询自己的认证状态
+     * 
+     * @param id 主键, 解析自jwt
+     * @return 用户自己账户的状态
+     */
+    @TokenRequired
+    @GetMapping("/myaccount/roletype")
+    public CustomResponse<String> myRoleType(@RequestAttribute("id") Integer id) {
+        var roleType = userService.getUserStatus(id);
+        return CustomResponse.success(roleType);
     }
 }

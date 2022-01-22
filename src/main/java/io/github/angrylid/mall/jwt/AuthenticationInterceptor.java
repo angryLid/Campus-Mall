@@ -9,6 +9,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -23,14 +25,17 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     UserService userService;
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
+        logger.error("Access {}", getClass());
         if (!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
         }
-        String token = request.getHeader("Authorization");
+        String token = request.getHeader("auth");
 
         Method method = handlerMethod.getMethod();
 
@@ -61,7 +66,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 throw new IllegalArgumentException("用户不存在");
             }
 
-            request.setAttribute("identity", user.getId());
+            request.setAttribute("id", user.getId());
 
             TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);
             if (userLoginToken.role() == UserRole.ADMIN) {

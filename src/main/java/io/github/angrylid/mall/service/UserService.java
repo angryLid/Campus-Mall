@@ -127,4 +127,9 @@ public class UserService {
 
         logger.error("{}", student);
     }
+
+    public String getUserStatus(Integer id) {
+        User user = userMapper.selectById(id);
+        return user.getRoleType();
+    }
 }
