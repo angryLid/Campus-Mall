@@ -1,12 +1,16 @@
 package io.github.angrylid.mall.api;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.angrylid.mall.dto.CustomResponse;
+import io.github.angrylid.mall.dto.EnterpriseQualification;
 import io.github.angrylid.mall.dto.UserLoginDto;
 import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.entity.UnverifiedStudent;
@@ -114,4 +119,25 @@ public class UserController {
         var roleType = userService.getUserStatus(id);
         return CustomResponse.success(roleType);
     }
+
+    @TokenRequired
+    @PostMapping(value = "/myaccount/qualification", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public CustomResponse<String> upload(@ModelAttribute EnterpriseQualification dto,
+            @RequestAttribute("id") String id) throws IllegalAccessException, IOException {
+        logger.error("image0: {}", dto.getImage0());
+
+        userService.qualificationRequset(dto, Integer.parseInt(id));
+        return CustomResponse.success(dto.getEnterpriseName());
+    }
+
+    @TokenRequired
+    @GetMapping("/myaccount/qualification")
+    public CustomResponse<EnterpriseQualification> getQualStatus(@RequestAttribute("id") Integer id) {
+        EnterpriseQualification resp;
+
+        resp = userService.qualStatus(id);
+
+        return CustomResponse.success(resp);
+    }
+
 }
