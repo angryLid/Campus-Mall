@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.github.angrylid.mall.dto.EnrollmentStudent;
-import io.github.angrylid.mall.dto.EnterpriseQualification;
+import io.github.angrylid.mall.dto.QualificationDto;
 import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.entity.RoleType;
 import io.github.angrylid.mall.entity.UnverifiedStudent;
@@ -62,7 +62,7 @@ public class UserService {
      * @throws IllegalAccessException
      * @throws IOException
      */
-    public void qualificationRequset(EnterpriseQualification dto, Integer applicant)
+    public void qualificationRequset(QualificationDto dto, Integer applicant)
             throws IllegalAccessException, IOException {
         var entity = new Qualification();
         entity.setEnterpriseName(dto.getEnterpriseName());
@@ -193,14 +193,14 @@ public class UserService {
         return user.getRoleType();
     }
 
-    public EnterpriseQualification qualStatus(Integer id) {
+    public QualificationDto qualStatus(Integer id) {
         var entities = qualificationMapper.selectByMap(ofEntries(entry("applicant_id", id)));
         if (entities.size() < 1) {
             return null;
         }
         var entity = entities.get(entities.size() - 1);
 
-        var ret = new EnterpriseQualification();
+        var ret = new QualificationDto();
         ret.setEnterpriseName(entity.getEnterpriseName());
         ret.setEnterpriseType(entity.getEnterpriseType());
         ret.setCurrentStatus(entity.getCurrentStatus());

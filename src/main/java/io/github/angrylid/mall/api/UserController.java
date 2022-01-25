@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.angrylid.mall.dto.CustomResponse;
-import io.github.angrylid.mall.dto.EnterpriseQualification;
+import io.github.angrylid.mall.dto.QualificationDto;
 import io.github.angrylid.mall.dto.UserLoginDto;
 import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.entity.UnverifiedStudent;
@@ -122,7 +122,7 @@ public class UserController {
 
     @TokenRequired
     @PostMapping(value = "/myaccount/qualification", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public CustomResponse<String> upload(@ModelAttribute EnterpriseQualification dto,
+    public CustomResponse<String> upload(@ModelAttribute QualificationDto dto,
             @RequestAttribute("id") String id) throws IllegalAccessException, IOException {
         logger.error("image0: {}", dto.getImage0());
 
@@ -132,8 +132,8 @@ public class UserController {
 
     @TokenRequired
     @GetMapping("/myaccount/qualification")
-    public CustomResponse<EnterpriseQualification> getQualStatus(@RequestAttribute("id") Integer id) {
-        EnterpriseQualification resp;
+    public CustomResponse<QualificationDto> getQualStatus(@RequestAttribute("id") Integer id) {
+        QualificationDto resp;
 
         resp = userService.qualStatus(id);
 

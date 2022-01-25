@@ -2,7 +2,7 @@ package io.github.angrylid.mall.dto;
 
 import java.time.LocalDateTime;
 
-public class EnterpriseQualification extends BaseImages {
+public class QualificationDto extends BaseImages {
     private String enterpriseName;
     private String enterpriseType;
     private String currentStatus;

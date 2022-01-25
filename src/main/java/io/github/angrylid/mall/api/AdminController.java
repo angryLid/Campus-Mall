@@ -27,6 +27,7 @@ import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.generated.mapper.AdminMapper;
 import io.github.angrylid.mall.generated.mapper.UserMapper;
 import io.github.angrylid.mall.jwt.JwtUtil;
+import io.github.angrylid.mall.service.AdminService;
 import io.github.angrylid.mall.service.UserService;
 
 /**
@@ -45,6 +46,9 @@ public class AdminController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private AdminService adminService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -153,5 +157,11 @@ public class AdminController {
         }
 
         return "enrollment";
+    }
+
+    @GetMapping("/qualification")
+    public String getQualifyRequest() {
+        adminService.selectAll();
+        return "";
     }
 }

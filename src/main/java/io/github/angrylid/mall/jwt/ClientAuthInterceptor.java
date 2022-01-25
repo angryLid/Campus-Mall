@@ -21,7 +21,7 @@ import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.UserService;
 
 @Component
-public class AuthenticationInterceptor implements HandlerInterceptor {
+public class ClientAuthInterceptor implements HandlerInterceptor {
     @Autowired
     UserService userService;
 
@@ -31,7 +31,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
 
-        logger.error("Access {}", getClass());
         if (!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
         }
@@ -65,7 +64,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             if (user == null) {
                 throw new IllegalArgumentException("用户不存在");
             }
-
+            logger.error("Access {}", user.getId());
             request.setAttribute("id", user.getId());
 
             TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);
