@@ -159,9 +159,4 @@ public class AdminController {
         return "enrollment";
     }
 
-    @GetMapping("/qualification")
-    public String getQualifyRequest() {
-        adminService.selectAll();
-        return "";
-    }
 }

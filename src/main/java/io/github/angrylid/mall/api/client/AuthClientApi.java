@@ -16,16 +16,23 @@ import io.github.angrylid.mall.dto.UserLoginDto;
 import io.github.angrylid.mall.service.UserService;
 
 @RestController
-@RequestMapping("/client/login")
-public class LoginApi {
+@RequestMapping("/client/sign")
+public class AuthClientApi {
 
     @Autowired
     private UserService userService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @PostMapping("/")
-    public CustomResponse<String> login(@RequestBody @Validated UserLoginDto userLoginDto,
+    /**
+     * 客户端用户登录方法
+     * 
+     * @param userLoginDto  电话号码和密码
+     * @param bindingResult 校验结果
+     * @return JWT
+     */
+    @PostMapping("/in")
+    public CustomResponse<String> signIn(@RequestBody @Validated UserLoginDto userLoginDto,
             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
@@ -36,12 +43,40 @@ public class LoginApi {
         }
         String token;
         try {
-            token = this.userService.login(userLoginDto.getTelephone(),
+            token = this.userService.generateToken(userLoginDto.getTelephone(),
                     userLoginDto.getPassword());
         } catch (IllegalArgumentException e) {
             token = e.getMessage();
             return CustomResponse.unauthorized(token);
         }
+        return CustomResponse.success(token);
+    }
+
+    /**
+     * 客户端用户注册方法
+     * 
+     * @param userLoginDto  电话号码和密码
+     * @param bindingResult 校验结果
+     * @return JWT
+     */
+    @PostMapping("/up")
+    public CustomResponse<String> signUp(@RequestBody @Validated UserLoginDto userLoginDto,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                logger.warn("fieldError:{}", fieldError);
+            }
+            return CustomResponse.validException("输入的参数不正确");
+        }
+
+        try {
+            this.userService.addUser(userLoginDto.getTelephone(),
+                    userLoginDto.getPassword(), "User" + userLoginDto.getTelephone());
+        } catch (Exception e) {
+            return CustomResponse.unauthorized(e.getMessage());
+        }
+        String token = userService.generateToken(userLoginDto.getTelephone(), userLoginDto.getPassword());
+
         return CustomResponse.success(token);
     }
 }

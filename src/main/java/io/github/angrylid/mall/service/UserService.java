@@ -98,7 +98,14 @@ public class UserService {
 
     }
 
-    public String login(String telephone, String password) {
+    /**
+     * 签发Token
+     * 
+     * @param telephone
+     * @param password
+     * @return JWT
+     */
+    public String generateToken(String telephone, String password) {
         User user = this.customUserMapper.getUser(telephone, password);
         if (user != null) {
             return JwtUtil.sign(telephone, password);

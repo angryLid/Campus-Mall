@@ -53,7 +53,7 @@ public class UserController {
         }
         String token;
         try {
-            token = this.userService.login(userLoginDto.getTelephone(),
+            token = this.userService.generateToken(userLoginDto.getTelephone(),
                     userLoginDto.getPassword());
         } catch (IllegalArgumentException e) {
             token = e.getMessage();

@@ -38,6 +38,10 @@ public class User implements Serializable {
 
     private String passwd;
 
+    private Integer studentId;
+
+    private Integer merchantId;
+
     private String gender;
 
     private String roleType;
@@ -101,6 +105,22 @@ public class User implements Serializable {
         this.passwd = passwd;
     }
 
+    public Integer getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
+    public Integer getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(Integer merchantId) {
+        this.merchantId = merchantId;
+    }
+
     public String getGender() {
         return gender;
     }
@@ -135,6 +155,8 @@ public class User implements Serializable {
         ", nickname=" + nickname +
         ", telephone=" + telephone +
         ", passwd=" + passwd +
+        ", studentId=" + studentId +
+        ", merchantId=" + merchantId +
         ", gender=" + gender +
         ", roleType=" + roleType +
         ", authStatus=" + authStatus +
