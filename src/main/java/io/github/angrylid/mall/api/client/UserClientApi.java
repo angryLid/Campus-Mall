@@ -1,4 +1,4 @@
-package io.github.angrylid.mall.api;
+package io.github.angrylid.mall.api.client;
 
 import java.io.IOException;
 
@@ -6,9 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,69 +13,51 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.QualificationDto;
-import io.github.angrylid.mall.dto.UserLoginDto;
 import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.entity.UnverifiedStudent;
+import io.github.angrylid.mall.generated.entity.Qualification;
+import io.github.angrylid.mall.generated.entity.Student;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.UserService;
 
 @RestController
-@RequestMapping(path = "/user")
-public class UserController {
+@RequestMapping("/client/account/")
+public class UserClientApi {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @GetMapping("/")
-    public Boolean ping(@RequestParam("token") String token) {
-        return userService.verifyJwt(token);
+    /**
+     * 获取用户学生信息
+     * 
+     * @param id
+     * @return
+     */
+    @TokenRequired
+    @GetMapping("/student_info/")
+    public CustomResponse<Student> getStudentInfo(@RequestAttribute("id") Integer id) {
+
+        Student student = userService.selectStudentInfo(id);
+        return CustomResponse.success(student);
     }
 
-    @PostMapping("/signin")
-    public CustomResponse<String> login(@RequestBody @Validated UserLoginDto userLoginDto,
-            BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                logger.warn("fieldError:{}", fieldError);
-            }
-            return CustomResponse.validException("输入的参数不正确");
-        }
-        String token;
-        try {
-            token = this.userService.generateToken(userLoginDto.getTelephone(),
-                    userLoginDto.getPassword());
-        } catch (IllegalArgumentException e) {
-            token = e.getMessage();
-            return CustomResponse.unauthorized(token);
-        }
-        return CustomResponse.success(token);
-    }
-
-    @PostMapping("/signup")
-    public CustomResponse<String> register(@RequestBody @Validated UserLoginDto userLoginDto,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                logger.warn("fieldError:{}", fieldError);
-            }
-            return CustomResponse.validException("输入的参数不正确");
-        }
-        String result;
-        try {
-            result = this.userService.addUser(userLoginDto.getTelephone(),
-                    userLoginDto.getPassword(), "User" + userLoginDto.getTelephone());
-        } catch (Exception e) {
-            return CustomResponse.unauthorized(e.getMessage());
-        }
-        return CustomResponse.success(result);
+    /**
+     * 获取用户店铺信息
+     * 
+     * @param id
+     * @return
+     */
+    @TokenRequired
+    @GetMapping("/merchant_info/")
+    public CustomResponse<Qualification> getMerchantInfo(@RequestAttribute("id") Integer id) {
+        Qualification qualification = userService.selectMerchantInfo(id);
+        return CustomResponse.success(qualification);
     }
 
     @TokenRequired

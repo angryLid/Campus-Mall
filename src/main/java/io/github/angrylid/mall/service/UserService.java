@@ -55,6 +55,30 @@ public class UserService {
     Minio minio;
 
     /**
+     * 依据用户信息查找学生信息
+     * 
+     * @param id 用户ID
+     * @return 关联的学生信息
+     */
+    public Student selectStudentInfo(Integer id) {
+        User user = userMapper.selectById(id);
+        Student student = studentMapper.selectById(user.getStudentId());
+        return student;
+    }
+
+    /**
+     * 依据用户信息查找商铺信息
+     * 
+     * @param id 用户ID
+     * @return 关联的商铺信息
+     */
+    public Qualification selectMerchantInfo(Integer id) {
+        User user = userMapper.selectById(id);
+        Qualification qualification = qualificationMapper.selectById(user.getMerchantId());
+        return qualification;
+    }
+
+    /**
      * 提交资质认证工单
      * 
      * @param dto       接受的表单数据
