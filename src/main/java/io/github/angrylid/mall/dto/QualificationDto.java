@@ -7,6 +7,15 @@ public class QualificationDto extends BaseImages {
     private String enterpriseType;
     private String currentStatus;
     private LocalDateTime createdAt;
+    private String commentary;
+
+    public String getCommentary() {
+        return commentary;
+    }
+
+    public void setCommentary(String commentary) {
+        this.commentary = commentary;
+    }
 
     public String getCurrentStatus() {
         return currentStatus;

@@ -100,4 +100,25 @@ public class QualificationService {
         }
         return true;
     }
+
+    /**
+     * 修改一条申请
+     * 
+     * @param id            主键
+     * @param comentary     评论
+     * @param currentStatus 状态
+     * @return
+     */
+    public Boolean updateOne(Integer id, String comentary, String currentStatus) {
+        Qualification qualification = new Qualification();
+        qualification.setId(id);
+        qualification.setComentary(comentary);
+        qualification.setCurrentStatus(currentStatus);
+
+        Integer row = qualificationMapper.updateById(qualification);
+        if (row == 1) {
+            return true;
+        }
+        return false;
+    }
 }
