@@ -1,7 +1,9 @@
 package io.github.angrylid.mall.api.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +23,13 @@ public class CartClientApi {
 
     @TokenRequired
     @PostMapping("/{id}")
-    public CustomResponse<String> add() {
-        return CustomResponse.dbException("data");
+    public CustomResponse<String> add(@PathVariable("id") Integer productId,
+            @RequestAttribute("id") Integer userId) {
+        Integer row = cartService.insertOne(userId, productId);
+        if (row == 1) {
+            return CustomResponse.success("success");
+        } else {
+            return CustomResponse.dbException("fail");
+        }
     }
 }

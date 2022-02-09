@@ -14,10 +14,10 @@ public class CartService {
         this.cartMapper = cartMapper;
     }
 
-    public void insertOne(Integer userId, Integer productId) {
+    public Integer insertOne(Integer userId, Integer productId) {
         Cart cart = new Cart();
         cart.setUserId(userId);
         cart.setProductId(productId);
-        cartMapper.insert(cart);
+        return cartMapper.insert(cart);
     }
 }
