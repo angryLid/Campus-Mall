@@ -53,6 +53,8 @@ public class Product implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime modifiedAt;
 
+    private Boolean pType;
+
 
     public Integer getId() {
         return id;
@@ -166,6 +168,14 @@ public class Product implements Serializable {
         this.modifiedAt = modifiedAt;
     }
 
+    public Boolean getpType() {
+        return pType;
+    }
+
+    public void setpType(Boolean pType) {
+        this.pType = pType;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -183,6 +193,7 @@ public class Product implements Serializable {
         ", image5=" + image5 +
         ", createdAt=" + createdAt +
         ", modifiedAt=" + modifiedAt +
+        ", pType=" + pType +
         "}";
     }
 }
