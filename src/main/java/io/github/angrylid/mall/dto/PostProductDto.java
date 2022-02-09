@@ -21,6 +21,19 @@ public class PostProductDto extends BaseImages {
     @NotNull
     protected String price;
 
+    @NotBlank
+    @NotEmpty
+    @NotNull
+    protected String pType;
+
+    public String getpType() {
+        return pType;
+    }
+
+    public void setpType(String pType) {
+        this.pType = pType;
+    }
+
     public String getTitle() {
         return title;
     }

@@ -34,12 +34,26 @@ public class ProductService {
     @Autowired
     Minio minio;
 
-    public void addProduct(PostProductDto dto) throws IllegalAccessException, IOException {
+    /**
+     * 插入一条产品记录
+     * 
+     * @param dto
+     * @throws IllegalAccessException
+     * @throws IOException
+     */
+    public void addProduct(PostProductDto dto, Integer id) throws IllegalAccessException, IOException {
         var entity = new Product();
         entity.setTitle(dto.getTitle());
         entity.setDescription(dto.getDescription());
-        entity.setSellerId(10001);
+        entity.setSellerId(id);
         entity.setPrice(new BigDecimal(dto.getPrice()));
+        if (dto.getpType().equals("个人闲置")) {
+            entity.setpType(true);
+        } else if (dto.getpType().equals("我的店铺")) {
+            entity.setpType(false);
+        } else {
+            entity.setpType(null);
+        }
 
         for (MultipartFile file = dto.getImage0(); file != null; file = null) {
             String name = minio.upload(file);
