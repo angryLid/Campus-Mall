@@ -51,7 +51,7 @@ public class MbpGenerator {
                                                         .addInclude("relation")
                                                         .addInclude("student")
                                                         .addInclude("admin")
-                                                        .addInclude("qualification")
+                                                        .addInclude("qualification").addInclude("cart")
                                                         .addTablePrefix("t_", "c_"); // 设置过滤表前缀
                                 }).strategyConfig(builder -> {
                                         builder.entityBuilder().logicDeleteColumnName("is_deleted")

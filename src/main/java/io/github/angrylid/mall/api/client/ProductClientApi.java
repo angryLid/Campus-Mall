@@ -26,18 +26,40 @@ public class ProductClientApi {
     @Autowired
     ProductService productService;
 
+    /**
+     * 获取个人闲置的物品
+     * 
+     * @return
+     */
     @GetMapping("/")
     public CustomResponse<List<Product>> getRecentProducts() {
-        var resp = productService.getProducts();
+        var resp = productService.selectUserProducts();
         return CustomResponse.success(resp);
     }
 
+    /**
+     * 获取特定的商品
+     * 
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public CustomResponse<Map<String, Object>> getSpecificProduct(@PathVariable("id") String id) {
 
         var resp = productService.getProductAndSeller(id);
         return CustomResponse.success(resp);
 
+    }
+
+    /**
+     * 获取小店的商品
+     * 
+     * @return
+     */
+    @GetMapping("/retailer")
+    public CustomResponse<List<Product>> getRetailerProducts() {
+        List<Product> products = productService.selectRtrProducts();
+        return CustomResponse.success(products);
     }
 
     /**

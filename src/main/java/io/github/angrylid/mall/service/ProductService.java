@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -88,11 +90,28 @@ public class ProductService {
 
     }
 
-    public List<Product> getProducts() {
-        // Map<String, Object> map = new HashMap<>();
-        // map.put("is_deleted", false);
-        // return productMapper.selectByMap(map);
-        return productMapper.selectList(null);
+    /**
+     * 检索所有店家的商品
+     * 
+     * @return 店家商品列表
+     */
+    public List<Product> selectRtrProducts() {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("p_type", 0);
+        List<Product> products = productMapper.selectList(queryWrapper);
+        return products;
+    }
+
+    /**
+     * 检索所有个人的商品
+     * 
+     * @return 商品列表
+     */
+    public List<Product> selectUserProducts() {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("p_type", 1);
+        List<Product> products = productMapper.selectList(queryWrapper);
+        return products;
     }
 
     public Product getProduct(String id) {
