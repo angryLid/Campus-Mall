@@ -27,6 +27,8 @@ public class Cart implements Serializable {
     @TableLogic
     private Boolean isDeleted;
 
+    private Integer productSum;
+
 
     public Integer getId() {
         return id;
@@ -60,6 +62,14 @@ public class Cart implements Serializable {
         this.isDeleted = isDeleted;
     }
 
+    public Integer getProductSum() {
+        return productSum;
+    }
+
+    public void setProductSum(Integer productSum) {
+        this.productSum = productSum;
+    }
+
     @Override
     public String toString() {
         return "Cart{" +
@@ -67,6 +77,7 @@ public class Cart implements Serializable {
         ", userId=" + userId +
         ", productId=" + productId +
         ", isDeleted=" + isDeleted +
+        ", productSum=" + productSum +
         "}";
     }
 }
