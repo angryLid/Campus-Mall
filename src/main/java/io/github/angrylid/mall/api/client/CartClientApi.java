@@ -3,15 +3,18 @@ package io.github.angrylid.mall.api.client;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.angrylid.mall.dto.CartItemDto;
+import io.github.angrylid.mall.dto.CartPaymentDto;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.CartService;
@@ -75,6 +78,37 @@ public class CartClientApi {
     public CustomResponse<List<CartItemDto>> getMyCart(@RequestAttribute("id") Integer userId) {
         List<CartItemDto> carts = cartService.selectOnes(userId);
         return CustomResponse.success(carts);
+    }
+
+    /**
+     * 清空我的购物车
+     * 
+     * @param productId
+     * @param userId
+     * @return
+     */
+    @TokenRequired
+    @PostMapping("/pay")
+    public CustomResponse<String> postMethodName(@RequestAttribute("id") Integer id,
+            @RequestBody CartPaymentDto dto) {
+        try {
+            cartService.updateOnes(id, dto.getItems());
+            return CustomResponse.success("success");
+        } catch (Exception e) {
+            return CustomResponse.dbException("fail");
+        }
+    }
+
+    @TokenRequired
+    @DeleteMapping("/{id}")
+    public CustomResponse<String> removeItem(@RequestAttribute("id") Integer userId,
+            @PathVariable("id") Integer productId) {
+        Integer row = cartService.deleteOne(userId, productId);
+        if (row == 1) {
+            return CustomResponse.success("success");
+        } else {
+            return CustomResponse.dbException("fail");
+        }
     }
 
 }

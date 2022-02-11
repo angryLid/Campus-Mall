@@ -3,7 +3,11 @@ package io.github.angrylid.mall.dto;
 import java.math.BigDecimal;
 
 public class CartItemDto {
+
+    private Integer cartId;
+
     private Integer id;
+
     private String title;
 
     private BigDecimal price;
@@ -11,6 +15,14 @@ public class CartItemDto {
     private Integer productSum;
 
     private String image0;
+
+    public Integer getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(Integer cartId) {
+        this.cartId = cartId;
+    }
 
     public Integer getId() {
         return id;

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.angrylid.mall.dto.CartItemDto;
+import io.github.angrylid.mall.entity.field.CartStatus;
 import io.github.angrylid.mall.generated.entity.Cart;
 import io.github.angrylid.mall.generated.entity.Product;
 import io.github.angrylid.mall.generated.mapper.CartMapper;
@@ -16,10 +17,13 @@ import io.github.angrylid.mall.generated.mapper.ProductMapper;
 
 @Service
 public class CartService {
+
     private CartMapper cartMapper;
+
     private ProductMapper productMapper;
 
-    public CartService(@Autowired CartMapper cartMapper, @Autowired ProductMapper productMapper) {
+    public CartService(@Autowired CartMapper cartMapper,
+            @Autowired ProductMapper productMapper) {
         this.cartMapper = cartMapper;
         this.productMapper = productMapper;
     }
@@ -77,6 +81,9 @@ public class CartService {
     public List<CartItemDto> selectOnes(Integer userId) {
         QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("status", CartStatus.IN_CART.getStatus());
+        queryWrapper.gt("product_sum", 0);
+
         List<Cart> carts = cartMapper.selectList(queryWrapper);
         List<CartItemDto> cartItemDtos = new ArrayList<>();
 
@@ -84,9 +91,46 @@ public class CartService {
             Product product = productMapper.selectById(cart.getProductId());
             CartItemDto cartItemDto = new CartItemDto(cart.getProductId(), product.getTitle(),
                     product.getPrice(), cart.getProductSum(), product.getImage0());
+            cartItemDto.setCartId(cart.getId());
             cartItemDtos.add(cartItemDto);
         }
         return cartItemDtos;
 
     }
+
+    /**
+     * 清空购物车
+     * 
+     * @param userId
+     * @param items
+     */
+    public void updateOnes(Integer userId, List<Integer> items) {
+
+        for (Integer item : items) {
+            Cart cart = new Cart();
+            cart.setId(item);
+            cart.setStatus(CartStatus.WAITING_RECEIVE.getStatus());
+            cartMapper.updateById(cart);
+        }
+    }
+
+    /**
+     * 移除一项
+     * 
+     * @param userId
+     * @param cartId
+     * @return
+     */
+    public Integer deleteOne(Integer userId, Integer cartId) {
+        QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("id", cartId);
+        Cart cart = cartMapper.selectOne(queryWrapper);
+        if (cart != null) {
+            cart.setProductSum(0);
+            return cartMapper.updateById(cart);
+        }
+        return 0;
+    }
+
 }

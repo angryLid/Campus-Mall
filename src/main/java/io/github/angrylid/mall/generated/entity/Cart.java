@@ -29,6 +29,8 @@ public class Cart implements Serializable {
 
     private Integer productSum;
 
+    private String status;
+
 
     public Integer getId() {
         return id;
@@ -70,6 +72,14 @@ public class Cart implements Serializable {
         this.productSum = productSum;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Cart{" +
@@ -78,6 +88,7 @@ public class Cart implements Serializable {
         ", productId=" + productId +
         ", isDeleted=" + isDeleted +
         ", productSum=" + productSum +
+        ", status=" + status +
         "}";
     }
 }
