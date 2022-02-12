@@ -1,5 +1,6 @@
 package io.github.angrylid.mall.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class CartService {
         QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         queryWrapper.eq("product_id", productId);
+        queryWrapper.eq("status", CartStatus.IN_CART.getStatus());
         Cart cart = cartMapper.selectOne(queryWrapper);
 
         if (cart == null) {
@@ -46,6 +48,7 @@ public class CartService {
             cart.setUserId(userId);
             cart.setProductId(productId);
             cart.setProductSum(1);
+            cart.setStatus(CartStatus.IN_CART.getStatus());
             return cartMapper.insert(cart);
         } else {
             cart.setProductSum(cart.getProductSum() + 1);
@@ -54,7 +57,7 @@ public class CartService {
     }
 
     /**
-     * 移除一项商品
+     * 商品数量 -1
      * 
      * @param userId
      * @param productId
@@ -64,6 +67,7 @@ public class CartService {
         QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         queryWrapper.eq("product_id", productId);
+        queryWrapper.eq("status", CartStatus.IN_CART.getStatus());
         Cart cart = cartMapper.selectOne(queryWrapper);
         if (cart != null) {
             cart.setProductSum(cart.getProductSum() - 1);
@@ -110,6 +114,7 @@ public class CartService {
             Cart cart = new Cart();
             cart.setId(item);
             cart.setStatus(CartStatus.WAITING_RECEIVE.getStatus());
+            cart.setGeneratedAt(LocalDateTime.now());
             cartMapper.updateById(cart);
         }
     }
@@ -125,6 +130,7 @@ public class CartService {
         QueryWrapper<Cart> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         queryWrapper.eq("id", cartId);
+        queryWrapper.eq("status", CartStatus.IN_CART.getStatus());
         Cart cart = cartMapper.selectOne(queryWrapper);
         if (cart != null) {
             cart.setProductSum(0);

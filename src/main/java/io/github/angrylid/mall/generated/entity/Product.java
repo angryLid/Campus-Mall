@@ -33,6 +33,8 @@ public class Product implements Serializable {
     @TableLogic
     private Boolean isDeleted;
 
+    private Boolean pType;
+
     private Integer sellerId;
 
     private String image0;
@@ -52,8 +54,6 @@ public class Product implements Serializable {
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime modifiedAt;
-
-    private Boolean pType;
 
 
     public Integer getId() {
@@ -94,6 +94,14 @@ public class Product implements Serializable {
 
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public Boolean getpType() {
+        return pType;
+    }
+
+    public void setpType(Boolean pType) {
+        this.pType = pType;
     }
 
     public Integer getSellerId() {
@@ -168,14 +176,6 @@ public class Product implements Serializable {
         this.modifiedAt = modifiedAt;
     }
 
-    public Boolean getpType() {
-        return pType;
-    }
-
-    public void setpType(Boolean pType) {
-        this.pType = pType;
-    }
-
     @Override
     public String toString() {
         return "Product{" +
@@ -184,6 +184,7 @@ public class Product implements Serializable {
         ", description=" + description +
         ", price=" + price +
         ", isDeleted=" + isDeleted +
+        ", pType=" + pType +
         ", sellerId=" + sellerId +
         ", image0=" + image0 +
         ", image1=" + image1 +
@@ -193,7 +194,6 @@ public class Product implements Serializable {
         ", image5=" + image5 +
         ", createdAt=" + createdAt +
         ", modifiedAt=" + modifiedAt +
-        ", pType=" + pType +
         "}";
     }
 }

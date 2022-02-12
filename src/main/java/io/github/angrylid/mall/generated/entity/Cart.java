@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -30,6 +31,8 @@ public class Cart implements Serializable {
     private Integer productSum;
 
     private String status;
+
+    private LocalDateTime generatedAt;
 
 
     public Integer getId() {
@@ -80,6 +83,14 @@ public class Cart implements Serializable {
         this.status = status;
     }
 
+    public LocalDateTime getGeneratedAt() {
+        return generatedAt;
+    }
+
+    public void setGeneratedAt(LocalDateTime generatedAt) {
+        this.generatedAt = generatedAt;
+    }
+
     @Override
     public String toString() {
         return "Cart{" +
@@ -89,6 +100,7 @@ public class Cart implements Serializable {
         ", isDeleted=" + isDeleted +
         ", productSum=" + productSum +
         ", status=" + status +
+        ", generatedAt=" + generatedAt +
         "}";
     }
 }
