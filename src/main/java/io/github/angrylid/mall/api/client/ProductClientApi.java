@@ -23,8 +23,11 @@ import io.github.angrylid.mall.service.ProductService;
 @RequestMapping("/client/product")
 public class ProductClientApi {
 
-    @Autowired
-    ProductService productService;
+    private ProductService productService;
+
+    public ProductClientApi(@Autowired ProductService productService) {
+        this.productService = productService;
+    }
 
     /**
      * 获取个人闲置的物品
@@ -32,9 +35,13 @@ public class ProductClientApi {
      * @return
      */
     @GetMapping("/")
-    public CustomResponse<List<Product>> getRecentProducts() {
-        var resp = productService.selectUserProducts();
-        return CustomResponse.success(resp);
+    public CustomResponse<List<Product>> getRecentProducts(@RequestAttribute("id") Integer id) {
+        if (id == null) {
+            List<Product> products = productService.selectUserProducts();
+            return CustomResponse.success(products);
+        }
+        List<Product> products = productService.selectUserProducts(id);
+        return CustomResponse.success(products);
     }
 
     /**
@@ -52,20 +59,25 @@ public class ProductClientApi {
     }
 
     /**
-     * 获取小店的商品
+     * 获取店铺的商品
      * 
+     * @param id
      * @return
      */
     @GetMapping("/retailer")
-    public CustomResponse<List<Product>> getRetailerProducts() {
-        List<Product> products = productService.selectRtrProducts();
+    public CustomResponse<List<Product>> getRetailerProducts(@RequestAttribute("id") Integer id) {
+        if (id == null) {
+            List<Product> products = productService.selectRtrProducts();
+            return CustomResponse.success(products);
+        }
+        List<Product> products = productService.selectRtrProducts(id);
         return CustomResponse.success(products);
     }
 
     /**
-     * 客户端新增一条数据
+     * 发布一个新的商品
      * 
-     * @param postProductDto
+     * @param postProductDto 商品信息
      * @return
      * @throws IllegalAccessException
      */

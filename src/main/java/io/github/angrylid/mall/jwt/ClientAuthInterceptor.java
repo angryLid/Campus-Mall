@@ -35,15 +35,9 @@ public class ClientAuthInterceptor implements HandlerInterceptor {
             return true;
         }
         String token = request.getHeader("auth");
-
         Method method = handlerMethod.getMethod();
 
-        if (method.isAnnotationPresent(TokenRequired.class)) {
-
-            if (token == null) {
-                throw new IllegalArgumentException("请先登录");
-            }
-
+        if (token != null && !token.isEmpty() && !token.isBlank()) {
             try {
                 if (!JwtUtil.verify(token)) {
                     throw new IllegalArgumentException(token + "不合法，未通过认证，请重新登录");
@@ -67,19 +61,28 @@ public class ClientAuthInterceptor implements HandlerInterceptor {
             logger.error("Access {}", user.getId());
             request.setAttribute("id", user.getId());
 
-            TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);
-            if (userLoginToken.role() == UserRole.ADMIN) {
-                if (user.getRoleType() != "1") {
-                    throw new IllegalArgumentException("无权访问");
+            if (method.isAnnotationPresent(TokenRequired.class)) {
+                TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);
+                if (userLoginToken.role() == UserRole.ADMIN) {
+                    if (user.getRoleType() != "1") {
+                        throw new IllegalArgumentException("无权访问");
+                    }
+                }
+
+                if (userLoginToken.role() == UserRole.STAFF) {
+                    request.setAttribute("UserIdentity", user.getId());
                 }
             }
 
-            if (userLoginToken.role() == UserRole.STAFF) {
-                request.setAttribute("UserIdentity", user.getId());
-            }
-
             return true;
+        } else {
+            if (method.isAnnotationPresent(TokenRequired.class)) {
+                throw new IllegalArgumentException("请先登录");
+            } else {
+                request.setAttribute("id", null);
+            }
         }
+
         return true;
     }
 

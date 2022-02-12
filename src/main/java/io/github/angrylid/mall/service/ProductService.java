@@ -103,12 +103,41 @@ public class ProductService {
     }
 
     /**
+     * 检索所有店家的商品 排除自己的商品
+     * 
+     * @param id
+     * @return
+     */
+    public List<Product> selectRtrProducts(Integer id) {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.ne("seller_id", id);
+
+        queryWrapper.eq("p_type", 0);
+        List<Product> products = productMapper.selectList(queryWrapper);
+        return products;
+    }
+
+    /**
      * 检索所有个人的商品
      * 
      * @return 商品列表
      */
     public List<Product> selectUserProducts() {
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("p_type", 1);
+        List<Product> products = productMapper.selectList(queryWrapper);
+        return products;
+    }
+
+    /**
+     * 检索所有商品 排除用户自己的商品
+     * 
+     * @param id
+     * @return
+     */
+    public List<Product> selectUserProducts(Integer id) {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.ne("seller_id", id);
         queryWrapper.eq("p_type", 1);
         List<Product> products = productMapper.selectList(queryWrapper);
         return products;
