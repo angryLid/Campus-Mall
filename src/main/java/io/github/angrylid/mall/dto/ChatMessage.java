@@ -1,12 +1,30 @@
 package io.github.angrylid.mall.dto;
 
 public class ChatMessage {
+
+    private String senderId;
+    private String recipientId;
     private String content;
-    private String sender;
     private MessageType type;
 
     public enum MessageType {
         CHAT, JOIN, LEAVE
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
+    public String getRecipientId() {
+        return recipientId;
+    }
+
+    public void setRecipientId(String recipientId) {
+        this.recipientId = recipientId;
     }
 
     public String getContent() {
@@ -15,14 +33,6 @@ public class ChatMessage {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
     }
 
     public MessageType getType() {
