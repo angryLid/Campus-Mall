@@ -1,11 +1,13 @@
 package io.github.angrylid.mall.dto;
 
+import java.time.LocalDateTime;
+
 public class ChatMessage {
 
     private String senderId;
     private String recipientId;
     private String content;
-    private MessageType type;
+    private LocalDateTime createdAt;
 
     public enum MessageType {
         CHAT, JOIN, LEAVE
@@ -35,12 +37,12 @@ public class ChatMessage {
         this.content = content;
     }
 
-    public MessageType getType() {
-        return type;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setType(MessageType type) {
-        this.type = type;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
 }

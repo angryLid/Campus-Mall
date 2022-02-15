@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -32,6 +33,19 @@ public class UserClientApi {
     private UserService userService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * 根据电话号码获取用户名
+     * 
+     * @param telephone 电话号码
+     * @return
+     */
+    @TokenRequired
+    @GetMapping("/username/{telephone}")
+    public CustomResponse<?> getUsername(@PathVariable("telephone") String telephone) {
+        String name = userService.selectNameByTelephone(telephone);
+        return CustomResponse.success(name);
+    }
 
     /**
      * 获取用户学生信息

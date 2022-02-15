@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,18 @@ public class UserService {
 
     @Autowired
     Minio minio;
+
+    /**
+     * 根据电话号码获取用户名
+     * 
+     * @param telephone
+     * @return
+     */
+    public String selectNameByTelephone(String telephone) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("telephone", telephone);
+        return userMapper.selectOne(queryWrapper).getNickname();
+    }
 
     /**
      * 依据用户信息查找学生信息
