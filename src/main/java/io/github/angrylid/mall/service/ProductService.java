@@ -139,8 +139,22 @@ public class ProductService {
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.ne("seller_id", id);
         queryWrapper.eq("p_type", 1);
+        queryWrapper.orderByDesc("created_at");
         List<Product> products = productMapper.selectList(queryWrapper);
         return products;
+    }
+
+    /**
+     * 检索商品发布者的联系方式
+     * 
+     * @param productId
+     * @return
+     */
+    public String selectSellerTel(Integer productId) {
+        Product product = productMapper.selectById(productId);
+        Integer sellerId = product.getSellerId();
+        String tel = userMapper.selectById(sellerId).getTelephone();
+        return tel;
     }
 
     public Product getProduct(String id) {

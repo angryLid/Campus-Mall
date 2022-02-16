@@ -1,32 +1,37 @@
 package io.github.angrylid.mall.dto;
 
-import java.time.LocalDateTime;
-
 public class ChatMessage {
 
-    private String senderId;
-    private String recipientId;
+    private String senderTel;
+    private String recipientTel;
     private String content;
-    private LocalDateTime createdAt;
+    private String createdAt;
 
-    public enum MessageType {
-        CHAT, JOIN, LEAVE
+    public ChatMessage() {
+
     }
 
-    public String getSenderId() {
-        return senderId;
+    public ChatMessage(String senderTel, String recipientTel, String content, String createdAt) {
+        this.senderTel = senderTel;
+        this.recipientTel = recipientTel;
+        this.content = content;
+        this.createdAt = createdAt;
     }
 
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
+    public String getSenderTel() {
+        return senderTel;
     }
 
-    public String getRecipientId() {
-        return recipientId;
+    public void setSenderTel(String senderTel) {
+        this.senderTel = senderTel;
     }
 
-    public void setRecipientId(String recipientId) {
-        this.recipientId = recipientId;
+    public String getRecipientTel() {
+        return recipientTel;
+    }
+
+    public void setRecipientTel(String recipientTel) {
+        this.recipientTel = recipientTel;
     }
 
     public String getContent() {
@@ -37,12 +42,18 @@ public class ChatMessage {
         this.content = content;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return "ChatMessage [content=" + content + ", createdAt=" + createdAt + ", recipientTel=" + recipientTel
+                + ", senderTel=" + senderTel + "]";
     }
 
 }

@@ -99,4 +99,18 @@ public class ProductClientApi {
 
         return CustomResponse.success(postProductDto.getTitle());
     }
+
+    /**
+     * 查询发布人的联系方式
+     * 
+     * @param id
+     * @return
+     */
+    @TokenRequired
+    @GetMapping("/seller/{id}")
+    public CustomResponse<?> getSeller(@PathVariable Integer id) {
+        String tel = productService.selectSellerTel(id);
+        return CustomResponse.success(tel);
+    }
+
 }
