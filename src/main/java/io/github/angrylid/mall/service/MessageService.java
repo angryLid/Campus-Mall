@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.angrylid.mall.dto.ChatMessage;
+import io.github.angrylid.mall.dto.ChatNotification;
 import io.github.angrylid.mall.generated.entity.Message;
 import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.generated.mapper.MessageMapper;
@@ -78,5 +81,67 @@ public class MessageService {
             chatMessages.add(chatMessage);
         });
         return chatMessages;
+    }
+
+    /**
+     * 检索最后留言
+     * 
+     * @param userId 用户id
+     */
+    public List<ChatNotification> selectChats(Integer userId) {
+        Set<Integer> ids = new HashSet<>();
+        List<ChatNotification> chatNotifications = new ArrayList<>();
+        QueryWrapper<Message> queryWrapper = new QueryWrapper<>();
+
+        queryWrapper.select("distinct sender_id, recipient_id").eq("sender_id", userId);
+        messageMapper.selectList(queryWrapper).forEach(action -> {
+            ids.add(action.getRecipientId());
+
+        });
+
+        queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("distinct sender_id, recipient_id").eq("recipient_id", userId);
+        messageMapper.selectList(queryWrapper).forEach(action -> {
+            ids.add(action.getSenderId());
+        });
+
+        for (Integer id : ids) {
+            List<Message> lastSentList = messageMapper.selectList(new QueryWrapper<Message>().eq("sender_id", userId)
+                    .eq("recipient_id", id).orderByDesc("created_at"));
+
+            List<Message> lastRecievedList = messageMapper.selectList(new QueryWrapper<Message>().eq("sender_id", id)
+                    .eq("recipient_id", userId).orderByDesc("created_at"));
+
+            Message lastSent;
+            Message lastRecieved;
+            Message last;
+
+            if (lastSentList.isEmpty()) {
+                lastSent = null;
+            } else {
+                lastSent = lastSentList.get(0);
+            }
+
+            if (lastRecievedList.isEmpty()) {
+                lastRecieved = null;
+            } else {
+                lastRecieved = lastRecievedList.get(0);
+            }
+
+            if (lastSent == null) {
+                last = lastRecieved;
+            } else if (lastRecieved == null) {
+                last = lastSent;
+            } else {
+                last = lastSent.getCreatedAt().isAfter(lastRecieved.getCreatedAt()) ? lastSent : lastRecieved;
+            }
+
+            User user = userMapper.selectOne(new QueryWrapper<User>().eq("id", id));
+            ChatNotification chatNotification = new ChatNotification(
+                    user.getTelephone(), user.getNickname(), last.getCreatedAt().toString(), last.getContent());
+            chatNotifications.add(chatNotification);
+        }
+
+        return chatNotifications;
     }
 }
