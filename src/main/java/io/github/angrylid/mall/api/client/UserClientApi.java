@@ -1,6 +1,7 @@
 package io.github.angrylid.mall.api.client;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.QualificationDto;
@@ -25,8 +24,7 @@ import io.github.angrylid.mall.generated.entity.Student;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.UserService;
 
-@RestController
-@RequestMapping("/client/account/")
+@ClientVersion("/account")
 public class UserClientApi {
 
     @Autowired
@@ -108,8 +106,8 @@ public class UserClientApi {
      */
     @TokenRequired
     @GetMapping("/myaccount/roletype")
-    public CustomResponse<String> myRoleType(@RequestAttribute("id") Integer id) {
-        var roleType = userService.getUserStatus(id);
+    public CustomResponse<Map<String, ?>> myRoleType(@RequestAttribute("id") Integer id) {
+        Map<String, ?> roleType = userService.getUserStatus(id);
         return CustomResponse.success(roleType);
     }
 

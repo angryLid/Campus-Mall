@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,8 @@ public class ProductClientApi {
     }
 
     /**
-     * 获取个人闲置的物品
+     * 获取个人发布闲置的物品
+     * GET /client/product/
      * 
      * @return
      */
@@ -45,21 +47,28 @@ public class ProductClientApi {
     }
 
     /**
-     * 获取特定的商品
+     * 获取指定的商品
+     * GET /client/product/{id}
      * 
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    public CustomResponse<Map<String, Object>> getSpecificProduct(@PathVariable("id") String id) {
+    public CustomResponse<Map<String, Object>> getSpecificProduct(@RequestAttribute("id") Integer userId,
+            @PathVariable("id") String productId) {
+        Map<String, Object> product;
+        if (userId == null) {
+            product = productService.getProductAndSeller(productId);
+        }
+        product = productService.getProductAndSeller(userId, productId);
 
-        var resp = productService.getProductAndSeller(id);
-        return CustomResponse.success(resp);
+        return CustomResponse.success(product);
 
     }
 
     /**
-     * 获取店铺的商品
+     * 获取店铺发布的商品
+     * GET /client/product/retailer/
      * 
      * @param id
      * @return
@@ -76,6 +85,7 @@ public class ProductClientApi {
 
     /**
      * 发布一个新的商品
+     * POST /client/product/
      * 
      * @param postProductDto 商品信息
      * @return
@@ -102,6 +112,7 @@ public class ProductClientApi {
 
     /**
      * 查询发布人的联系方式
+     * GET /client/product/seller/{id}
      * 
      * @param id
      * @return
@@ -111,6 +122,54 @@ public class ProductClientApi {
     public CustomResponse<?> getSeller(@PathVariable Integer id) {
         String tel = productService.selectSellerTel(id);
         return CustomResponse.success(tel);
+    }
+
+    /**
+     * 查询我的发布
+     * GET /client/product/published/
+     * 
+     * @param id
+     * @return
+     */
+    @TokenRequired
+    @GetMapping("/published")
+    public CustomResponse<?> getMyPublished(@RequestAttribute("id") Integer id) {
+        List<Product> products = productService.selectMyPublished(id);
+        return CustomResponse.success(products);
+    }
+
+    /**
+     * 删除我的发布
+     * DELETE /client/product/{id}
+     * 
+     * @param id
+     * @return
+     */
+    @TokenRequired
+    @DeleteMapping("/{id}")
+    public CustomResponse<?> deleteProduct(@PathVariable("id") Integer id) {
+        Integer result = productService.deleteProduct(id);
+        if (result == 1) {
+            return CustomResponse.success("Delete Success.");
+        }
+        return CustomResponse.dbException("database error.");
+    }
+
+    @TokenRequired
+    @GetMapping("/favorite")
+    public CustomResponse<?> getFavorite(@RequestAttribute("id") Integer id) {
+        List<Product> products = productService.selectFavorite(id);
+        return CustomResponse.success(products);
+    }
+
+    @TokenRequired
+    @PostMapping("/favorite/{id}")
+    public CustomResponse<?> addFavorite(@PathVariable("id") Integer id, @RequestAttribute("id") Integer userId) {
+        Integer result = productService.addFavorite(id, userId);
+        if (result == 1) {
+            return CustomResponse.success("Add Success.");
+        }
+        return CustomResponse.dbException("database error.");
     }
 
 }

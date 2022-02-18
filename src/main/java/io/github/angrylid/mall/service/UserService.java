@@ -4,7 +4,9 @@ import static java.util.Map.entry;
 import static java.util.Map.ofEntries;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import io.github.angrylid.mall.dto.EnrollmentStudent;
 import io.github.angrylid.mall.dto.QualificationDto;
 import io.github.angrylid.mall.entity.AccountInformation;
+import io.github.angrylid.mall.entity.HandleProcedure;
 import io.github.angrylid.mall.entity.RoleType;
 import io.github.angrylid.mall.entity.UnverifiedStudent;
 import io.github.angrylid.mall.generated.entity.Qualification;
@@ -233,9 +236,39 @@ public class UserService {
         logger.error("{}", student);
     }
 
-    public String getUserStatus(Integer id) {
+    /**
+     * 获取用户的认证信息
+     * 
+     * @param uid user table's id column
+     * @return Infected row, value is 1 unless error occurs
+     */
+    public Map<String, Object> getUserStatus(Integer id) {
         User user = userMapper.selectById(id);
-        return user.getRoleType();
+
+        Map<String, Object> map = new HashMap<>();
+        Integer studentId = user.getStudentId();
+        Integer merchantId = user.getMerchantId();
+
+        if (studentId != null) {
+            Student student = studentMapper.selectById(studentId);
+            map.put("student", student);
+
+        } else {
+            map.put("student", null);
+        }
+        if (merchantId != null) {
+            Qualification qualification = qualificationMapper.selectById(merchantId);
+            if (qualification.getCurrentStatus().equals(HandleProcedure.APPROVED.getStatus())) {
+                map.put("qualification", qualification);
+            } else {
+                map.put("qualification", null);
+            }
+
+        } else {
+            map.put("qualification", null);
+        }
+
+        return map;
     }
 
     public QualificationDto qualStatus(Integer id) {

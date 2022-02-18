@@ -2,6 +2,7 @@ package io.github.angrylid.mall.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.github.angrylid.mall.dto.PostProductDto;
+import io.github.angrylid.mall.generated.entity.Favorite;
 import io.github.angrylid.mall.generated.entity.Product;
+import io.github.angrylid.mall.generated.mapper.FavoriteMapper;
 import io.github.angrylid.mall.generated.mapper.ProductMapper;
 import io.github.angrylid.mall.generated.mapper.UserMapper;
 import io.github.angrylid.mall.mapper.ProductDetailMapper;
@@ -36,6 +39,9 @@ public class ProductService {
     @Autowired
     Minio minio;
 
+    @Autowired
+    private FavoriteMapper favoriteMapper;
+
     /**
      * 插入一条产品记录
      * 
@@ -49,9 +55,9 @@ public class ProductService {
         entity.setDescription(dto.getDescription());
         entity.setSellerId(id);
         entity.setPrice(new BigDecimal(dto.getPrice()));
-        if (dto.getpType().equals("个人闲置")) {
+        if (dto.getpType().equals("personal")) {
             entity.setpType(true);
-        } else if (dto.getpType().equals("我的店铺")) {
+        } else if (dto.getpType().equals("enterprise")) {
             entity.setpType(false);
         } else {
             entity.setpType(null);
@@ -164,14 +170,57 @@ public class ProductService {
     public Map<String, Object> getProductAndSeller(String id) {
         Map<String, Object> map = new HashMap<>();
         var product = getProduct(id);
-        map.put("product", product);
-
         var sellerId = product.getSellerId();
         var user = userMapper.selectById(sellerId);
 
-        map.put("publisher", user);
+        map.put("sellerName", user.getNickname());
+        map.put("sellerTel", user.getTelephone());
+        map.put("publishTime", product.getCreatedAt().toString());
+        map.put("title", product.getTitle());
+        map.put("price", product.getPrice().toString());
+        map.put("description", product.getDescription());
+
+        map.put("image0", product.getImage0());
+        map.put("image1", product.getImage1());
+        map.put("image2", product.getImage2());
+        map.put("image3", product.getImage3());
+        map.put("image4", product.getImage4());
+        map.put("image5", product.getImage5());
 
         return map;
+    }
+
+    public Map<String, Object> getProductAndSeller(Integer userId, String productId) {
+        Map<String, Object> map = getProductAndSeller(productId);
+        Favorite favorite = favoriteMapper
+                .selectOne(new QueryWrapper<Favorite>().eq("user_id", userId).eq("product_id", productId));
+        if (favorite != null) {
+            map.put("favorate", true);
+        } else {
+            map.put("favorate", false);
+        }
+        return map;
+    }
+
+    public List<Product> selectMyPublished(Integer id) {
+        return productMapper.selectList(new QueryWrapper<Product>().eq("seller_id", id));
+    }
+
+    public Integer deleteProduct(Integer id) {
+        return productMapper.deleteById(id);
+    }
+
+    public List<Product> selectFavorite(Integer id) {
+        List<Favorite> favorites = favoriteMapper.selectList(new QueryWrapper<Favorite>().eq("user_id", id));
+        List<Product> products = new ArrayList<>();
+        for (Favorite favorite : favorites) {
+            products.add(productMapper.selectById(favorite.getProductId()));
+        }
+        return products;
+    }
+
+    public Integer addFavorite(Integer userId, Integer productId) {
+        return 1;
     }
 
 }
