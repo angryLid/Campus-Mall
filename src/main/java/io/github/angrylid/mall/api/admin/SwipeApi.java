@@ -43,6 +43,19 @@ public class SwipeApi {
     }
 
     /**
+     * 查看活动详情
+     * GET /admin/swipe/{id}
+     * 
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public CustomResponse<?> getSwipe(@PathVariable Integer id) {
+        Swipe swipe = swipeService.selectSwipe(id);
+        return CustomResponse.success(swipe);
+    }
+
+    /**
      * 更新轮播状态
      * PUT /admin/swipe/{id}
      * 

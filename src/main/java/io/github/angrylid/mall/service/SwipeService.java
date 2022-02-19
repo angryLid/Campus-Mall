@@ -45,7 +45,16 @@ public class SwipeService {
      * 
      */
     public List<Swipe> selectAllSwipes() {
-        return swipeMapper.selectList(null);
+        return swipeMapper.selectList(new QueryWrapper<Swipe>().orderByDesc("created_at"));
+    }
+
+    /**
+     * 查看活动详情
+     * 
+     * @param id 轮播图id
+     */
+    public Swipe selectSwipe(Integer id) {
+        return swipeMapper.selectById(id);
     }
 
     /**
@@ -71,7 +80,7 @@ public class SwipeService {
         Swipe swipe = new Swipe();
         swipe.setTitle(swipeDTO.getTitle());
         swipe.setDetail(swipeDTO.getDetail());
-        swipe.setStatus(0);
+        swipe.setStatus(1);
         String uuid = minio.upload(swipeDTO.getImage());
         swipe.setImage(uuid);
         return swipeMapper.insert(swipe);
