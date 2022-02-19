@@ -13,14 +13,14 @@ import io.github.angrylid.mall.dto.ChatMessage;
 import io.github.angrylid.mall.service.MessageService;
 
 @Controller
-public class ChatController {
+public class ChatClientApi {
 
     private SimpMessagingTemplate template;
     private MessageService messageService;
 
     private final Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
-    public ChatController(@Autowired SimpMessagingTemplate template, @Autowired MessageService messageService) {
+    public ChatClientApi(@Autowired SimpMessagingTemplate template, @Autowired MessageService messageService) {
         this.template = template;
         this.messageService = messageService;
     }

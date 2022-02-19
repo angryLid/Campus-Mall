@@ -12,14 +12,10 @@ import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.github.angrylid.mall.dto.EnrollmentStudent;
 import io.github.angrylid.mall.dto.QualificationDto;
 import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.entity.HandleProcedure;
@@ -50,8 +46,6 @@ public class UserService {
 
     @Resource
     private StudentMapper studentMapper;
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private QualificationMapper qualificationMapper;
@@ -214,26 +208,6 @@ public class UserService {
         user.setId(uid);
         user.setRoleType("student_verified");
         return userMapper.updateById(user);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void enrollBatch(EnrollmentStudent input) {
-
-        User user = new User();
-        user.setTelephone(input.getTelephone());
-        user.setPasswd("12345678");
-        user.setRoleType(RoleType.STUDENT_VERIFIED.getStatus());
-        user.setNickname(input.getName() + input.getTelephone().substring(9, 11));
-        userMapper.insert(user);
-
-        Student student = new Student();
-        student.setName(input.getName());
-        student.setBelongTo(input.getBelongTo());
-        student.setStudentId(input.getStudentId());
-        student.setRelatedUser(user.getId());
-        studentMapper.insert(student);
-
-        logger.error("{}", student);
     }
 
     /**
