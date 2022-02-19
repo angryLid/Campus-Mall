@@ -11,7 +11,7 @@ import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.MessageService;
 
-@ClientVersion("/notification")
+@ClientController("/notification")
 public class NotificationClientApi {
 
     private MessageService messageService;

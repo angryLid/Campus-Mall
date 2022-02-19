@@ -15,16 +15,20 @@ import java.time.LocalDateTime;
  * @author angrylid
  * @since 
  */
-public class Favorite implements Serializable {
+public class Swipe implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private Integer userId;
+    private String image;
 
-    private Integer productId;
+    private String title;
+
+    private String detail;
+
+    private Integer status;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
@@ -38,20 +42,36 @@ public class Favorite implements Serializable {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getImage() {
+        return image;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public String getTitle() {
+        return title;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -64,10 +84,12 @@ public class Favorite implements Serializable {
 
     @Override
     public String toString() {
-        return "Favorite{" +
+        return "Swipe{" +
         "id=" + id +
-        ", userId=" + userId +
-        ", productId=" + productId +
+        ", image=" + image +
+        ", title=" + title +
+        ", detail=" + detail +
+        ", status=" + status +
         ", createdAt=" + createdAt +
         "}";
     }

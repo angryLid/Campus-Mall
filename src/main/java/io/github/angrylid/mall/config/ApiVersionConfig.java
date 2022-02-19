@@ -4,12 +4,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import io.github.angrylid.mall.api.client.ClientVersion;
+import io.github.angrylid.mall.api.admin.annotation.AdminController;
+import io.github.angrylid.mall.api.client.ClientController;
 
 @Configuration
 public class ApiVersionConfig implements WebMvcConfigurer {
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
-        configurer.addPathPrefix("/client", c -> c.isAnnotationPresent(ClientVersion.class));
+        configurer.addPathPrefix("/client", c -> c.isAnnotationPresent(ClientController.class));
+        configurer.addPathPrefix("/admin", c -> c.isAnnotationPresent(AdminController.class));
     }
 }

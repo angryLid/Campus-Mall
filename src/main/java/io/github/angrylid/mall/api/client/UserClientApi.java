@@ -24,7 +24,7 @@ import io.github.angrylid.mall.generated.entity.Student;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.UserService;
 
-@ClientVersion("/account")
+@ClientController("/account")
 public class UserClientApi {
 
     @Autowired

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Retention(RetentionPolicy.RUNTIME)
 @RestController
 @RequestMapping
-public @interface ClientVersion {
+public @interface ClientController {
 
     @AliasFor(annotation = RequestMapping.class)
     String name() default "";
