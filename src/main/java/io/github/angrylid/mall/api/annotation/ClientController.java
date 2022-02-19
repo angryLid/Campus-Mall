@@ -1,4 +1,4 @@
-package io.github.angrylid.mall.api.client;
+package io.github.angrylid.mall.api.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

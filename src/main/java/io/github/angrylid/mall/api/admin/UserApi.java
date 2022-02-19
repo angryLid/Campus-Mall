@@ -1,4 +1,4 @@
-package io.github.angrylid.mall.api;
+package io.github.angrylid.mall.api.admin;
 
 import static java.util.Map.entry;
 import static java.util.Map.ofEntries;
@@ -36,7 +36,7 @@ import io.github.angrylid.mall.service.UserService;
  */
 @RestController()
 @RequestMapping("/admin")
-public class AdminController {
+public class UserApi {
 
     @Autowired
     AdminMapper adminMapper;

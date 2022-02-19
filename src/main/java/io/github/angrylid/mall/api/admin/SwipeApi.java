@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-import io.github.angrylid.mall.api.admin.annotation.AdminController;
+import io.github.angrylid.mall.api.annotation.AdminController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.UploadSwipeDTO;
 import io.github.angrylid.mall.generated.entity.Swipe;
