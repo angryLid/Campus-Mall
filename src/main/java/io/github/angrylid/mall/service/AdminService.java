@@ -3,7 +3,6 @@ package io.github.angrylid.mall.service;
 import static java.util.Map.entry;
 import static java.util.Map.ofEntries;
 
-import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -50,11 +49,9 @@ public class AdminService {
      */
     public String generateToken(String name, String password) throws Exception {
 
-        List<Admin> result = adminMapper.selectByMap(ofEntries(
-                entry("name", name),
-                entry("password", password)));
-        if (result.size() != 1) {
-            throw new Exception("找不到用户");
+        Admin admin = adminMapper.selectOne(new QueryWrapper<Admin>().eq("name", name).eq("password", password));
+        if (admin == null) {
+            throw new IllegalArgumentException("找不到用户");
         }
         return JwtUtil.signAdmin(name, password);
 
