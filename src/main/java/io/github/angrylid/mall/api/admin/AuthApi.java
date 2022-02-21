@@ -1,19 +1,19 @@
 package io.github.angrylid.mall.api.admin;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
+import io.github.angrylid.mall.api.annotation.AdminController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.service.AdminService;
 
 /**
  * 管理员鉴权控制器
  */
-@RestController
-@RequestMapping("/admin/sign/")
+@AdminController("/auth")
 public class AuthApi {
 
     @Autowired
@@ -47,4 +47,5 @@ public class AuthApi {
 
         return CustomResponse.success(token);
     }
+
 }

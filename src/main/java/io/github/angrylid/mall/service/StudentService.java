@@ -27,6 +27,7 @@ public class StudentService {
     @Transactional(rollbackFor = Exception.class)
     public void insertStudent(UploadStudentDTO uploadStudent) {
 
+        String salt = "salt";
         logger.warn(uploadStudent.toString());
 
         Student student = new Student();
@@ -39,7 +40,7 @@ public class StudentService {
         user.setTelephone(uploadStudent.getTelephone());
         user.setPasswd("12345678");
         user.setStudentId(student.getId());
-        user.setNickname(uploadStudent.getName() + uploadStudent.getTelephone().substring(9, 11));
+        user.setNickname(uploadStudent.getName() + uploadStudent.getTelephone().substring(9, 11) + salt);
         userMapper.insert(user);
     }
 }
