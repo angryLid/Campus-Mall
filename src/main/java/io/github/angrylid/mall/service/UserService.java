@@ -154,7 +154,7 @@ public class UserService {
         user.setTelephone(telephone);
         user.setPasswd(password);
         user.setNickname(nickname);
-        user.setRoleType(RoleType.UNKNOWN.getStatus());
+        user.setRoleType(RoleType.UNKNOWN.getValue());
         try {
             userMapper.insert(user);
         } catch (Exception e) {

@@ -1,19 +1,25 @@
 package io.github.angrylid.mall.api.admin;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.github.angrylid.mall.api.annotation.AdminController;
-import io.github.angrylid.mall.dto.EnrollmentDto;
-import io.github.angrylid.mall.dto.EnrollmentStudent;
+import io.github.angrylid.mall.dto.CustomResponse;
+import io.github.angrylid.mall.dto.UploadStudentDTO;
 import io.github.angrylid.mall.service.StudentService;
 
+@Validated
 @AdminController("/student")
 public class StudentApi {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(StudentApi.class);
 
     private StudentService studentService;
 
@@ -21,28 +27,24 @@ public class StudentApi {
         this.studentService = studentService;
     }
 
-    private boolean isBen(String target) {
-        return target == null || target.isEmpty() || target.isBlank();
-    }
-
     /**
      * 新生入学批量登记注册
+     * POST /admin/student
      * 
-     * @param enrollmentDto 学号,姓名,电话号码,班级
+     * @param students 学号,姓名,电话号码,班级
      * @return
      */
-    @PostMapping("/enrollment")
-    public String doEnrollment(@RequestBody EnrollmentDto enrollmentDto) {
-
-        logger.error("enrollment");
-
-        for (EnrollmentStudent s : enrollmentDto.getStudents()) {
-            if (isBen(s.getStudentId()) || isBen(s.getName()) || isBen(s.getTelephone()) || isBen(s.getBelongTo())) {
-                continue;
+    @PostMapping()
+    public CustomResponse<?> postStudents(
+            @RequestBody List<@Valid UploadStudentDTO> students) {
+        try {
+            for (UploadStudentDTO student : students) {
+                studentService.insertStudent(student);
             }
-            studentService.insertStudents(s);
+            return CustomResponse.success("注册成功");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return CustomResponse.dbException("注册失败, 请联系管理员");
         }
-
-        return "enrollment";
     }
 }
