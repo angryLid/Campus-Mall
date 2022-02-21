@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.github.angrylid.mall.dto.UploadStudentDTO;
 import io.github.angrylid.mall.generated.entity.Student;
@@ -23,22 +24,22 @@ public class StudentService {
         this.studentMapper = studentMapper;
     }
 
-    // @Transactional(rollbackFor = Exception.class)
-    public void insertStudent(UploadStudentDTO student) {
+    @Transactional(rollbackFor = Exception.class)
+    public void insertStudent(UploadStudentDTO uploadStudent) {
 
-        logger.warn(student.toString());
+        logger.warn(uploadStudent.toString());
 
-        Student studentModel = new Student();
-        student.setName(student.getName());
-        student.setBelongTo(student.getBelongTo());
-        student.setStudentId(student.getStudentId());
-        studentMapper.insert(studentModel);
+        Student student = new Student();
+        student.setName(uploadStudent.getName());
+        student.setBelongTo(uploadStudent.getBelongTo());
+        student.setStudentId(uploadStudent.getStudentId());
+        studentMapper.insert(student);
 
         User user = new User();
-        user.setTelephone(student.getTelephone());
+        user.setTelephone(uploadStudent.getTelephone());
         user.setPasswd("12345678");
-        user.setStudentId(studentModel.getId());
-        user.setNickname(student.getName() + student.getTelephone().substring(9, 11));
+        user.setStudentId(student.getId());
+        user.setNickname(uploadStudent.getName() + uploadStudent.getTelephone().substring(9, 11));
         userMapper.insert(user);
     }
 }

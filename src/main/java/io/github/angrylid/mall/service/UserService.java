@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,47 @@ public class UserService {
 
     @Autowired
     Minio minio;
+
+    /**
+     * 管理员 - 获取所有用户
+     *
+     * @return 所有用户
+     */
+    public List<User> selectUsers() {
+        Page<User> page = new Page<>(1, 50);
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("created_at");
+        Page<User> users = userMapper.selectPage(page, wrapper);
+        return users.getRecords();
+    }
+
+    /**
+     * 管理员 - 更新用户状态(启用/停用)
+     * 
+     * @param id         用户ID
+     * @param authStatus
+     * @return
+     */
+    public Integer updateUserStatus(Integer id, Integer authStatus) {
+        User user = new User();
+        user.setId(id);
+        user.setAuthStatus(authStatus);
+        int result = userMapper.updateById(user);
+        return result;
+    }
+
+    /**
+     * 管理员 - 通过电话号码检索用户
+     * 
+     * @param telephone
+     * @return
+     */
+    public User selectUserByTelephone(String telephone) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("telephone", telephone);
+        User user = userMapper.selectOne(wrapper);
+        return user;
+    }
 
     /**
      * 根据电话号码获取用户名
