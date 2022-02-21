@@ -55,6 +55,8 @@ public class Product implements Serializable {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime modifiedAt;
 
+    private Integer status;
+
 
     public Integer getId() {
         return id;
@@ -176,6 +178,14 @@ public class Product implements Serializable {
         this.modifiedAt = modifiedAt;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -194,6 +204,7 @@ public class Product implements Serializable {
         ", image5=" + image5 +
         ", createdAt=" + createdAt +
         ", modifiedAt=" + modifiedAt +
+        ", status=" + status +
         "}";
     }
 }

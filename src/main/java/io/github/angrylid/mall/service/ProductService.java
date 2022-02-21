@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,30 @@ public class ProductService {
 
     @Autowired
     private FavoriteMapper favoriteMapper;
+
+    /**
+     * 管理员 检索所有商品
+     * 
+     * @return
+     */
+    public List<Product> selectProducts() {
+        Page<Product> pages = productMapper.selectPage(new Page<Product>(1, 50),
+                new QueryWrapper<Product>().orderByDesc("created_at"));
+        return pages.getRecords();
+    }
+
+    /**
+     * 管理员 更新状态(违规/撤销)
+     * 
+     * @param productId
+     * @param status
+     */
+    public Integer updateProductStatus(Integer id, Integer status) {
+        Product product = new Product();
+        product.setStatus(status);
+        product.setId(id);
+        return productMapper.updateById(product);
+    }
 
     /**
      * 插入一条产品记录
