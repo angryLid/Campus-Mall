@@ -17,6 +17,7 @@ import io.github.angrylid.mall.api.annotation.AdminController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.UploadSwipeDTO;
 import io.github.angrylid.mall.generated.entity.Swipe;
+import io.github.angrylid.mall.jwt.annotation.AdminRequired;
 import io.github.angrylid.mall.service.SwipeService;
 
 @AdminController("/swipe")
@@ -36,6 +37,7 @@ public class SwipeApi {
      * 
      * @return
      */
+    @AdminRequired
     @GetMapping
     public CustomResponse<?> getSwipeList() {
         List<Swipe> swipeList = swipeService.selectAllSwipes();
@@ -49,6 +51,7 @@ public class SwipeApi {
      * @param id
      * @return
      */
+    @AdminRequired
     @GetMapping("/{id}")
     public CustomResponse<?> getSwipe(@PathVariable Integer id) {
         Swipe swipe = swipeService.selectSwipe(id);
@@ -62,6 +65,7 @@ public class SwipeApi {
      * @param id 轮播图id
      * @return
      */
+    @AdminRequired
     @PutMapping("/{id}")
     public CustomResponse<?> putSwipeStatus(@PathVariable("id") Integer id) {
         Integer result = swipeService.updateSwipeStatus(id);
@@ -77,6 +81,7 @@ public class SwipeApi {
      * 
      * @return
      */
+    @AdminRequired
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public CustomResponse<?> postSwipe(@ModelAttribute UploadSwipeDTO uploadSwipeDTO) {
         logger.warn("Upload:{}", uploadSwipeDTO);

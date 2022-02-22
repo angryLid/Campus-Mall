@@ -6,19 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
+import io.github.angrylid.mall.api.annotation.AdminController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.generated.entity.Qualification;
+import io.github.angrylid.mall.jwt.annotation.AdminRequired;
 import io.github.angrylid.mall.service.QualificationService;
 
 /**
  * 管理后台审核商家资质
  */
-@RestController
-@RequestMapping("/admin/qualification")
+@AdminController("/qualification")
 public class QualificationApi {
 
     @Autowired
@@ -29,6 +28,7 @@ public class QualificationApi {
      * 
      * @return
      */
+    @AdminRequired
     @GetMapping("/")
     public CustomResponse<List<Qualification>> getAll() {
         List<Qualification> qualifications = qualificationService.selectAllWaiting();
@@ -43,6 +43,7 @@ public class QualificationApi {
      * @param commentary 驳回理由
      * @return
      */
+    @AdminRequired
     @PutMapping("/{id}")
     public CustomResponse<Boolean> putOne(@PathVariable("id") Integer id,
             @RequestParam("option") String option,

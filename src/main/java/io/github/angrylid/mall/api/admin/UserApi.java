@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import io.github.angrylid.mall.api.annotation.AdminController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.generated.entity.User;
+import io.github.angrylid.mall.jwt.annotation.AdminRequired;
 import io.github.angrylid.mall.service.UserService;
 
 /**
@@ -32,6 +33,7 @@ public class UserApi {
      * 
      * @return 所有用户
      */
+    @AdminRequired
     @GetMapping()
     public CustomResponse<?> getUsers() {
         List<User> users = userService.selectUsers();
@@ -46,6 +48,7 @@ public class UserApi {
      * @param authStatus 用户状态
      * @return 是否成功
      */
+    @AdminRequired
     @PutMapping("/{id}/{status}")
     public CustomResponse<?> putUser(@PathVariable("id") Integer id,
             @PathVariable("status") Integer authStatus) {
@@ -64,6 +67,7 @@ public class UserApi {
      * @param telephone 电话号码
      * @return 响应<用户实体>
      */
+    @AdminRequired
     @GetMapping("/{telephone}")
     public CustomResponse<?> getUser(@PathVariable("telephone") String telephone) {
         User user = userService.selectUserByTelephone(telephone);

@@ -40,6 +40,17 @@ public class AdminService {
     }
 
     /**
+     * 根据用户名,密码查询管理员
+     * 
+     * @param name
+     * @param password
+     * @return
+     */
+    public Admin selectAdmin(String name, String password) {
+        return adminMapper.selectOne(new QueryWrapper<Admin>().eq("name", name).eq("password", password));
+    }
+
+    /**
      * 签发Token
      * 
      * @param name
@@ -49,7 +60,7 @@ public class AdminService {
      */
     public String generateToken(String name, String password) throws Exception {
 
-        Admin admin = adminMapper.selectOne(new QueryWrapper<Admin>().eq("name", name).eq("password", password));
+        Admin admin = selectAdmin(name, password);
         if (admin == null) {
             throw new IllegalArgumentException("找不到用户");
         }

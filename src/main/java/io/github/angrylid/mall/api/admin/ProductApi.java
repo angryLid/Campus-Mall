@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import io.github.angrylid.mall.api.annotation.AdminController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.generated.entity.Product;
+import io.github.angrylid.mall.jwt.annotation.AdminRequired;
 import io.github.angrylid.mall.service.ProductService;
 
 @AdminController("/product")
@@ -28,6 +29,7 @@ public class ProductApi {
      * 
      * @return
      */
+    @AdminRequired
     @GetMapping()
     public CustomResponse<?> getProducts() {
         List<Product> products = productService.selectProducts();
@@ -42,6 +44,7 @@ public class ProductApi {
      * @param status
      * @return
      */
+    @AdminRequired
     @PutMapping("/{id}/{status}")
     public CustomResponse<?> putProduct(@PathVariable("id") Integer id,
             @PathVariable("status") Integer status) {

@@ -17,14 +17,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import io.github.angrylid.mall.generated.entity.User;
-import io.github.angrylid.mall.jwt.annotation.TokenRequired;
-import io.github.angrylid.mall.service.UserService;
+import io.github.angrylid.mall.generated.entity.Admin;
+import io.github.angrylid.mall.jwt.annotation.AdminRequired;
+import io.github.angrylid.mall.service.AdminService;
 
 @Component
 public class AdminAuthIntercepter implements HandlerInterceptor {
     @Autowired
-    UserService userService;
+    private AdminService adminService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -40,45 +40,45 @@ public class AdminAuthIntercepter implements HandlerInterceptor {
 
         Method method = handlerMethod.getMethod();
 
-        if (method.isAnnotationPresent(TokenRequired.class)) {
+        if (method.isAnnotationPresent(AdminRequired.class)) {
 
             if (token == null) {
                 throw new IllegalArgumentException("请先登录");
             }
 
             try {
-                if (!JwtUtil.verify(token)) {
-                    throw new IllegalArgumentException(token + "不合法，未通过认证，请重新登录");
+                if (!JwtUtil.verifyAdmin(token)) {
+                    throw new IllegalArgumentException("Token不合法, 请重新登录");
                 }
             } catch (JWTVerificationException e) {
-                throw new IllegalArgumentException("未通过认证，请重新登录");
+                throw new IllegalArgumentException("验证出现异常, 请重新登录");
             }
 
-            String telephone;
             try {
-                telephone = JWT.decode(token).getClaim("telephone").asString();
-            } catch (JWTDecodeException e) {
-                throw new IllegalArgumentException("用户不存在");
-            }
+                String name = JWT.decode(token).getClaim("username").asString();
+                String password = JWT.decode(token).getClaim("password").asString();
+                Admin admin = adminService.selectAdmin(name, password);
 
-            User user = this.userService.getUserByTel(telephone);
-
-            if (user == null) {
-                throw new IllegalArgumentException("用户不存在");
-            }
-
-            request.setAttribute("id", user.getId());
-
-            TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);
-            if (userLoginToken.role() == UserRole.ADMIN) {
-                if (user.getRoleType() != "1") {
-                    throw new IllegalArgumentException("无权访问");
+                if (admin == null) {
+                    throw new IllegalArgumentException("未能找到管理员");
                 }
+
+            } catch (JWTDecodeException e) {
+                throw new IllegalArgumentException("Token解码异常, 管理员不存在");
             }
 
-            if (userLoginToken.role() == UserRole.STAFF) {
-                request.setAttribute("UserIdentity", user.getId());
-            }
+            // request.setAttribute("id", user.getId());
+
+            // TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);
+            // if (userLoginToken.role() == UserRole.ADMIN) {
+            // if (user.getRoleType() != "1") {
+            // throw new IllegalArgumentException("无权访问");
+            // }
+            // }
+
+            // if (userLoginToken.role() == UserRole.STAFF) {
+            // request.setAttribute("UserIdentity", user.getId());
+            // }
 
             return true;
         }

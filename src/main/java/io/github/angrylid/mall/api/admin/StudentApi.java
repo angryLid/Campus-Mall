@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import io.github.angrylid.mall.api.annotation.AdminController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.UploadStudentDTO;
+import io.github.angrylid.mall.jwt.annotation.AdminRequired;
 import io.github.angrylid.mall.service.StudentService;
 
 @Validated
@@ -34,6 +35,7 @@ public class StudentApi {
      * @param students 学号,姓名,电话号码,班级
      * @return
      */
+    @AdminRequired
     @PostMapping()
     public CustomResponse<?> postStudents(
             @RequestBody List<@Valid UploadStudentDTO> students) {
