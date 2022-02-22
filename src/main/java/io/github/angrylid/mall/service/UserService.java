@@ -216,7 +216,7 @@ public class UserService {
         return user;
     }
 
-    public AccountInformation getFollowingAndFollowedOfCurrentUser(int id) {
+    public AccountInformation selectAccountInfo(Integer id) {
         AccountInformation friend = new AccountInformation();
         try {
             friend.setFollowing(this.customUserMapper.getFollowingSpecificUser(id));

@@ -34,6 +34,20 @@ public class UserClientApi {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
+     * 获取当前用户信息
+     * 
+     * @param id 用户id
+     */
+    @TokenRequired
+    @GetMapping("/myaccount")
+    public CustomResponse<?> getMyAccount(@RequestAttribute("id") Integer id) {
+
+        AccountInformation result = userService.selectAccountInfo(id);
+
+        return CustomResponse.success(result);
+    }
+
+    /**
      * 根据电话号码获取用户名
      * 
      * @param telephone 电话号码
@@ -71,15 +85,6 @@ public class UserClientApi {
     public CustomResponse<Qualification> getMerchantInfo(@RequestAttribute("id") Integer id) {
         Qualification qualification = userService.selectMerchantInfo(id);
         return CustomResponse.success(qualification);
-    }
-
-    @TokenRequired
-    @GetMapping("/myaccount")
-    public CustomResponse<AccountInformation> getCurrentUserInformation(@RequestAttribute("id") String identify) {
-
-        var friend = this.userService.getFollowingAndFollowedOfCurrentUser(Integer.parseInt(identify));
-
-        return CustomResponse.success(friend);
     }
 
     @GetMapping("/student")

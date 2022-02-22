@@ -12,6 +12,7 @@ public class GlobalControllerExceptionHandler {
 
     @ExceptionHandler(value = { IllegalArgumentException.class })
     public CustomResponse<String> deniedPermissionException(IllegalArgumentException ex) {
+        ex.printStackTrace();
         return CustomResponse.unauthorized(ex.getMessage());
     }
 

@@ -68,6 +68,15 @@ public class ProductService {
     }
 
     /**
+     * 检索商品,分页
+     */
+    public List<Product> selectProductPage(Integer index) {
+        Page<Product> pages = productMapper.selectPage(new Page<Product>(index, 2),
+                new QueryWrapper<Product>().orderByDesc("created_at"));
+        return pages.getRecords();
+    }
+
+    /**
      * 插入一条产品记录
      * 
      * @param dto
@@ -198,6 +207,7 @@ public class ProductService {
         var sellerId = product.getSellerId();
         var user = userMapper.selectById(sellerId);
 
+        map.put("sellerId", user.getId());
         map.put("sellerName", user.getNickname());
         map.put("sellerTel", user.getTelephone());
         map.put("publishTime", product.getCreatedAt().toString());

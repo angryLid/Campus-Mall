@@ -2,6 +2,7 @@ package io.github.angrylid.mall.generated.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
 
 /**
@@ -22,6 +23,9 @@ public class Relation implements Serializable {
     private Integer userId;
 
     private Integer followerId;
+
+    @TableLogic
+    private Boolean isDeleted;
 
 
     public Integer getId() {
@@ -48,12 +52,21 @@ public class Relation implements Serializable {
         this.followerId = followerId;
     }
 
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
     @Override
     public String toString() {
         return "Relation{" +
         "id=" + id +
         ", userId=" + userId +
         ", followerId=" + followerId +
+        ", isDeleted=" + isDeleted +
         "}";
     }
 }
