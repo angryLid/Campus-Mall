@@ -11,18 +11,28 @@ import io.github.angrylid.mall.jwt.ClientAuthInterceptor;
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
-    @Autowired
     private ClientAuthInterceptor clientAuthInterceptor;
-
-    @Autowired
     private AdminAuthIntercepter adminAuthIntercepter;
 
+    @Autowired
+    public InterceptorConfig(ClientAuthInterceptor clientAuthInterceptor, AdminAuthIntercepter adminAuthIntercepter) {
+        this.clientAuthInterceptor = clientAuthInterceptor;
+        this.adminAuthIntercepter = adminAuthIntercepter;
+    }
+
+    /**
+     * 注册拦截器
+     * 登录注册不拦其他都拦
+     * 
+     * @param registry
+     * 
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(clientAuthInterceptor)
-                .addPathPatterns("/client/**");
+                .addPathPatterns("/client/**").excludePathPatterns("/client/auth/**");
 
         registry.addInterceptor(adminAuthIntercepter)
-                .addPathPatterns("/admin/**");
+                .addPathPatterns("/admin/**").excludePathPatterns("/admin/auth/**");
     }
 }

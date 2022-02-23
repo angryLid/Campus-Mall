@@ -25,6 +25,9 @@ public class ClientAuthInterceptor implements HandlerInterceptor {
     @Autowired
     UserService userService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -39,27 +42,25 @@ public class ClientAuthInterceptor implements HandlerInterceptor {
 
         if (token != null && !token.isEmpty() && !token.isBlank()) {
             try {
-                if (!JwtUtil.verify(token)) {
+                if (!jwtUtil.verify(token)) {
                     throw new IllegalArgumentException(token + "不合法，未通过认证，请重新登录");
                 }
             } catch (JWTVerificationException e) {
                 throw new IllegalArgumentException("未通过认证，请重新登录");
             }
 
-            String telephone;
             try {
-                telephone = JWT.decode(token).getClaim("telephone").asString();
+                String telephone = JWT.decode(token).getClaim("telephone").asString();
+                User user = this.userService.getUserByTel(telephone);
+                if (user == null) {
+                    throw new IllegalArgumentException("用户不存在");
+                }
+                logger.error("Access {}", user.getId());
+                request.setAttribute("id", user.getId());
+
             } catch (JWTDecodeException e) {
                 throw new IllegalArgumentException("用户不存在");
             }
-
-            User user = this.userService.getUserByTel(telephone);
-
-            if (user == null) {
-                throw new IllegalArgumentException("用户不存在");
-            }
-            logger.error("Access {}", user.getId());
-            request.setAttribute("id", user.getId());
 
             // if (method.isAnnotationPresent(TokenRequired.class)) {
             // TokenRequired userLoginToken = method.getAnnotation(TokenRequired.class);

@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,6 +54,9 @@ public class UserService {
 
     @Autowired
     Minio minio;
+
+    @Autowired
+    JwtUtil jwtUtil;
 
     /**
      * 管理员 - 获取所有用户
@@ -183,12 +187,18 @@ public class UserService {
      * @return JWT
      */
     public String generateToken(String telephone, String password) {
-        User user = this.customUserMapper.getUser(telephone, password);
-        if (user != null) {
-            return JwtUtil.sign(telephone, password);
+        try {
+            User user = userMapper
+                    .selectOne(new QueryWrapper<User>().eq("telephone", telephone).eq("passwd", password));
+            if (user != null) {
+                return jwtUtil.sign(telephone, password);
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("账号或密码错误");
         }
 
-        throw new IllegalArgumentException("Wrong tel or password");
     }
 
     public String addUser(String telephone, String password, String nickname) {
@@ -199,8 +209,9 @@ public class UserService {
         user.setRoleType(RoleType.UNKNOWN.getValue());
         try {
             userMapper.insert(user);
-        } catch (Exception e) {
-            throw e;
+        } catch (DuplicateKeyException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("该手机号已被注册");
         }
         return "Succeed!";
     }
@@ -234,7 +245,7 @@ public class UserService {
     }
 
     public boolean verifyJwt(String token) {
-        return JwtUtil.verify(token);
+        return jwtUtil.verify(token);
     }
 
     public List<UnverifiedStudent> getUnverifiedStudents() {

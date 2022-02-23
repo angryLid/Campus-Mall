@@ -30,13 +30,16 @@ public class AdminService {
 
     private QualificationMapper qualificationMapper;
 
+    private JwtUtil jwtUtil;
+
     @Autowired
     public AdminService(AdminMapper adminMapper, ProductMapper productMapper, UserMapper userMapper,
-            QualificationMapper qualificationMapper) {
+            QualificationMapper qualificationMapper, JwtUtil jwtUtil) {
         this.adminMapper = adminMapper;
         this.productMapper = productMapper;
         this.userMapper = userMapper;
         this.qualificationMapper = qualificationMapper;
+        this.jwtUtil = jwtUtil;
     }
 
     /**
@@ -64,7 +67,7 @@ public class AdminService {
         if (admin == null) {
             throw new IllegalArgumentException("找不到用户");
         }
-        return JwtUtil.signAdmin(name, password);
+        return jwtUtil.signAdmin(name, password);
 
     }
 

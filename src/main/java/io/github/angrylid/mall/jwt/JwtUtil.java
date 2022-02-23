@@ -8,10 +8,17 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
 public class JwtUtil {
-    // 365 Days
-    private static final long EXPIRE_TIME = 31536000000L;
-    private static final String SECRET = "8sn3D3v-:.f]3";
+
+    @Value("${jwt.expiration}")
+    private long EXPIRE_TIME;
+
+    @Value("${jwt.secret}")
+    private String SECRET;
 
     /**
      * 签发用户token
@@ -20,7 +27,7 @@ public class JwtUtil {
      * @param password  密码
      * @return 签发的token
      */
-    public static String sign(String telephone, String password) {
+    public String sign(String telephone, String password) {
         Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         Algorithm algorithm = Algorithm.HMAC256(SECRET);
         HashMap<String, Object> header = new HashMap<>(2);
@@ -28,7 +35,6 @@ public class JwtUtil {
         header.put("alg", "HS256");
         return JWT.create()
                 .withHeader(header)
-                .withClaim("password", password)
                 .withClaim("telephone", telephone)
                 .withExpiresAt(date)
                 .sign(algorithm);
@@ -40,7 +46,7 @@ public class JwtUtil {
      * @param token 签发的token
      * @return 是否合法，是否过期
      */
-    public static boolean verify(String token) {
+    public boolean verify(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET);
             JWTVerifier verifier = JWT.require(algorithm).build();
@@ -59,15 +65,14 @@ public class JwtUtil {
      * @param password 密码
      * @return JWT
      */
-    public static String signAdmin(String username, String password) {
+    public String signAdmin(String username, String password) {
         Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
-        Algorithm algorithm = Algorithm.HMAC256("SECRET");
+        Algorithm algorithm = Algorithm.HMAC256(SECRET);
         HashMap<String, Object> header = new HashMap<>(2);
         header.put("typ", "JWT");
         header.put("alg", "HS256");
         return JWT.create()
                 .withHeader(header)
-                .withClaim("password", password)
                 .withClaim("username", username)
                 .withExpiresAt(date)
                 .sign(algorithm);
@@ -79,9 +84,9 @@ public class JwtUtil {
      * @param token JWT
      * @return 是否合法
      */
-    public static boolean verifyAdmin(String token) {
+    public boolean verifyAdmin(String token) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256("SECRET");
+            Algorithm algorithm = Algorithm.HMAC256(SECRET);
             JWTVerifier verifier = JWT.require(algorithm).build();
             verifier.verify(token);
             return true;
