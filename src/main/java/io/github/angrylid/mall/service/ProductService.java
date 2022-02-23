@@ -207,6 +207,7 @@ public class ProductService {
         var sellerId = product.getSellerId();
         var user = userMapper.selectById(sellerId);
 
+        map.put("id", product.getId());
         map.put("sellerId", user.getId());
         map.put("sellerName", user.getNickname());
         map.put("sellerTel", user.getTelephone());

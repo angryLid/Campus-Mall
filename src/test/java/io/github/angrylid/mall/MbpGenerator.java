@@ -55,6 +55,7 @@ public class MbpGenerator {
                                                         .addInclude("message")
                                                         .addInclude("favorite")
                                                         .addInclude("swipe")
+                                                        .addInclude("trade_order")
                                                         .addTablePrefix("t_", "c_"); // 设置过滤表前缀
                                 }).strategyConfig(builder -> {
                                         builder.entityBuilder().logicDeleteColumnName("is_deleted")

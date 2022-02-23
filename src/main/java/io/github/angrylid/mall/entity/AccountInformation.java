@@ -7,6 +7,8 @@ public class AccountInformation {
     private String name;
     private String telephone;
 
+    private Integer favorite;
+
     public AccountInformation() {
 
     }
@@ -49,4 +51,13 @@ public class AccountInformation {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
+
+    public Integer getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Integer favorite) {
+        this.favorite = favorite;
+    }
+
 }

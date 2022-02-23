@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -16,22 +16,26 @@ import java.time.LocalDateTime;
  * @author angrylid
  * @since 
  */
-public class Favorite implements Serializable {
+@TableName("trade_order")
+public class TradeOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private Integer userId;
+    private Integer sellerId;
+
+    private Integer consumerId;
 
     private Integer productId;
+
+    private Integer quantity;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
-    @TableLogic
-    private Boolean isDeleted;
+    private Integer status;
 
 
     public Integer getId() {
@@ -42,12 +46,20 @@ public class Favorite implements Serializable {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getSellerId() {
+        return sellerId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setSellerId(Integer sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public Integer getConsumerId() {
+        return consumerId;
+    }
+
+    public void setConsumerId(Integer consumerId) {
+        this.consumerId = consumerId;
     }
 
     public Integer getProductId() {
@@ -58,6 +70,14 @@ public class Favorite implements Serializable {
         this.productId = productId;
     }
 
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -66,22 +86,24 @@ public class Favorite implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Boolean getIsDeleted() {
-        return isDeleted;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
-        return "Favorite{" +
+        return "TradeOrder{" +
         "id=" + id +
-        ", userId=" + userId +
+        ", sellerId=" + sellerId +
+        ", consumerId=" + consumerId +
         ", productId=" + productId +
+        ", quantity=" + quantity +
         ", createdAt=" + createdAt +
-        ", isDeleted=" + isDeleted +
+        ", status=" + status +
         "}";
     }
 }

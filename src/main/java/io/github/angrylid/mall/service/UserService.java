@@ -228,20 +228,22 @@ public class UserService {
     }
 
     public AccountInformation selectAccountInfo(Integer id) {
-        AccountInformation friend = new AccountInformation();
+        AccountInformation infomation = new AccountInformation();
+
         try {
-            friend.setFollowing(this.customUserMapper.getFollowingSpecificUser(id));
-            friend.setFollowed(this.customUserMapper.getFollowedSpecificUser(id));
+            infomation.setFollowing(this.customUserMapper.getFollowingSpecificUser(id));
+            infomation.setFollowed(this.customUserMapper.getFollowedSpecificUser(id));
 
             User user = this.customUserMapper.getUserById(id);
-            friend.setName(user.getNickname());
-            friend.setTelephone(user.getTelephone());
+            infomation.setName(user.getNickname());
+            infomation.setTelephone(user.getTelephone());
+
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
 
-        return friend;
+        return infomation;
     }
 
     public boolean verifyJwt(String token) {

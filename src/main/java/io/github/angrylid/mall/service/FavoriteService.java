@@ -35,4 +35,8 @@ public class FavoriteService {
         return favoriteMapper.delete(new QueryWrapper<Favorite>().eq("user_id", userId).eq("product_id", productId));
     }
 
+    public Long selectSum(Integer userId) {
+        return favoriteMapper.selectCount(new QueryWrapper<Favorite>().eq("user_id", userId));
+    }
+
 }
