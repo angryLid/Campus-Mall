@@ -4,6 +4,7 @@ import static java.util.Map.entry;
 import static java.util.Map.ofEntries;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +98,23 @@ public class UserService {
         wrapper.eq("telephone", telephone);
         User user = userMapper.selectOne(wrapper);
         return user;
+    }
+
+    /**
+     * 客户端 - 更新 用户名
+     * 
+     * @param id   用户ID
+     * @param name 用户名
+     */
+    public Integer updateUserName(Integer id, String name) throws SQLException {
+        User user = new User();
+        user.setId(id);
+        user.setNickname(name);
+        try {
+            return userMapper.updateById(user);
+        } catch (Exception ex) {
+            throw new SQLException(ex);
+        }
     }
 
     /**

@@ -1,7 +1,10 @@
 package io.github.angrylid.mall.api.client;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Map;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import io.github.angrylid.mall.api.annotation.ClientController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.QualificationDto;
+import io.github.angrylid.mall.dto.request.UserNameDTO;
 import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.entity.UnverifiedStudent;
 import io.github.angrylid.mall.generated.entity.Qualification;
@@ -25,6 +29,7 @@ import io.github.angrylid.mall.generated.entity.Student;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.UserService;
 
+@Valid
 @ClientController("/account")
 public class UserClientApi {
 
@@ -32,6 +37,26 @@ public class UserClientApi {
     private UserService userService;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * 设置用户名
+     * 
+     * @param userNameDTO 用户名
+     * @param id
+     * @return
+     */
+    @PostMapping("/name")
+    public CustomResponse<?> setName(@RequestBody @Valid UserNameDTO userNameDTO,
+            @RequestAttribute("id") Integer id) {
+        try {
+            userService.updateUserName(id, userNameDTO.getName());
+            return CustomResponse.success(userNameDTO.getName());
+        } catch (SQLException exception) {
+            logger.error("用户名已存在");
+            return CustomResponse.dbException("用户名已存在");
+        }
+
+    }
 
     /**
      * 获取当前用户信息
