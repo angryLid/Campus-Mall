@@ -12,13 +12,18 @@ import org.springframework.web.multipart.MultipartFile;
 import io.github.angrylid.mall.dto.QualificationDto;
 import io.github.angrylid.mall.entity.HandleProcedure;
 import io.github.angrylid.mall.generated.entity.Qualification;
+import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.generated.mapper.QualificationMapper;
+import io.github.angrylid.mall.generated.mapper.UserMapper;
 import io.github.angrylid.mall.utils.Minio;
 
 @Service
 public class QualificationService {
     @Autowired
     private QualificationMapper qualificationMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private Minio minio;
@@ -87,20 +92,9 @@ public class QualificationService {
             entity.setImage5(name);
         }
 
-        Integer row;
-        Qualification exsited = selectOne(applicantId);
+        Integer row = qualificationMapper.insert(entity);
 
-        if (exsited != null) {
-            entity.setId(exsited.getId());
-            row = qualificationMapper.updateById(entity);
-        } else {
-            row = qualificationMapper.insert(entity);
-        }
-
-        if (row != 1) {
-            return false;
-        }
-        return true;
+        return row == 1;
     }
 
     /**
@@ -112,16 +106,20 @@ public class QualificationService {
      * @return
      */
     public Boolean updateOne(Integer id, String comentary, String currentStatus) {
-        Qualification qualification = new Qualification();
-        qualification.setId(id);
+        Qualification qualification = qualificationMapper.selectById(id);
+
+        if (currentStatus.equals(HandleProcedure.APPROVED.getValue())) {
+            User user = new User();
+            System.out.println("applicantID" + qualification.getApplicantId());
+            user.setId(qualification.getApplicantId());
+
+            user.setMerchantId(-1);
+            userMapper.updateById(user);
+        }
         qualification.setComentary(comentary);
         qualification.setCurrentStatus(currentStatus);
-
         Integer row = qualificationMapper.updateById(qualification);
-        if (row == 1) {
-            return true;
-        }
-        return false;
+        return row == 1;
     }
 
     /**
@@ -133,7 +131,8 @@ public class QualificationService {
     public Qualification selectMerchantInfo(Integer userId) {
         QueryWrapper<Qualification> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("applicant_id", userId);
-        Qualification qualification = qualificationMapper.selectOne(queryWrapper);
+        queryWrapper.orderByDesc("created_at");
+        Qualification qualification = qualificationMapper.selectList(queryWrapper).get(0);
         return qualification;
     }
 
