@@ -11,7 +11,7 @@ public enum HandleProcedure {
         this.status = status;
     }
 
-    public String getStatus() {
+    public String getValue() {
         return this.status;
     }
 }

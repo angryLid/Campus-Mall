@@ -305,7 +305,7 @@ public class UserService {
         }
         if (merchantId != null) {
             Qualification qualification = qualificationMapper.selectById(merchantId);
-            if (qualification.getCurrentStatus().equals(HandleProcedure.APPROVED.getStatus())) {
+            if (qualification.getCurrentStatus().equals(HandleProcedure.APPROVED.getValue())) {
                 map.put("qualification", qualification);
             } else {
                 map.put("qualification", null);

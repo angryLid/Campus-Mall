@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.github.angrylid.mall.dto.QualificationDto;
+import io.github.angrylid.mall.entity.HandleProcedure;
 import io.github.angrylid.mall.generated.entity.Qualification;
 import io.github.angrylid.mall.generated.mapper.QualificationMapper;
 import io.github.angrylid.mall.utils.Minio;
@@ -58,6 +59,7 @@ public class QualificationService {
         var entity = new Qualification();
         entity.setEnterpriseName(dto.getEnterpriseName());
         entity.setEnterpriseType(dto.getEnterpriseType());
+        entity.setCurrentStatus(HandleProcedure.WAITING.getValue());
         entity.setApplicantId(applicantId);
 
         for (MultipartFile file = dto.getImage0(); file != null; file = null) {
@@ -121,4 +123,18 @@ public class QualificationService {
         }
         return false;
     }
+
+    /**
+     * 依据用户信息查找商铺信息
+     * 
+     * @param id 用户ID
+     * @return 关联的商铺信息
+     */
+    public Qualification selectMerchantInfo(Integer userId) {
+        QueryWrapper<Qualification> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("applicant_id", userId);
+        Qualification qualification = qualificationMapper.selectOne(queryWrapper);
+        return qualification;
+    }
+
 }

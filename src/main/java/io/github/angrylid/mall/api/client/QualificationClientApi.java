@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
+import io.github.angrylid.mall.api.annotation.ClientController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.QualificationDto;
 import io.github.angrylid.mall.generated.entity.Qualification;
@@ -20,8 +19,7 @@ import io.github.angrylid.mall.service.QualificationService;
 /**
  * 客户提交和修改经营资质
  */
-@RestController
-@RequestMapping("/client/qualification")
+@ClientController("/qualification")
 public class QualificationClientApi {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -62,5 +60,18 @@ public class QualificationClientApi {
         }
 
         return CustomResponse.success(dto.getEnterpriseName());
+    }
+
+    /**
+     * 获取用户店铺信息
+     * 
+     * @param id
+     * @return
+     */
+    @TokenRequired
+    @GetMapping("/info")
+    public CustomResponse<Qualification> getMerchantInfo(@RequestAttribute("id") Integer id) {
+        Qualification qualification = qualificationService.selectMerchantInfo(id);
+        return CustomResponse.success(qualification);
     }
 }

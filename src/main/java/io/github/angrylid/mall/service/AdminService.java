@@ -79,7 +79,7 @@ public class AdminService {
         Long product = productMapper.selectCount(new QueryWrapper<>());
         Long merchant = qualificationMapper
                 .selectCount(
-                        new QueryWrapper<Qualification>().eq("current_status", HandleProcedure.APPROVED.getStatus()));
+                        new QueryWrapper<Qualification>().eq("current_status", HandleProcedure.APPROVED.getValue()));
         return ofEntries(
                 entry("user", user),
                 entry("product", product),

@@ -24,7 +24,6 @@ import io.github.angrylid.mall.dto.QualificationDto;
 import io.github.angrylid.mall.dto.request.UserNameDTO;
 import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.entity.UnverifiedStudent;
-import io.github.angrylid.mall.generated.entity.Qualification;
 import io.github.angrylid.mall.generated.entity.Student;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.UserService;
@@ -99,19 +98,6 @@ public class UserClientApi {
         return CustomResponse.success(student);
     }
 
-    /**
-     * 获取用户店铺信息
-     * 
-     * @param id
-     * @return
-     */
-    @TokenRequired
-    @GetMapping("/merchant_info/")
-    public CustomResponse<Qualification> getMerchantInfo(@RequestAttribute("id") Integer id) {
-        Qualification qualification = userService.selectMerchantInfo(id);
-        return CustomResponse.success(qualification);
-    }
-
     @GetMapping("/student")
     public CustomResponse<Object> manage() {
         var resp = userService.getUnverifiedStudents();
@@ -137,8 +123,8 @@ public class UserClientApi {
      */
     @TokenRequired
     @GetMapping("/myaccount/roletype")
-    public CustomResponse<Map<String, ?>> myRoleType(@RequestAttribute("id") Integer id) {
-        Map<String, ?> roleType = userService.getUserStatus(id);
+    public CustomResponse<?> myRoleType(@RequestAttribute("id") Integer id) {
+        Map<String, Object> roleType = userService.getUserStatus(id);
         return CustomResponse.success(roleType);
     }
 
