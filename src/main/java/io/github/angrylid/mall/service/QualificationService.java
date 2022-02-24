@@ -132,7 +132,7 @@ public class QualificationService {
         QueryWrapper<Qualification> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("applicant_id", userId);
         queryWrapper.orderByDesc("created_at");
-        Qualification qualification = qualificationMapper.selectList(queryWrapper).get(0);
+        Qualification qualification = qualificationMapper.selectOne(queryWrapper);
         return qualification;
     }
 
