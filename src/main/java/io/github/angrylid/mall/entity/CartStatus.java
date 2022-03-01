@@ -1,4 +1,4 @@
-package io.github.angrylid.mall.entity.field;
+package io.github.angrylid.mall.entity;
 
 public enum CartStatus {
     IN_CART("in_cart"),

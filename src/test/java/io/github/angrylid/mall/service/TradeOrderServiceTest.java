@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import io.github.angrylid.mall.entity.DetailOrder;
+import io.github.angrylid.mall.dto.response.DetailOrder;
 
 @SpringBootTest
 

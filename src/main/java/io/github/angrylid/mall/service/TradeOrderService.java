@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.angrylid.mall.dto.request.OrderDTO;
-import io.github.angrylid.mall.entity.DetailOrder;
+import io.github.angrylid.mall.dto.response.DetailOrder;
 import io.github.angrylid.mall.generated.entity.Product;
 import io.github.angrylid.mall.generated.entity.TradeOrder;
 import io.github.angrylid.mall.generated.mapper.ProductMapper;

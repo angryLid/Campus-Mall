@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import io.github.angrylid.mall.dto.request.OrderDTO;
 import io.github.angrylid.mall.dto.response.CartItemDto;
-import io.github.angrylid.mall.entity.field.CartStatus;
+import io.github.angrylid.mall.entity.CartStatus;
 import io.github.angrylid.mall.generated.entity.Cart;
 import io.github.angrylid.mall.generated.entity.Product;
 import io.github.angrylid.mall.generated.mapper.CartMapper;

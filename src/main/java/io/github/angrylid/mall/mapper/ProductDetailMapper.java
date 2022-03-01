@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import io.github.angrylid.mall.entity.ProductDetail;
+import io.github.angrylid.mall.dto.response.ProductDetail;
 
 @Mapper
 public interface ProductDetailMapper {
