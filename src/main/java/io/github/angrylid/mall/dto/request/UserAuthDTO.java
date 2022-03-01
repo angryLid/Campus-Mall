@@ -1,10 +1,10 @@
-package io.github.angrylid.mall.dto.auth;
+package io.github.angrylid.mall.dto.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class UserSignIn {
+public class UserAuthDTO {
 
     @Size(max = 11, min = 11)
     @NotBlank
@@ -16,7 +16,7 @@ public class UserSignIn {
     @NotNull
     String password;
 
-    public UserSignIn(String telephone, String password) {
+    public UserAuthDTO(String telephone, String password) {
         this.telephone = telephone;
         this.password = password;
     }

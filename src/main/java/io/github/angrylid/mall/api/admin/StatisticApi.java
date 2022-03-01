@@ -11,12 +11,12 @@ import io.github.angrylid.mall.jwt.annotation.AdminRequired;
 import io.github.angrylid.mall.service.AdminService;
 
 @AdminController("/static")
-public class StaticApi {
+public class StatisticApi {
 
     private AdminService adminService;
 
     @Autowired
-    public StaticApi(AdminService adminService) {
+    public StatisticApi(AdminService adminService) {
         this.adminService = adminService;
     }
 

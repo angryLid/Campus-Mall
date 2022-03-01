@@ -1,10 +1,10 @@
-package io.github.angrylid.mall.dto.auth;
+package io.github.angrylid.mall.dto.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class AdminSignIn {
+public class AdminAuthDTO {
 
     @NotNull
     @NotBlank

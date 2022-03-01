@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import io.github.angrylid.mall.api.annotation.AdminController;
 import io.github.angrylid.mall.dto.CustomResponse;
-import io.github.angrylid.mall.dto.auth.AdminSignIn;
+import io.github.angrylid.mall.dto.request.AdminAuthDTO;
 import io.github.angrylid.mall.service.AdminService;
 
 /**
@@ -30,7 +30,7 @@ public class AuthApi {
      */
     @PostMapping()
     public CustomResponse<String> signIn(
-            @RequestBody @Valid AdminSignIn requestBody) {
+            @RequestBody @Valid AdminAuthDTO requestBody) {
         try {
             String token = adminService.generateToken(requestBody.getName(), requestBody.getPassword());
             return CustomResponse.success(token);

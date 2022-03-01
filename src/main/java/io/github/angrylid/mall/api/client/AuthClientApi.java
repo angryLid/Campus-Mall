@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import io.github.angrylid.mall.api.annotation.ClientController;
 import io.github.angrylid.mall.dto.CustomResponse;
-import io.github.angrylid.mall.dto.auth.UserSignIn;
+import io.github.angrylid.mall.dto.request.UserAuthDTO;
 import io.github.angrylid.mall.service.UserService;
 
 @Validated
@@ -31,7 +31,7 @@ public class AuthClientApi {
      * @return JWT
      */
     @PostMapping()
-    public CustomResponse<String> signIn(@RequestBody @Valid UserSignIn userLoginDto) {
+    public CustomResponse<String> signIn(@RequestBody @Valid UserAuthDTO userLoginDto) {
 
         try {
             String token = userService.generateToken(userLoginDto.getTelephone(),
@@ -51,7 +51,7 @@ public class AuthClientApi {
      * @return JWT
      */
     @PostMapping("/register")
-    public CustomResponse<String> signUp(@RequestBody @Valid UserSignIn userLoginDto) {
+    public CustomResponse<String> signUp(@RequestBody @Valid UserAuthDTO userLoginDto) {
 
         try {
             userService.addUser(userLoginDto.getTelephone(),
