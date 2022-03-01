@@ -1,21 +1,18 @@
 package io.github.angrylid.mall.service;
 
-import static java.util.Map.entry;
-import static java.util.Map.ofEntries;
-
-import java.util.Map;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.github.angrylid.mall.dto.response.StatisticDTO;
 import io.github.angrylid.mall.entity.HandleProcedure;
 import io.github.angrylid.mall.generated.entity.Admin;
 import io.github.angrylid.mall.generated.entity.Qualification;
 import io.github.angrylid.mall.generated.mapper.AdminMapper;
 import io.github.angrylid.mall.generated.mapper.ProductMapper;
 import io.github.angrylid.mall.generated.mapper.QualificationMapper;
+import io.github.angrylid.mall.generated.mapper.TradeOrderMapper;
 import io.github.angrylid.mall.generated.mapper.UserMapper;
 import io.github.angrylid.mall.jwt.JwtUtil;
 
@@ -30,15 +27,18 @@ public class AdminService {
 
     private QualificationMapper qualificationMapper;
 
+    private TradeOrderMapper tradeOrderMapper;
+
     private JwtUtil jwtUtil;
 
     @Autowired
     public AdminService(AdminMapper adminMapper, ProductMapper productMapper, UserMapper userMapper,
-            QualificationMapper qualificationMapper, JwtUtil jwtUtil) {
+            QualificationMapper qualificationMapper, TradeOrderMapper tradeOrderMapper, JwtUtil jwtUtil) {
         this.adminMapper = adminMapper;
         this.productMapper = productMapper;
         this.userMapper = userMapper;
         this.qualificationMapper = qualificationMapper;
+        this.tradeOrderMapper = tradeOrderMapper;
         this.jwtUtil = jwtUtil;
     }
 
@@ -74,17 +74,16 @@ public class AdminService {
     /**
      * 检索数据量
      */
-    public Map<String, Long> selectSum() {
+    public StatisticDTO selectSum() {
         Long user = userMapper.selectCount(new QueryWrapper<>());
         Long product = productMapper.selectCount(new QueryWrapper<>());
         Long merchant = qualificationMapper
                 .selectCount(
                         new QueryWrapper<Qualification>().eq("current_status", HandleProcedure.APPROVED.getValue()));
-        return ofEntries(
-                entry("user", user),
-                entry("product", product),
-                entry("merchant", merchant),
-                entry("order", 99L));
+
+        Long order = tradeOrderMapper.selectCount(new QueryWrapper<>());
+
+        return new StatisticDTO(user, product, merchant, order);
     }
 
 }

@@ -1,7 +1,5 @@
 package io.github.angrylid.mall.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,33 +12,37 @@ import io.github.angrylid.mall.generated.mapper.UserMapper;
 
 @Service
 public class StudentService {
-    private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
+    // private static final Logger logger =
+    // LoggerFactory.getLogger(StudentService.class);
 
     private UserMapper userMapper;
     private StudentMapper studentMapper;
 
-    public StudentService(@Autowired UserMapper userMapper, @Autowired StudentMapper studentMapper) {
+    public StudentService(@Autowired UserMapper userMapper,
+            @Autowired StudentMapper studentMapper) {
         this.userMapper = userMapper;
         this.studentMapper = studentMapper;
     }
 
+    /**
+     * 新生入学批量登记注册
+     * 
+     * @param uploadStudent
+     */
     @Transactional(rollbackFor = Exception.class)
     public void insertStudent(StudentEnrollmentDTO uploadStudent) {
-
-        String salt = "salt";
-        logger.warn(uploadStudent.toString());
-
+        // 插入一条学生记录
         Student student = new Student();
         student.setName(uploadStudent.getName());
         student.setBelongTo(uploadStudent.getBelongTo());
         student.setStudentId(uploadStudent.getStudentId());
         studentMapper.insert(student);
-
+        // 插入相应的用户记录
         User user = new User();
         user.setTelephone(uploadStudent.getTelephone());
         user.setPasswd("12345678");
         user.setStudentId(student.getId());
-        user.setNickname(uploadStudent.getName() + uploadStudent.getTelephone().substring(9, 11) + salt);
+        user.setNickname(uploadStudent.getStudentId() + uploadStudent.getName());
         userMapper.insert(user);
     }
 }

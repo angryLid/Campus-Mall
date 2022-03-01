@@ -1,10 +1,10 @@
 package io.github.angrylid.mall.service;
 
-import java.util.Map;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import io.github.angrylid.mall.dto.response.StatisticDTO;
 
 @SpringBootTest
 public class AdminServiceTest {
@@ -19,7 +19,7 @@ public class AdminServiceTest {
     @Test
     void testSelectSum() {
 
-        Map<String, Long> map = adminService.selectSum();
+        StatisticDTO map = adminService.selectSum();
 
         System.out.println(map);
     }
