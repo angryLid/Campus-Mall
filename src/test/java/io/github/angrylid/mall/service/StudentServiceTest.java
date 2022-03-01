@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import io.github.angrylid.mall.dto.UploadStudentDTO;
+import io.github.angrylid.mall.dto.request.StudentEnrollmentDTO;
 
 @SpringBootTest
 public class StudentServiceTest {
@@ -17,7 +17,7 @@ public class StudentServiceTest {
 
     @Test
     void testInsertStudent() {
-        UploadStudentDTO student = new UploadStudentDTO();
+        StudentEnrollmentDTO student = new StudentEnrollmentDTO();
         student.setName("陶白白");
         student.setStudentId("1501020001");
         student.setBelongTo("考古学系");

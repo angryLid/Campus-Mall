@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import io.github.angrylid.mall.api.annotation.AdminController;
 import io.github.angrylid.mall.dto.CustomResponse;
-import io.github.angrylid.mall.dto.UploadStudentDTO;
+import io.github.angrylid.mall.dto.request.StudentEnrollmentDTO;
 import io.github.angrylid.mall.jwt.annotation.AdminRequired;
 import io.github.angrylid.mall.service.StudentService;
 
@@ -38,9 +38,9 @@ public class StudentApi {
     @AdminRequired
     @PostMapping()
     public CustomResponse<?> postStudents(
-            @RequestBody List<@Valid UploadStudentDTO> students) {
+            @RequestBody List<@Valid StudentEnrollmentDTO> students) {
         try {
-            for (UploadStudentDTO student : students) {
+            for (StudentEnrollmentDTO student : students) {
                 studentService.insertStudent(student);
             }
             return CustomResponse.success("注册成功");

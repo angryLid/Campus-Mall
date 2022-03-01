@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.github.angrylid.mall.dto.UploadOrder;
+import io.github.angrylid.mall.dto.request.OrderDTO;
 import io.github.angrylid.mall.entity.DetailOrder;
 import io.github.angrylid.mall.generated.entity.Product;
 import io.github.angrylid.mall.generated.entity.TradeOrder;
@@ -39,9 +39,9 @@ public class TradeOrderService {
         return detailOrderMapper.selectBought(userId);
     }
 
-    public Integer insertOrders(Integer userId, List<UploadOrder> orders) {
+    public Integer insertOrders(Integer userId, List<OrderDTO> orders) {
 
-        for (UploadOrder order : orders) {
+        for (OrderDTO order : orders) {
             Product product = productMapper.selectOne(new QueryWrapper<Product>().eq("id", order.getId()));
             TradeOrder tradeOrder = new TradeOrder();
             tradeOrder.setSellerId(product.getSellerId());

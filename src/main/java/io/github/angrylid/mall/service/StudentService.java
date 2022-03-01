@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.angrylid.mall.dto.UploadStudentDTO;
+import io.github.angrylid.mall.dto.request.StudentEnrollmentDTO;
 import io.github.angrylid.mall.generated.entity.Student;
 import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.generated.mapper.StudentMapper;
@@ -25,7 +25,7 @@ public class StudentService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void insertStudent(UploadStudentDTO uploadStudent) {
+    public void insertStudent(StudentEnrollmentDTO uploadStudent) {
 
         String salt = "salt";
         logger.warn(uploadStudent.toString());

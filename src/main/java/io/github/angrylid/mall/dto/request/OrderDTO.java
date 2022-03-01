@@ -1,6 +1,6 @@
-package io.github.angrylid.mall.dto;
+package io.github.angrylid.mall.dto.request;
 
-public class UploadOrder {
+public class OrderDTO {
     private Integer id;
     private Integer quantity;
 

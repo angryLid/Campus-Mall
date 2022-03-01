@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import io.github.angrylid.mall.api.annotation.ClientController;
 import io.github.angrylid.mall.dto.CustomResponse;
-import io.github.angrylid.mall.dto.UploadOrder;
+import io.github.angrylid.mall.dto.request.OrderDTO;
 import io.github.angrylid.mall.entity.DetailOrder;
 import io.github.angrylid.mall.service.CartService;
 import io.github.angrylid.mall.service.TradeOrderService;
@@ -55,7 +55,8 @@ public class OrderClientApi {
      */
     @Transactional(rollbackFor = Exception.class)
     @PostMapping("/payment")
-    public CustomResponse<?> pay(@RequestAttribute("id") Integer id, @RequestBody List<@Valid UploadOrder> orders) {
+    public CustomResponse<?> pay(@RequestAttribute("id") Integer id,
+            @RequestBody List<@Valid OrderDTO> orders) {
         cartService.updateOnes(id, orders);
         tradeOrderService.insertOrders(id, orders);
 

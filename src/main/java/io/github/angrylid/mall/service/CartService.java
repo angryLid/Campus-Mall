@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.angrylid.mall.dto.CartItemDto;
-import io.github.angrylid.mall.dto.UploadOrder;
+import io.github.angrylid.mall.dto.request.OrderDTO;
 import io.github.angrylid.mall.entity.field.CartStatus;
 import io.github.angrylid.mall.generated.entity.Cart;
 import io.github.angrylid.mall.generated.entity.Product;
@@ -109,9 +109,9 @@ public class CartService {
      * @param userId
      * @param items
      */
-    public void updateOnes(Integer userId, List<UploadOrder> items) {
+    public void updateOnes(Integer userId, List<OrderDTO> items) {
 
-        for (UploadOrder item : items) {
+        for (OrderDTO item : items) {
             Cart cart = new Cart();
             cart.setId(item.getId());
             cart.setStatus(CartStatus.WAITING_RECEIVE.getStatus());
