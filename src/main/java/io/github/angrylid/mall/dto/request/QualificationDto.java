@@ -1,6 +1,8 @@
-package io.github.angrylid.mall.dto;
+package io.github.angrylid.mall.dto.request;
 
 import java.time.LocalDateTime;
+
+import io.github.angrylid.mall.dto.BaseImages;
 
 public class QualificationDto extends BaseImages {
     private String enterpriseName;

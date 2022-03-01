@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.angrylid.mall.dto.CartItemDto;
 import io.github.angrylid.mall.dto.CustomResponse;
+import io.github.angrylid.mall.dto.response.CartItemDto;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.CartService;
 

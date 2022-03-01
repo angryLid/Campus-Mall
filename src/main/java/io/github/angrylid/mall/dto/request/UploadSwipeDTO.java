@@ -1,4 +1,4 @@
-package io.github.angrylid.mall.dto;
+package io.github.angrylid.mall.dto.request;
 
 import org.springframework.web.multipart.MultipartFile;
 

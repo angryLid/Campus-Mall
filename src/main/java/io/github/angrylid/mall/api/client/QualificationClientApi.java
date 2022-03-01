@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 
 import io.github.angrylid.mall.api.annotation.ClientController;
 import io.github.angrylid.mall.dto.CustomResponse;
-import io.github.angrylid.mall.dto.QualificationDto;
+import io.github.angrylid.mall.dto.request.QualificationDto;
 import io.github.angrylid.mall.generated.entity.Qualification;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.QualificationService;

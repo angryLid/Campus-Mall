@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import io.github.angrylid.mall.api.annotation.ClientController;
 import io.github.angrylid.mall.dto.CustomResponse;
-import io.github.angrylid.mall.dto.QualificationDto;
+import io.github.angrylid.mall.dto.request.QualificationDto;
 import io.github.angrylid.mall.dto.request.UserNameDTO;
 import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.entity.UnverifiedStudent;

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.github.angrylid.mall.dto.QualificationDto;
+import io.github.angrylid.mall.dto.request.QualificationDto;
 import io.github.angrylid.mall.entity.HandleProcedure;
 import io.github.angrylid.mall.generated.entity.Qualification;
 import io.github.angrylid.mall.generated.entity.User;

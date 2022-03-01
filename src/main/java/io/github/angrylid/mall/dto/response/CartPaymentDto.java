@@ -1,4 +1,4 @@
-package io.github.angrylid.mall.dto;
+package io.github.angrylid.mall.dto.response;
 
 import java.util.List;
 

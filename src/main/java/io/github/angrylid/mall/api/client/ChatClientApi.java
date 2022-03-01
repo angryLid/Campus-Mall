@@ -9,7 +9,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import io.github.angrylid.mall.dto.ChatMessage;
+import io.github.angrylid.mall.dto.response.ChatMessage;
 import io.github.angrylid.mall.service.MessageService;
 
 @Controller

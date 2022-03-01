@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.github.angrylid.mall.dto.PostProductDto;
+import io.github.angrylid.mall.dto.request.PostProductDto;
 import io.github.angrylid.mall.generated.entity.Favorite;
 import io.github.angrylid.mall.generated.entity.Product;
 import io.github.angrylid.mall.generated.mapper.FavoriteMapper;

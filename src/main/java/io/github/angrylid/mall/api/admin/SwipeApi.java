@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import io.github.angrylid.mall.api.annotation.AdminController;
 import io.github.angrylid.mall.dto.CustomResponse;
-import io.github.angrylid.mall.dto.UploadSwipeDTO;
+import io.github.angrylid.mall.dto.request.UploadSwipeDTO;
 import io.github.angrylid.mall.generated.entity.Swipe;
 import io.github.angrylid.mall.jwt.annotation.AdminRequired;
 import io.github.angrylid.mall.service.SwipeService;
 
+/**
+ * Swipe - 轮播图
+ */
 @AdminController("/swipe")
 public class SwipeApi {
 

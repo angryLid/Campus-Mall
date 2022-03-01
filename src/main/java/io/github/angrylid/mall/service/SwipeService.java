@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.github.angrylid.mall.dto.UploadSwipeDTO;
+import io.github.angrylid.mall.dto.request.UploadSwipeDTO;
 import io.github.angrylid.mall.generated.entity.Swipe;
 import io.github.angrylid.mall.generated.mapper.SwipeMapper;
 import io.github.angrylid.mall.utils.Minio;

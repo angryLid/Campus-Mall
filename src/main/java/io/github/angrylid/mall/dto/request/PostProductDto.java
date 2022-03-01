@@ -1,8 +1,10 @@
-package io.github.angrylid.mall.dto;
+package io.github.angrylid.mall.dto.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import io.github.angrylid.mall.dto.BaseImages;
 
 public class PostProductDto extends BaseImages {
 

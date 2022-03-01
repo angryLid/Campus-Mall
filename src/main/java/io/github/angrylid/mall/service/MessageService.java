@@ -17,8 +17,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.github.angrylid.mall.dto.ChatMessage;
-import io.github.angrylid.mall.dto.ChatNotification;
+import io.github.angrylid.mall.dto.response.ChatMessage;
+import io.github.angrylid.mall.dto.response.ChatNotification;
 import io.github.angrylid.mall.generated.entity.Message;
 import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.generated.mapper.MessageMapper;
