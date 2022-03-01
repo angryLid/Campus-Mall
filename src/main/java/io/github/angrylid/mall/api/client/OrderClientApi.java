@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import io.github.angrylid.mall.api.annotation.ClientController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.request.OrderDTO;
-import io.github.angrylid.mall.dto.response.DetailOrder;
+import io.github.angrylid.mall.entity.DetailOrder;
 import io.github.angrylid.mall.service.CartService;
 import io.github.angrylid.mall.service.TradeOrderService;
 

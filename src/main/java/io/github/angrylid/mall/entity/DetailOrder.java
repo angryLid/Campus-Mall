@@ -1,4 +1,4 @@
-package io.github.angrylid.mall.dto.response;
+package io.github.angrylid.mall.entity;
 
 import java.math.BigDecimal;
 
