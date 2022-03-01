@@ -20,15 +20,10 @@ import io.github.angrylid.mall.jwt.JwtUtil;
 public class AdminService {
 
     private AdminMapper adminMapper;
-
     private ProductMapper productMapper;
-
     private UserMapper userMapper;
-
     private QualificationMapper qualificationMapper;
-
     private TradeOrderMapper tradeOrderMapper;
-
     private JwtUtil jwtUtil;
 
     @Autowired

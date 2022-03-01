@@ -98,12 +98,6 @@ public class UserClientApi {
         return CustomResponse.success(student);
     }
 
-    @GetMapping("/student")
-    public CustomResponse<Object> manage() {
-        var resp = userService.getUnverifiedStudents();
-        return CustomResponse.success(resp);
-    }
-
     @PutMapping("/student")
     public CustomResponse<Object> approve(@RequestBody UnverifiedStudent unverifiedStudent) {
         var result = userService.permitStudent(unverifiedStudent.getUid());

@@ -25,14 +25,25 @@ public class FavoriteService {
     }
 
     public Integer insertFavorite(Integer userId, Integer productId) {
-        Favorite favorite = new Favorite();
-        favorite.setUserId(userId);
-        favorite.setProductId(productId);
-        return favoriteMapper.insert(favorite);
+
+        Favorite favorite = favoriteMapper.selectOne(new QueryWrapper<Favorite>().eq("user_id", userId).eq("product_id",
+                productId));
+        if (favorite != null) {
+            return 0;
+        } else {
+            favorite = new Favorite();
+            favorite.setUserId(userId);
+            favorite.setProductId(productId);
+            return favoriteMapper.insert(favorite);
+        }
+
     }
 
     public Integer deleteFavorite(Integer userId, Integer productId) {
-        return favoriteMapper.delete(new QueryWrapper<Favorite>().eq("user_id", userId).eq("product_id", productId));
+        QueryWrapper<Favorite> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId).eq("product_id", productId);
+
+        return favoriteMapper.delete(queryWrapper);
     }
 
     public Long selectSum(Integer userId) {

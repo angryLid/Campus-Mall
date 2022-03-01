@@ -3,11 +3,7 @@ package io.github.angrylid.mall.service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -17,31 +13,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.github.angrylid.mall.dto.request.PostProductDto;
+import io.github.angrylid.mall.dto.response.ProductDetailsDTO;
 import io.github.angrylid.mall.generated.entity.Favorite;
 import io.github.angrylid.mall.generated.entity.Product;
+import io.github.angrylid.mall.generated.entity.Relation;
+import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.generated.mapper.FavoriteMapper;
 import io.github.angrylid.mall.generated.mapper.ProductMapper;
+import io.github.angrylid.mall.generated.mapper.RelationMapper;
 import io.github.angrylid.mall.generated.mapper.UserMapper;
-import io.github.angrylid.mall.mapper.ProductDetailMapper;
 import io.github.angrylid.mall.utils.Minio;
 
 @Service
 public class ProductService {
 
-    @Resource
-    ProductDetailMapper myProductMapper;
-
-    @Resource
-    ProductMapper productMapper;
-
-    @Resource
-    UserMapper userMapper;
-
-    @Autowired
-    Minio minio;
-
-    @Autowired
+    private Minio minio;
+    private ProductMapper productMapper;
+    private UserMapper userMapper;
     private FavoriteMapper favoriteMapper;
+    private RelationMapper relationMapper;
+
+    @Autowired
+    public ProductService(Minio minio, ProductMapper productMapper, UserMapper userMapper,
+            FavoriteMapper favoriteMapper, RelationMapper relationMapper) {
+        this.minio = minio;
+        this.productMapper = productMapper;
+        this.userMapper = userMapper;
+        this.favoriteMapper = favoriteMapper;
+        this.relationMapper = relationMapper;
+    }
 
     /**
      * 管理员 检索所有商品
@@ -201,41 +201,44 @@ public class ProductService {
         return productMapper.selectById(id);
     }
 
-    public Map<String, Object> getProductAndSeller(String id) {
-        Map<String, Object> map = new HashMap<>();
-        var product = getProduct(id);
-        var sellerId = product.getSellerId();
-        var user = userMapper.selectById(sellerId);
+    public ProductDetailsDTO getProductAndSeller(String id) {
+        ProductDetailsDTO ret = new ProductDetailsDTO();
 
-        map.put("id", product.getId());
-        map.put("sellerId", user.getId());
-        map.put("sellerName", user.getNickname());
-        map.put("sellerTel", user.getTelephone());
-        map.put("publishTime", product.getCreatedAt().toString());
-        map.put("title", product.getTitle());
-        map.put("price", product.getPrice().toString());
-        map.put("description", product.getDescription());
+        Product product = getProduct(id);
+        Integer sellerId = product.getSellerId();
+        User user = userMapper.selectById(sellerId);
 
-        map.put("image0", product.getImage0());
-        map.put("image1", product.getImage1());
-        map.put("image2", product.getImage2());
-        map.put("image3", product.getImage3());
-        map.put("image4", product.getImage4());
-        map.put("image5", product.getImage5());
+        ret.setId(product.getId());
+        ret.setSellerId(user.getId());
+        ret.setSellerName(user.getNickname());
+        ret.setSellerTel(user.getTelephone());
+        ret.setTitle(product.getTitle());
+        ret.setDescription(product.getDescription());
+        ret.setPrice(product.getPrice().toString());
+        ret.setPublishTime(product.getCreatedAt().toString());
+        ret.setImage0(product.getImage0());
+        ret.setImage1(product.getImage1());
+        ret.setImage2(product.getImage2());
+        ret.setImage3(product.getImage3());
+        ret.setImage4(product.getImage4());
+        ret.setImage5(product.getImage5());
 
-        return map;
+        return ret;
     }
 
-    public Map<String, Object> getProductAndSeller(Integer userId, String productId) {
-        Map<String, Object> map = getProductAndSeller(productId);
+    public ProductDetailsDTO getProductAndSeller(Integer userId, String productId) {
+        ProductDetailsDTO p = getProductAndSeller(productId);
+
+        Product product = getProduct(productId);
+        Boolean followedSeller = relationMapper.selectCount(
+                new QueryWrapper<Relation>().eq("user_id", userId).eq("follower_id", product.getSellerId())) > 0;
+
+        p.setFollowedSeller(followedSeller);
         Favorite favorite = favoriteMapper
                 .selectOne(new QueryWrapper<Favorite>().eq("user_id", userId).eq("product_id", productId));
-        if (favorite != null) {
-            map.put("favorate", true);
-        } else {
-            map.put("favorate", false);
-        }
-        return map;
+        p.setFavorite(favorite != null);
+
+        return p;
     }
 
     public List<Product> selectMyPublished(Integer id) {

@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -30,8 +29,8 @@ public class Favorite implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
-    @TableLogic
-    private Boolean isDeleted;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime modifiedAt;
 
 
     public Integer getId() {
@@ -66,12 +65,12 @@ public class Favorite implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Boolean getIsDeleted() {
-        return isDeleted;
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
     }
 
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
     @Override
@@ -81,7 +80,7 @@ public class Favorite implements Serializable {
         ", userId=" + userId +
         ", productId=" + productId +
         ", createdAt=" + createdAt +
-        ", isDeleted=" + isDeleted +
+        ", modifiedAt=" + modifiedAt +
         "}";
     }
 }

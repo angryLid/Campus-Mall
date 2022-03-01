@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -23,41 +21,37 @@ import io.github.angrylid.mall.dto.request.QualificationDto;
 import io.github.angrylid.mall.entity.AccountInformation;
 import io.github.angrylid.mall.entity.HandleProcedure;
 import io.github.angrylid.mall.entity.RoleType;
-import io.github.angrylid.mall.entity.UnverifiedStudent;
 import io.github.angrylid.mall.generated.entity.Qualification;
+import io.github.angrylid.mall.generated.entity.Relation;
 import io.github.angrylid.mall.generated.entity.Student;
 import io.github.angrylid.mall.generated.entity.User;
 import io.github.angrylid.mall.generated.mapper.QualificationMapper;
+import io.github.angrylid.mall.generated.mapper.RelationMapper;
 import io.github.angrylid.mall.generated.mapper.StudentMapper;
 import io.github.angrylid.mall.generated.mapper.UserMapper;
 import io.github.angrylid.mall.jwt.JwtUtil;
-import io.github.angrylid.mall.mapper.CustomUserMapper;
-import io.github.angrylid.mall.mapper.UnverifiedStudentMapper;
 import io.github.angrylid.mall.utils.Minio;
 
 @Service("userService")
 public class UserService {
 
-    @Resource
-    private CustomUserMapper customUserMapper;
-
-    @Resource
-    UnverifiedStudentMapper unverifiedStudentMapper;
-
-    @Resource
+    private JwtUtil jwtUtil;
+    private Minio minio;
+    private QualificationMapper qualificationMapper;
+    private RelationMapper relationMapper;
+    private StudentMapper studentMapper;
     private UserMapper userMapper;
 
-    @Resource
-    private StudentMapper studentMapper;
-
     @Autowired
-    private QualificationMapper qualificationMapper;
-
-    @Autowired
-    Minio minio;
-
-    @Autowired
-    JwtUtil jwtUtil;
+    public UserService(JwtUtil jwtUtil, Minio minio, QualificationMapper qualificationMapper,
+            RelationMapper relationMapper, StudentMapper studentMapper, UserMapper userMapper) {
+        this.jwtUtil = jwtUtil;
+        this.minio = minio;
+        this.qualificationMapper = qualificationMapper;
+        this.relationMapper = relationMapper;
+        this.studentMapper = studentMapper;
+        this.userMapper = userMapper;
+    }
 
     /**
      * 管理员 - 获取所有用户
@@ -210,8 +204,10 @@ public class UserService {
                     .selectOne(new QueryWrapper<User>().eq("telephone", telephone).eq("passwd", password));
             if (user != null) {
                 return jwtUtil.sign(telephone, password);
+            } else {
+                throw new IllegalArgumentException();
             }
-            return null;
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalArgumentException("账号或密码错误");
@@ -237,7 +233,7 @@ public class UserService {
     public User getUserByTel(String telephone) {
         User user = new User();
         try {
-            user = this.customUserMapper.getUserByTel(telephone);
+            user = userMapper.selectOne(new QueryWrapper<User>().eq("telephone", telephone));
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -249,10 +245,14 @@ public class UserService {
         AccountInformation infomation = new AccountInformation();
 
         try {
-            infomation.setFollowing(this.customUserMapper.getFollowingSpecificUser(id));
-            infomation.setFollowed(this.customUserMapper.getFollowedSpecificUser(id));
+            Long following = relationMapper
+                    .selectCount(new QueryWrapper<Relation>().eq("user_id", id).eq("is_deleted", 0));
+            Long followed = relationMapper
+                    .selectCount(new QueryWrapper<Relation>().eq("follower_id", id).eq("is_deleted", 0));
+            infomation.setFollowing(following.intValue());
+            infomation.setFollowed(followed.intValue());
 
-            User user = this.customUserMapper.getUserById(id);
+            User user = userMapper.selectById(id);
             infomation.setName(user.getNickname());
             infomation.setTelephone(user.getTelephone());
 
@@ -266,10 +266,6 @@ public class UserService {
 
     public boolean verifyJwt(String token) {
         return jwtUtil.verify(token);
-    }
-
-    public List<UnverifiedStudent> getUnverifiedStudents() {
-        return unverifiedStudentMapper.getStudents();
     }
 
     /**

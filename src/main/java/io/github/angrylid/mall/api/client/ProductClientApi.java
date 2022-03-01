@@ -1,7 +1,6 @@
 package io.github.angrylid.mall.api.client;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import io.github.angrylid.mall.api.annotation.ClientController;
 import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.request.PostProductDto;
+import io.github.angrylid.mall.dto.response.ProductDetailsDTO;
 import io.github.angrylid.mall.generated.entity.Product;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.ProductService;
@@ -52,13 +52,14 @@ public class ProductClientApi {
      * @return
      */
     @GetMapping("/{id}")
-    public CustomResponse<Map<String, Object>> getSpecificProduct(@RequestAttribute("id") Integer userId,
+    public CustomResponse<?> getSpecificProduct(@RequestAttribute("id") Integer userId,
             @PathVariable("id") String productId) {
-        Map<String, Object> product;
+        ProductDetailsDTO product;
         if (userId == null) {
             product = productService.getProductAndSeller(productId);
+        } else {
+            product = productService.getProductAndSeller(userId, productId);
         }
-        product = productService.getProductAndSeller(userId, productId);
 
         return CustomResponse.success(product);
 

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 
 import io.github.angrylid.mall.api.annotation.ClientController;
 import io.github.angrylid.mall.dto.CustomResponse;
-import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.FavoriteService;
 
 @ClientController("/favorite")
@@ -22,7 +21,13 @@ public class FavoriteClientApi {
         this.favoriteService = favoriteService;
     }
 
-    @TokenRequired
+    /**
+     * 获取个人收藏的物品
+     * 
+     * @param userId    用户id
+     * @param productId 物品id
+     * @return
+     */
     @GetMapping("/{productId}")
     public CustomResponse<?> isFavorite(@RequestAttribute("id") Integer userId,
             @PathVariable("productId") Integer productId) {
@@ -31,7 +36,14 @@ public class FavoriteClientApi {
         return CustomResponse.success(result);
     }
 
-    @TokenRequired
+    /**
+     * 添加收藏
+     * 
+     * @param userId    用户id
+     * @param productId 物品id
+     * @return
+     */
+
     @PostMapping("/{productId}")
     public CustomResponse<?> setFavorite(@RequestAttribute("id") Integer userId,
             @PathVariable("productId") Integer productId) {
@@ -43,7 +55,13 @@ public class FavoriteClientApi {
         return CustomResponse.dbException("fail");
     }
 
-    @TokenRequired
+    /**
+     * 取消收藏
+     * 
+     * @param userId
+     * @param productId
+     * @return
+     */
     @DeleteMapping("/{productId}")
     public CustomResponse<?> deleteFavorite(@RequestAttribute("id") Integer userId,
             @PathVariable("productId") Integer productId) {
