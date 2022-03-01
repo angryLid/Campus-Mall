@@ -154,21 +154,4 @@ public class ProductClientApi {
         return CustomResponse.dbException("database error.");
     }
 
-    @TokenRequired
-    @GetMapping("/favorite")
-    public CustomResponse<?> getFavorite(@RequestAttribute("id") Integer id) {
-        List<Product> products = productService.selectFavorite(id);
-        return CustomResponse.success(products);
-    }
-
-    @TokenRequired
-    @PostMapping("/favorite/{id}")
-    public CustomResponse<?> addFavorite(@PathVariable("id") Integer id, @RequestAttribute("id") Integer userId) {
-        Integer result = productService.addFavorite(id, userId);
-        if (result == 1) {
-            return CustomResponse.success("Add Success.");
-        }
-        return CustomResponse.dbException("database error.");
-    }
-
 }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -23,7 +22,6 @@ import io.github.angrylid.mall.dto.CustomResponse;
 import io.github.angrylid.mall.dto.request.QualificationDto;
 import io.github.angrylid.mall.dto.request.UserNameDTO;
 import io.github.angrylid.mall.dto.response.AccountInformation;
-import io.github.angrylid.mall.dto.response.UnverifiedStudent;
 import io.github.angrylid.mall.generated.entity.Student;
 import io.github.angrylid.mall.jwt.annotation.TokenRequired;
 import io.github.angrylid.mall.service.UserService;
@@ -96,17 +94,6 @@ public class UserClientApi {
 
         Student student = userService.selectStudentInfo(id);
         return CustomResponse.success(student);
-    }
-
-    @PutMapping("/student")
-    public CustomResponse<Object> approve(@RequestBody UnverifiedStudent unverifiedStudent) {
-        var result = userService.permitStudent(unverifiedStudent.getUid());
-        if (result == 1) {
-            return CustomResponse.success("OK");
-        } else {
-            return CustomResponse.dbException("Error");
-        }
-
     }
 
     /**

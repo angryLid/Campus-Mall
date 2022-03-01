@@ -21,6 +21,12 @@ public class NotificationClientApi {
         this.messageService = messageService;
     }
 
+    /**
+     * 获取所有历史聊天记录
+     * 
+     * @param id
+     * @return
+     */
     @TokenRequired
     @GetMapping("/")
     public CustomResponse<?> getNotification(@RequestAttribute("id") Integer id) {
