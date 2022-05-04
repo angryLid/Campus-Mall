@@ -30,7 +30,7 @@ public class QualificationApi {
      * @return
      */
     @AdminRequired
-    @GetMapping("/")
+    @GetMapping()
     public CustomResponse<List<Qualification>> getAll() {
         List<Qualification> qualifications = qualificationService.selectAllWaiting();
         return CustomResponse.success(qualifications);
