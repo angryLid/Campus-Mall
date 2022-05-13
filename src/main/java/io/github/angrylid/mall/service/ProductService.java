@@ -89,6 +89,7 @@ public class ProductService {
         entity.setDescription(dto.getDescription());
         entity.setSellerId(id);
         entity.setPrice(new BigDecimal(dto.getPrice()));
+        entity.setStatus(1);
         if (dto.getpType().equals("personal")) {
             entity.setpType(true);
         } else if (dto.getpType().equals("enterprise")) {
